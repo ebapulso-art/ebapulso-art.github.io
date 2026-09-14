@@ -72,6 +72,8 @@ html {
 
 
 body {
+    background: red !important;
+}
 
     font-family: var(--font-main);
 

@@ -73,8 +73,10 @@ body {
 
 body::before {
     content: "";
+
     position: fixed;
     inset: 0;
+
     pointer-events: none;
     z-index: 9999;
 
@@ -138,13 +140,16 @@ ul {
 
 .section {
     position: relative;
+
     padding: 130px 0;
+
     overflow: hidden;
 }
 
 .section-label {
     display: flex;
     align-items: center;
+
     gap: 12px;
 
     margin-bottom: 28px;
@@ -153,6 +158,7 @@ ul {
 
     font-size: 11px;
     font-weight: 700;
+
     letter-spacing: 0.18em;
     text-transform: uppercase;
 }
@@ -170,9 +176,12 @@ ul {
     max-width: 900px;
 
     font-family: var(--font-title);
+
     font-size: clamp(42px, 6vw, 82px);
     font-weight: 700;
+
     line-height: 0.98;
+
     letter-spacing: -0.055em;
 }
 
@@ -188,6 +197,7 @@ ul {
     color: var(--gray);
 
     font-size: 17px;
+
     line-height: 1.8;
 }
 
@@ -224,10 +234,11 @@ ul {
 
 .navbar.scrolled {
     background: rgba(5, 5, 5, 0.92);
+
     border-color: var(--line);
 }
 
-.navbar-container {
+.nav-container {
     width: min(
         calc(100% - 48px),
         var(--container)
@@ -255,6 +266,7 @@ ul {
 .nav-menu {
     display: flex;
     align-items: center;
+
     gap: 30px;
 }
 
@@ -283,7 +295,8 @@ ul {
 
     background: var(--orange);
 
-    transition: width var(--transition-normal);
+    transition:
+        width var(--transition-normal);
 }
 
 .nav-menu a:hover {
@@ -310,6 +323,7 @@ ul {
 
 .nav-cta:hover {
     background: var(--orange);
+
     color: var(--black) !important;
 
     transform: translateY(-2px);
@@ -409,6 +423,7 @@ ul {
 
     display: flex;
     align-items: center;
+
     gap: 22px;
 
     position: relative;
@@ -470,6 +485,7 @@ ul {
 
     font-size: 11px;
     font-weight: 700;
+
     letter-spacing: 0.22em;
 }
 
@@ -505,6 +521,7 @@ ul {
     font-family: var(--font-title);
 
     font-size: clamp(21px, 2vw, 28px);
+
     font-weight: 600;
 }
 
@@ -531,6 +548,7 @@ ul {
 
 .btn {
     display: inline-flex;
+
     align-items: center;
     justify-content: center;
 
@@ -556,6 +574,7 @@ ul {
 
 .btn-primary {
     background: var(--orange);
+
     color: var(--black);
 
     border: 1px solid var(--orange);
@@ -563,6 +582,7 @@ ul {
 
 .btn-primary:hover {
     background: var(--orange-light);
+
     border-color: var(--orange-light);
 }
 
@@ -576,12 +596,13 @@ ul {
 
 .btn-secondary:hover {
     border-color: var(--orange);
+
     color: var(--orange);
 }
 
 
 /* =========================================================
-   06. HERO — VISUAL
+   06. HERO — VISUAL / PULSO
    ========================================================= */
 
 .hero-visual {
@@ -590,6 +611,7 @@ ul {
     min-height: 430px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 }
@@ -598,6 +620,7 @@ ul {
     position: relative;
 
     width: min(100%, 580px);
+
     aspect-ratio: 1 / 1;
 
     border: 1px solid rgba(255,255,255,0.12);
@@ -652,6 +675,7 @@ ul {
     right: 35px;
 
     display: flex;
+
     justify-content: space-between;
 
     color: var(--gray-dark);
@@ -686,6 +710,7 @@ ul {
     border: 1px solid rgba(255,106,0,0.45);
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -752,7 +777,8 @@ ul {
     stroke-dasharray: 1200;
     stroke-dashoffset: 1200;
 
-    animation: pulseDraw 5s linear infinite;
+    animation:
+        pulseDraw 5s linear infinite;
 
     filter:
         drop-shadow(
@@ -761,6 +787,7 @@ ul {
 }
 
 @keyframes pulseDraw {
+
     0% {
         stroke-dashoffset: 1200;
     }
@@ -781,12 +808,14 @@ ul {
     bottom: 45px;
 
     display: flex;
+
     gap: 7px;
 
     color: var(--gray-dark);
 
     font-size: 10px;
     font-weight: 700;
+
     letter-spacing: 0.15em;
 
     z-index: 3;
@@ -803,7 +832,9 @@ ul {
     bottom: 38px;
 
     display: flex;
+
     flex-direction: column;
+
     gap: 5px;
 
     color: var(--gray-dark);
@@ -812,6 +843,7 @@ ul {
     font-weight: 700;
 
     letter-spacing: 0.18em;
+
     text-transform: uppercase;
 
     z-index: 3;
@@ -822,10 +854,12 @@ ul {
 
     font-size: 18px;
 
-    animation: scrollArrow 1.5s ease-in-out infinite;
+    animation:
+        scrollArrow 1.5s ease-in-out infinite;
 }
 
 @keyframes scrollArrow {
+
     0%,
     100% {
         transform: translateY(0);
@@ -882,6 +916,7 @@ ul {
 
     font-size: 12px;
     font-weight: 700;
+
     letter-spacing: 0.15em;
 }
 
@@ -981,7 +1016,8 @@ ul {
 
     background: var(--orange);
 
-    transition: height var(--transition-normal);
+    transition:
+        height var(--transition-normal);
 }
 
 .concept-card:hover {
@@ -1153,7 +1189,13 @@ ul {
     background: var(--black);
 }
 
-.projects-grid {
+.projects-wrapper {
+    width: 100%;
+
+    overflow: hidden;
+}
+
+.projects-track {
     display: grid;
 
     grid-template-columns: repeat(3, 1fr);
@@ -1191,6 +1233,7 @@ ul {
     padding: 0 14px;
 
     display: flex;
+
     align-items: center;
 
     gap: 6px;
@@ -1215,7 +1258,9 @@ ul {
     padding: 30px;
 
     display: flex;
+
     flex-direction: column;
+
     justify-content: flex-end;
 
     background:
@@ -1332,11 +1377,13 @@ ul {
     min-height: 300px;
 
     display: flex;
+
     align-items: center;
 }
 
 .intencion-visual svg {
     width: 100%;
+
     overflow: visible;
 }
 
@@ -1350,10 +1397,31 @@ ul {
     stroke-linecap: round;
     stroke-linejoin: round;
 
+    stroke-dasharray: 1100;
+    stroke-dashoffset: 1100;
+
+    animation:
+        intentionPulse 6s linear infinite;
+
     filter:
         drop-shadow(
             0 0 10px rgba(255,106,0,0.45)
         );
+}
+
+@keyframes intentionPulse {
+
+    0% {
+        stroke-dashoffset: 1100;
+    }
+
+    65% {
+        stroke-dashoffset: 0;
+    }
+
+    100% {
+        stroke-dashoffset: -1100;
+    }
 }
 
 
@@ -1373,6 +1441,7 @@ ul {
     margin-top: 70px;
 
     border-top: 1px solid var(--line);
+
     border-bottom: 1px solid var(--line);
 }
 
@@ -1529,6 +1598,7 @@ ul {
 
 .cta h2 {
     position: relative;
+
     z-index: 2;
 
     font-family: var(--font-title);
@@ -1548,6 +1618,7 @@ ul {
 
 .cta p {
     position: relative;
+
     z-index: 2;
 
     margin: 35px auto;
@@ -1559,6 +1630,7 @@ ul {
 
 .cta .btn {
     position: relative;
+
     z-index: 2;
 }
 
@@ -1608,6 +1680,7 @@ ul {
     padding: 16px 18px;
 
     border: 1px solid var(--line);
+
     border-radius: var(--radius-small);
 
     outline: none;
@@ -1712,6 +1785,7 @@ ul {
 
 #image-preview-grid img {
     width: 100%;
+
     aspect-ratio: 1 / 1;
 
     object-fit: cover;
@@ -1740,15 +1814,33 @@ ul {
 
 .contact-info {
     display: flex;
+
     flex-direction: column;
 
     gap: 20px;
 }
 
 .contact-item {
-    padding: 24px 0;
+    display: block;
 
-    border-bottom: 1px solid var(--line);
+    padding: 24px;
+
+    border: 1px solid var(--line);
+
+    background: var(--black-card);
+
+    transition:
+        border-color var(--transition-fast),
+        background var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.contact-item:hover {
+    border-color: rgba(255,106,0,0.45);
+
+    background: var(--black-light);
+
+    transform: translateY(-3px);
 }
 
 .contact-item span {
@@ -1762,7 +1854,26 @@ ul {
     font-weight: 700;
 
     letter-spacing: 0.15em;
+
     text-transform: uppercase;
+}
+
+.contact-item strong {
+    display: block;
+
+    color: var(--white);
+
+    font-size: 18px;
+}
+
+.contact-item p {
+    margin-top: 8px;
+
+    color: var(--gray);
+
+    font-size: 13px;
+
+    line-height: 1.7;
 }
 
 .contact-item a {
@@ -1770,7 +1881,8 @@ ul {
 
     font-size: 18px;
 
-    transition: color var(--transition-fast);
+    transition:
+        color var(--transition-fast);
 }
 
 .contact-item a:hover {
@@ -1801,7 +1913,9 @@ ul {
     margin: 0 auto;
 
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
 
     gap: 25px;
@@ -1889,6 +2003,7 @@ ul {
     font-weight: 700;
 
     letter-spacing: 0.15em;
+
     text-transform: uppercase;
 }
 
@@ -1901,7 +2016,8 @@ ul {
 
     font-size: 13px;
 
-    transition: color var(--transition-fast);
+    transition:
+        color var(--transition-fast);
 }
 
 .footer-links a:hover {
@@ -1914,6 +2030,7 @@ ul {
     border-top: 1px solid var(--line);
 
     display: flex;
+
     justify-content: space-between;
     align-items: center;
 
@@ -1925,7 +2042,8 @@ ul {
 }
 
 .footer-bottom a {
-    transition: color var(--transition-fast);
+    transition:
+        color var(--transition-fast);
 }
 
 .footer-bottom a:hover {
@@ -1950,6 +2068,7 @@ ul {
     position: relative;
 
     display: flex;
+
     align-items: center;
 
     gap: 10px;
@@ -1957,6 +2076,7 @@ ul {
     padding: 13px 18px;
 
     border: 1px solid var(--orange);
+
     border-radius: 100px;
 
     background: rgba(5,5,5,0.92);
@@ -1991,10 +2111,12 @@ ul {
         0 0 0 5px rgba(255,106,0,0.12),
         0 0 15px rgba(255,106,0,0.7);
 
-    animation: pulsiPulse 1.7s infinite;
+    animation:
+        pulsiPulse 1.7s infinite;
 }
 
 @keyframes pulsiPulse {
+
     0% {
         box-shadow:
             0 0 0 0 rgba(255,106,0,0.35);
@@ -2013,6 +2135,7 @@ ul {
 
 .pulsi-label {
     font-size: 13px;
+
     font-weight: 700;
 }
 
@@ -2030,9 +2153,11 @@ ul {
     height: 540px;
 
     display: flex;
+
     flex-direction: column;
 
     border: 1px solid var(--line);
+
     border-radius: 18px;
 
     background: #0a0a0a;
@@ -2070,6 +2195,7 @@ ul {
     padding: 18px 20px;
 
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
@@ -2101,6 +2227,7 @@ ul {
     height: 32px;
 
     border: 1px solid var(--line);
+
     border-radius: 50%;
 
     background: transparent;
@@ -2118,6 +2245,7 @@ ul {
     overflow-y: auto;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 12px;
@@ -2175,6 +2303,7 @@ ul {
     padding: 8px 11px;
 
     border: 1px solid var(--line);
+
     border-radius: 100px;
 
     background: transparent;
@@ -2210,6 +2339,7 @@ ul {
     padding: 11px 13px;
 
     border: 1px solid var(--line);
+
     border-radius: 9px;
 
     outline: none;
@@ -2227,6 +2357,7 @@ ul {
     width: 42px;
 
     border: none;
+
     border-radius: 9px;
 
     background: var(--orange);
@@ -2234,6 +2365,7 @@ ul {
     color: var(--black);
 
     font-size: 18px;
+
     font-weight: 700;
 }
 
@@ -2256,6 +2388,8 @@ ul {
     opacity: 1;
 
     transform: translateY(0);
+
+    transition-delay: var(--animation-delay, 0ms);
 }
 
 .stagger-card {
@@ -2272,6 +2406,8 @@ ul {
     opacity: 1;
 
     transform: translateY(0);
+
+    transition-delay: var(--animation-delay, 0ms);
 }
 
 
@@ -2289,10 +2425,12 @@ ul {
     height: 42px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     border: 1px solid var(--line);
+
     border-radius: 50%;
 
     background: rgba(5,5,5,0.9);
@@ -2312,6 +2450,7 @@ ul {
 
 .btn-volver-arriba.visible {
     opacity: 1;
+
     visibility: visible;
 
     transform: translateY(0);
@@ -2358,7 +2497,7 @@ ul {
         gap: 60px;
     }
 
-    .projects-grid {
+    .projects-track {
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -2403,7 +2542,7 @@ ul {
         padding: 90px 0;
     }
 
-    .navbar-container {
+    .nav-container {
         width: calc(100% - 30px);
 
         height: 72px;
@@ -2424,13 +2563,16 @@ ul {
         position: absolute;
 
         top: 72px;
+
         left: 15px;
         right: 15px;
 
         padding: 20px;
 
         display: none;
+
         flex-direction: column;
+
         align-items: stretch;
 
         gap: 5px;
@@ -2511,11 +2653,13 @@ ul {
 
     .hero-index {
         right: 15px;
+
         bottom: 20px;
     }
 
     .scroll-indicator {
         left: 15px;
+
         bottom: 20px;
     }
 
@@ -2553,7 +2697,7 @@ ul {
         padding: 28px;
     }
 
-    .projects-grid {
+    .projects-track {
         grid-template-columns: 1fr;
 
         margin-top: 45px;
@@ -2573,6 +2717,7 @@ ul {
         min-height: 190px;
 
         border-right: none;
+
         border-bottom: 1px solid var(--line);
     }
 
@@ -2651,11 +2796,13 @@ ul {
 
     .pulsi-container {
         right: 15px;
+
         bottom: 15px;
     }
 
     .pulsi-chat {
         right: 0;
+
         bottom: 62px;
 
         height: 500px;
@@ -2663,7 +2810,12 @@ ul {
 
     .btn-volver-arriba {
         right: 15px;
+
         bottom: 75px;
+    }
+
+    .intencion-visual {
+        min-height: 220px;
     }
 }
 
@@ -2716,6 +2868,10 @@ ul {
 
         right: -2px;
     }
+
+    .intencion-visual {
+        min-height: 180px;
+    }
 }
 
 
@@ -2761,4 +2917,4 @@ ul {
 
         scroll-behavior: auto !important;
     }
-}
+           }

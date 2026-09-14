@@ -450,10 +450,29 @@ ul {
     );
 }
 
+
+/* =========================================================
+   LOGO PRINCIPAL — PULSO
+   ========================================================= */
+
 .hero-brand-image {
-    width: clamp(140px, 18vw, 230px);
+    width: clamp(190px, 22vw, 260px);
 
     height: auto;
+
+    transform-origin: center;
+
+    animation:
+        logoPulso 4.8s ease-in-out infinite;
+
+    filter:
+        drop-shadow(
+            0 0 0 rgba(255,106,0,0)
+        );
+
+    will-change:
+        transform,
+        filter;
 }
 
 .hero-container {
@@ -798,6 +817,51 @@ ul {
 
     100% {
         stroke-dashoffset: -1200;
+    }
+}
+
+
+/* =========================================================
+   ANIMACIÓN DEL LOGO PRINCIPAL
+   ========================================================= */
+
+@keyframes logoPulso {
+
+    0%,
+    100% {
+        transform: scale(1);
+
+        filter:
+            drop-shadow(
+                0 0 0 rgba(255,106,0,0)
+            );
+    }
+
+    45% {
+        transform: scale(1.012);
+
+        filter:
+            drop-shadow(
+                0 0 5px rgba(255,106,0,0.18)
+            );
+    }
+
+    50% {
+        transform: scale(1.025);
+
+        filter:
+            drop-shadow(
+                0 0 13px rgba(255,106,0,0.38)
+            );
+    }
+
+    58% {
+        transform: scale(1.008);
+
+        filter:
+            drop-shadow(
+                0 0 5px rgba(255,106,0,0.15)
+            );
     }
 }
 
@@ -1928,10 +1992,69 @@ ul {
     background: var(--line);
 }
 
+
+/* =========================================================
+   LOGO FINAL — PULSO
+   ========================================================= */
+
 .brand-closing-image {
-    width: clamp(180px, 25vw, 320px);
+    width: clamp(220px, 28vw, 360px);
 
     height: auto;
+
+    transform-origin: center;
+
+    animation:
+        logoCierrePulso 5.5s ease-in-out infinite;
+
+    filter:
+        drop-shadow(
+            0 0 0 rgba(255,106,0,0)
+        );
+
+    will-change:
+        transform,
+        filter;
+}
+
+@keyframes logoCierrePulso {
+
+    0%,
+    100% {
+        transform: scale(1);
+
+        filter:
+            drop-shadow(
+                0 0 0 rgba(255,106,0,0)
+            );
+    }
+
+    40% {
+        transform: scale(1.01);
+
+        filter:
+            drop-shadow(
+                0 0 4px rgba(255,106,0,0.14)
+            );
+    }
+
+    47% {
+        transform: scale(1.022);
+
+        filter:
+            drop-shadow(
+                0 0 14px rgba(255,106,0,0.35)
+            );
+    }
+
+    55% {
+        transform: scale(1.006);
+
+        filter:
+            drop-shadow(
+                0 0 5px rgba(255,106,0,0.14)
+            );
+    }
 }
 
 .brand-closing p {
@@ -2612,7 +2735,7 @@ ul {
     }
 
     .hero-brand-image {
-        width: 125px;
+        width: 200px;
     }
 
     .hero-container {
@@ -2772,6 +2895,10 @@ ul {
         padding: 80px 0;
     }
 
+    .brand-closing-image {
+        width: 220px;
+    }
+
     .brand-closing-content {
         width: calc(100% - 30px);
     }
@@ -2832,6 +2959,14 @@ ul {
 
     .hero-brand-line {
         display: none;
+    }
+
+    .hero-brand-image {
+        width: 190px;
+    }
+
+    .brand-closing-image {
+        width: 205px;
     }
 
     .pulse-visual {
@@ -2917,4 +3052,4 @@ ul {
 
         scroll-behavior: auto !important;
     }
-           }
+}

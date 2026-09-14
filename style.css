@@ -1427,3 +1427,219 @@ ul {
     }
 
 }
+/* ============================================================
+   PULSO — NOSOTROS
+   ============================================================ */
+
+.nosotros {
+  background: var(--color-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.nosotros-content {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 80px;
+  align-items: start;
+}
+
+/* Texto principal */
+
+.nosotros-text {
+  max-width: 650px;
+}
+
+.large-text {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--color-dark);
+  margin: 0 0 30px;
+}
+
+.nosotros-text p:not(.large-text) {
+  max-width: 600px;
+  font-size: 1.08rem;
+  line-height: 1.8;
+  color: var(--color-text-soft);
+  margin: 0;
+}
+
+/* Línea decorativa */
+
+.nosotros-text::after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 3px;
+  margin-top: 40px;
+  background: var(--color-accent);
+  border-radius: 999px;
+}
+
+/* ============================================================
+   CONCEPTOS
+   ============================================================ */
+
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.concept-card {
+  position: relative;
+  min-height: 220px;
+  padding: 30px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition);
+}
+
+.concept-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 90, 31, 0.35);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Número */
+
+.concept-number {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: 0.08em;
+}
+
+/* Título */
+
+.concept-card h3 {
+  margin: 35px 0 10px;
+
+  font-family: var(--font-heading);
+  font-size: 1.55rem;
+  line-height: 1.15;
+  font-weight: 700;
+
+  color: var(--color-dark);
+}
+
+/* Descripción */
+
+.concept-card p {
+  margin: 0;
+
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--color-text-soft);
+}
+
+/* Decoración interna */
+
+.concept-card::before {
+  content: "";
+  position: absolute;
+  width: 90px;
+  height: 90px;
+
+  right: -35px;
+  bottom: -35px;
+
+  border: 1px solid rgba(255, 90, 31, 0.18);
+  border-radius: 50%;
+
+  transition: transform 0.5s ease;
+}
+
+.concept-card:hover::before {
+  transform: scale(1.45);
+}
+
+/* Segunda circunferencia */
+
+.concept-card::after {
+  content: "";
+  position: absolute;
+  width: 45px;
+  height: 45px;
+
+  right: -12px;
+  bottom: -12px;
+
+  border: 1px solid rgba(255, 90, 31, 0.12);
+  border-radius: 50%;
+
+  transition: transform 0.5s ease;
+}
+
+.concept-card:hover::after {
+  transform: scale(1.8);
+}
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+
+@media (max-width: 1000px) {
+
+  .nosotros-content {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .nosotros-text {
+    max-width: 800px;
+  }
+
+}
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+
+@media (max-width: 650px) {
+
+  .nosotros-content {
+    gap: 40px;
+  }
+
+  .large-text {
+    font-size: 2.2rem;
+    line-height: 1.12;
+  }
+
+  .nosotros-text p:not(.large-text) {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .concepts-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .concept-card {
+    min-height: 190px;
+    padding: 25px;
+  }
+
+  .concept-card h3 {
+    margin-top: 25px;
+    font-size: 1.35rem;
+  }
+
+}

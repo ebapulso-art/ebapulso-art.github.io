@@ -456,7 +456,7 @@ ul {
    ========================================================= */
 
 .hero-brand-image {
-    width: clamp(190px, 22vw, 260px);
+    width: clamp(220px, 25vw, 330px);
 
     height: auto;
 

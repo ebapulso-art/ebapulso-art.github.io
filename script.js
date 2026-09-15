@@ -1,627 +1,578 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-/* =====================================================
-   NAVBAR
-====================================================== */
+    /* =====================================================
+       NAVBAR
+       ===================================================== */
 
-const navbar = document.querySelector(".navbar");
+    const navbar = document.querySelector(".navbar");
 
-const actualizarNavbar = () => {
+    const actualizarNavbar = () => {
+        if (!navbar) return;
 
-    if (!navbar) return;
+        navbar.classList.toggle(
+            "scrolled",
+            window.scrollY > 40
+        );
+    };
 
-    navbar.classList.toggle(
-        "scrolled",
-        window.scrollY > 40
+    window.addEventListener(
+        "scroll",
+        actualizarNavbar
     );
 
-};
-
-window.addEventListener(
-    "scroll",
-    actualizarNavbar
-);
-
-actualizarNavbar();
+    actualizarNavbar();
 
 
-/* =====================================================
-   MENÚ MOBILE
-====================================================== */
+    /* =====================================================
+       MENÚ MOBILE
+       ===================================================== */
 
-const menuToggle =
-    document.querySelector("#menu-toggle");
+    const menuToggle =
+        document.querySelector("#menu-toggle");
 
-const navMenu =
-    document.querySelector("#nav-menu");
+    const navMenu =
+        document.querySelector("#nav-menu");
 
-if (menuToggle && navMenu) {
+    if (menuToggle && navMenu) {
 
-    menuToggle.addEventListener("click", () => {
+        menuToggle.addEventListener("click", () => {
 
-        const abierto =
-            navMenu.classList.toggle("activo");
+            const abierto =
+                navMenu.classList.toggle("activo");
 
-        menuToggle.classList.toggle(
-            "activo",
-            abierto
-        );
-
-        menuToggle.setAttribute(
-            "aria-expanded",
-            abierto ? "true" : "false"
-        );
-
-    });
-
-
-    navMenu.querySelectorAll("a").forEach((enlace) => {
-
-        enlace.addEventListener("click", () => {
-
-            navMenu.classList.remove("activo");
-
-            menuToggle.classList.remove("activo");
+            menuToggle.classList.toggle(
+                "activo",
+                abierto
+            );
 
             menuToggle.setAttribute(
                 "aria-expanded",
-                "false"
+                abierto ? "true" : "false"
             );
-
         });
 
-    });
 
-}
+        navMenu.querySelectorAll("a").forEach((enlace) => {
 
+            enlace.addEventListener("click", () => {
 
-/* =====================================================
-   ANIMACIONES AL HACER SCROLL
-====================================================== */
+                navMenu.classList.remove("activo");
 
-const elementosAnimados =
-    document.querySelectorAll(
-        ".section-heading, " +
-        ".nosotros-text, " +
-        ".concept-card, " +
-        ".service-card, " +
-        ".project-card, " +
-        ".process-step, " +
-        ".why-card, " +
-        ".cta, " +
-        ".contact-item"
-    );
+                menuToggle.classList.remove("activo");
 
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+            });
 
-if ("IntersectionObserver" in window) {
-
-    const observer =
-        new IntersectionObserver(
-            (entradas, observador) => {
-
-                entradas.forEach((entrada) => {
-
-                    if (!entrada.isIntersecting) {
-                        return;
-                    }
-
-                    entrada.target.classList.add(
-                        "visible"
-                    );
-
-                    observador.unobserve(
-                        entrada.target
-                    );
-
-                });
-
-            },
-            {
-                threshold: 0.12,
-                rootMargin: "0px 0px -40px 0px"
-            }
-        );
-
-
-    elementosAnimados.forEach((elemento) => {
-
-        elemento.classList.add("reveal");
-
-        observer.observe(elemento);
-
-    });
-
-} else {
-
-    elementosAnimados.forEach((elemento) => {
-
-        elemento.classList.add("visible");
-
-    });
-
-}
-
-
-/* =====================================================
-   ANIMACIONES ESCALONADAS
-====================================================== */
-
-const grupos = [
-    ".concepts-grid",
-    ".services-grid",
-    ".projects-track",
-    ".why-grid",
-    ".process-grid"
-];
-
-
-grupos.forEach((selector) => {
-
-    const grupo =
-        document.querySelector(selector);
-
-    if (!grupo) return;
-
-
-    Array.from(grupo.children).forEach(
-        (elemento, indice) => {
-
-            elemento.style.setProperty(
-                "--animation-delay",
-                `${indice * 80}ms`
-            );
-
-        }
-    );
-
-});
-
-
-/* =====================================================
-   ENLACES INTERNOS
-====================================================== */
-
-const enlacesInternos =
-    document.querySelectorAll(
-        'a[href^="#"]'
-    );
-
-
-enlacesInternos.forEach((enlace) => {
-
-    enlace.addEventListener("click", (evento) => {
-
-        const destinoId =
-            enlace.getAttribute("href");
-
-
-        if (
-            !destinoId ||
-            destinoId === "#"
-        ) {
-            return;
-        }
-
-
-        const destino =
-            document.querySelector(destinoId);
-
-
-        if (!destino) {
-            return;
-        }
-
-
-        evento.preventDefault();
-
-
-        destino.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-
-    });
-
-});
-
-
-/* =====================================================
-   BOTÓN VOLVER ARRIBA
-====================================================== */
-
-let botonArriba =
-    document.querySelector(
-        ".btn-volver-arriba"
-    );
-
-
-if (!botonArriba) {
-
-    botonArriba =
-        document.createElement("button");
-
-    botonArriba.className =
-        "btn-volver-arriba";
-
-    botonArriba.type = "button";
-
-    botonArriba.setAttribute(
-        "aria-label",
-        "Volver arriba"
-    );
-
-    botonArriba.innerHTML = "↑";
-
-    document.body.appendChild(
-        botonArriba
-    );
-
-}
-
-
-const actualizarBotonArriba = () => {
-
-    botonArriba.classList.toggle(
-        "visible",
-        window.scrollY > 600
-    );
-
-};
-
-
-window.addEventListener(
-    "scroll",
-    actualizarBotonArriba
-);
-
-actualizarBotonArriba();
-
-
-botonArriba.addEventListener(
-    "click",
-    () => {
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
         });
 
     }
-);
 
 
-/* =====================================================
-   FORMULARIO
-====================================================== */
+    /* =====================================================
+       ANIMACIONES AL HACER SCROLL
+       ===================================================== */
 
-const formulario =
-    document.querySelector(
-        "#project-form"
-    );
-
-
-const mensajeFormulario =
-    document.querySelector(
-        "#form-status"
-    );
-
-
-if (formulario) {
-
-    formulario.addEventListener(
-        "submit",
-        (evento) => {
-
-            evento.preventDefault();
+    const elementosAnimados =
+        document.querySelectorAll(
+            ".section-heading, " +
+            ".nosotros-text, " +
+            ".concept-card, " +
+            ".service-card, " +
+            ".project-card, " +
+            ".process-step, " +
+            ".why-card, " +
+            ".cta, " +
+            ".contact-item"
+        );
 
 
-            if (!formulario.checkValidity()) {
+    if ("IntersectionObserver" in window) {
 
-                formulario.reportValidity();
+        const observer =
+            new IntersectionObserver(
+                (entradas, observador) => {
 
-                return;
+                    entradas.forEach((entrada) => {
 
-            }
+                        if (!entrada.isIntersecting) {
+                            return;
+                        }
 
+                        entrada.target.classList.add(
+                            "visible"
+                        );
 
-            if (mensajeFormulario) {
+                        observador.unobserve(
+                            entrada.target
+                        );
 
-                mensajeFormulario.textContent =
-                    "¡Perfecto! Tu proyecto está listo para ser enviado.";
+                    });
 
-                mensajeFormulario.classList.add(
-                    "visible"
-                );
-
-            }
-
-
-            console.log(
-                "Formulario validado correctamente."
+                },
+                {
+                    threshold: 0.12,
+                    rootMargin: "0px 0px -40px 0px"
+                }
             );
 
-        }
-    );
 
-}
+        elementosAnimados.forEach((elemento) => {
 
+            elemento.classList.add("reveal");
 
-/* =====================================================
-   PREVISUALIZACIÓN DE IMÁGENES
-====================================================== */
+            observer.observe(elemento);
 
-const inputImagenes =
-    document.querySelector(
-        "#imagenes-referencia"
-    );
+        });
 
+    } else {
 
-const previewImagenes =
-    document.querySelector(
-        "#image-preview-grid"
-    );
+        elementosAnimados.forEach((elemento) => {
+
+            elemento.classList.add("visible");
+
+        });
+
+    }
 
 
-if (
-    inputImagenes &&
-    previewImagenes
-) {
+    /* =====================================================
+       ANIMACIONES ESCALONADAS
+       ===================================================== */
 
-    inputImagenes.addEventListener(
-        "change",
-        () => {
+    const grupos = [
+        ".concepts-grid",
+        ".services-grid",
+        ".projects-track",
+        ".why-grid",
+        ".process-grid"
+    ];
 
-            previewImagenes.innerHTML = "";
+
+    grupos.forEach((selector) => {
+
+        const grupo =
+            document.querySelector(selector);
+
+        if (!grupo) return;
 
 
-            const archivos =
-                Array.from(
-                    inputImagenes.files || []
+        Array.from(grupo.children).forEach(
+            (elemento, indice) => {
+
+                elemento.style.setProperty(
+                    "--animation-delay",
+                    `${indice * 80}ms`
                 );
 
+            }
+        );
 
-            archivos.forEach((archivo) => {
+    });
+
+
+    /* =====================================================
+       ENLACES INTERNOS
+       ===================================================== */
+
+    const enlacesInternos =
+        document.querySelectorAll(
+            'a[href^="#"]'
+        );
+
+
+    enlacesInternos.forEach((enlace) => {
+
+        enlace.addEventListener(
+            "click",
+            (evento) => {
+
+                const destinoId =
+                    enlace.getAttribute("href");
+
 
                 if (
-                    !archivo.type.startsWith(
-                        "image/"
-                    )
+                    !destinoId ||
+                    destinoId === "#"
                 ) {
                     return;
                 }
 
 
-                const contenedor =
-                    document.createElement("div");
-
-                contenedor.className =
-                    "image-preview-item";
-
-
-                const imagen =
-                    document.createElement("img");
-
-
-                imagen.src =
-                    URL.createObjectURL(
-                        archivo
+                const destino =
+                    document.querySelector(
+                        destinoId
                     );
 
-                imagen.alt =
-                    "Imagen de referencia";
+
+                if (!destino) {
+                    return;
+                }
 
 
-                imagen.addEventListener(
-                    "load",
-                    () => {
-
-                        URL.revokeObjectURL(
-                            imagen.src
-                        );
-
-                    }
-                );
+                evento.preventDefault();
 
 
-                contenedor.appendChild(
-                    imagen
-                );
+                destino.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            }
+        );
+
+    });
 
 
-                previewImagenes.appendChild(
-                    contenedor
-                );
+    /* =====================================================
+       BOTÓN VOLVER ARRIBA
+       ===================================================== */
 
+    let botonArriba =
+        document.querySelector(
+            ".btn-volver-arriba"
+        );
+
+
+    if (!botonArriba) {
+
+        botonArriba =
+            document.createElement("button");
+
+        botonArriba.className =
+            "btn-volver-arriba";
+
+        botonArriba.type = "button";
+
+        botonArriba.setAttribute(
+            "aria-label",
+            "Volver arriba"
+        );
+
+        botonArriba.innerHTML = "↑";
+
+        document.body.appendChild(
+            botonArriba
+        );
+
+    }
+
+
+    const actualizarBotonArriba = () => {
+
+        botonArriba.classList.toggle(
+            "visible",
+            window.scrollY > 600
+        );
+
+    };
+
+
+    window.addEventListener(
+        "scroll",
+        actualizarBotonArriba
+    );
+
+
+    actualizarBotonArriba();
+
+
+    botonArriba.addEventListener(
+        "click",
+        () => {
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
             });
 
         }
     );
 
-}
+
+    /* =====================================================
+       FORMULARIO
+       ===================================================== */
+
+    const formulario =
+        document.querySelector(
+            "#project-form"
+        );
 
 
-/* =====================================================
-   PULSI
-====================================================== */
-
-const pulsiButton =
-    document.querySelector(
-        "#pulsi-button"
-    );
+    const mensajeFormulario =
+        document.querySelector(
+            "#form-status"
+        );
 
 
-const pulsiChat =
-    document.querySelector(
-        "#pulsi-chat"
-    );
+    if (formulario) {
+
+        formulario.addEventListener(
+            "submit",
+            (evento) => {
+
+                evento.preventDefault();
 
 
-const pulsiClose =
-    document.querySelector(
-        "#pulsi-close"
-    );
+                if (!formulario.checkValidity()) {
+
+                    formulario.reportValidity();
+
+                    return;
+
+                }
 
 
-const pulsiInput =
-    document.querySelector(
-        "#pulsi-input"
-    );
+                if (mensajeFormulario) {
+
+                    mensajeFormulario.textContent =
+                        "¡Perfecto! Tu proyecto está listo para ser enviado.";
+
+                    mensajeFormulario.classList.add(
+                        "visible"
+                    );
+
+                }
 
 
-const pulsiForm =
-    document.querySelector(
-        "#pulsi-form"
-    );
+                console.log(
+                    "Formulario validado correctamente."
+                );
 
-
-const pulsiQuickButtons =
-    document.querySelectorAll(
-        ".pulsi-quick button"
-    );
-
-
-/* =====================================================
-   ABRIR PULSI
-====================================================== */
-
-const abrirPulsi = () => {
-
-    if (!pulsiChat) return;
-
-
-    pulsiChat.classList.add(
-        "active"
-    );
-
-
-    pulsiChat.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-
-    if (pulsiButton) {
-
-        pulsiButton.setAttribute(
-            "aria-expanded",
-            "true"
+            }
         );
 
     }
 
 
-    if (pulsiInput) {
+    /* =====================================================
+       PREVISUALIZACIÓN DE IMÁGENES
+       ===================================================== */
 
-        setTimeout(() => {
+    const inputImagenes =
+        document.querySelector(
+            "#imagenes-referencia"
+        );
 
-            pulsiInput.focus();
 
-        }, 150);
+    const previewImagenes =
+        document.querySelector(
+            "#image-preview-grid"
+        );
+
+
+    if (
+        inputImagenes &&
+        previewImagenes
+    ) {
+
+        inputImagenes.addEventListener(
+            "change",
+            () => {
+
+                previewImagenes.innerHTML = "";
+
+
+                const archivos =
+                    Array.from(
+                        inputImagenes.files || []
+                    );
+
+
+                archivos.forEach((archivo) => {
+
+                    if (
+                        !archivo.type.startsWith(
+                            "image/"
+                        )
+                    ) {
+                        return;
+                    }
+
+
+                    const contenedor =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    contenedor.className =
+                        "image-preview-item";
+
+
+                    const imagen =
+                        document.createElement(
+                            "img"
+                        );
+
+
+                    imagen.src =
+                        URL.createObjectURL(
+                            archivo
+                        );
+
+
+                    imagen.alt =
+                        "Imagen de referencia";
+
+
+                    imagen.addEventListener(
+                        "load",
+                        () => {
+
+                            URL.revokeObjectURL(
+                                imagen.src
+                            );
+
+                        }
+                    );
+
+
+                    contenedor.appendChild(
+                        imagen
+                    );
+
+
+                    previewImagenes.appendChild(
+                        contenedor
+                    );
+
+                });
+
+            }
+        );
 
     }
 
-};
+
+    /* =====================================================
+       PULSI
+       ===================================================== */
+
+    const pulsiButton =
+        document.querySelector(
+            "#pulsi-button"
+        );
 
 
-/* =====================================================
-   CERRAR PULSI
-====================================================== */
-
-const cerrarPulsi = () => {
-
-    if (!pulsiChat) return;
+    const pulsiChat =
+        document.querySelector(
+            "#pulsi-chat"
+        );
 
 
-    pulsiChat.classList.remove(
-        "active"
-    );
+    const pulsiClose =
+        document.querySelector(
+            "#pulsi-close"
+        );
 
 
-    pulsiChat.setAttribute(
-        "aria-hidden",
-        "true"
-    );
+    const pulsiInput =
+        document.querySelector(
+            "#pulsi-input"
+        );
 
 
-    if (pulsiButton) {
+    const pulsiForm =
+        document.querySelector(
+            "#pulsi-form"
+        );
 
-        pulsiButton.setAttribute(
-            "aria-expanded",
+
+    const pulsiQuickButtons =
+        document.querySelectorAll(
+            ".pulsi-quick button"
+        );
+
+
+    const abrirPulsi = () => {
+
+        if (!pulsiChat) return;
+
+
+        pulsiChat.classList.add(
+            "active"
+        );
+
+
+        pulsiChat.setAttribute(
+            "aria-hidden",
             "false"
         );
 
-    }
 
-};
+        if (pulsiButton) {
 
-
-/* =====================================================
-   BOTÓN PULSI
-====================================================== */
-
-if (pulsiButton) {
-
-    pulsiButton.addEventListener(
-        "click",
-        () => {
-
-            if (
-                pulsiChat &&
-                pulsiChat.classList.contains(
-                    "active"
-                )
-            ) {
-
-                cerrarPulsi();
-
-            } else {
-
-                abrirPulsi();
-
-            }
+            pulsiButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
 
         }
-    );
-
-}
 
 
-/* =====================================================
-   CERRAR PULSI
-====================================================== */
+        if (pulsiInput) {
 
-if (pulsiClose) {
+            setTimeout(() => {
 
-    pulsiClose.addEventListener(
-        "click",
-        cerrarPulsi
-    );
+                pulsiInput.focus();
 
-}
+            }, 150);
+
+        }
+
+    };
 
 
-/* =====================================================
-   BOTONES RÁPIDOS DE PULSI
-====================================================== */
+    const cerrarPulsi = () => {
 
-pulsiQuickButtons.forEach(
-    (boton) => {
+        if (!pulsiChat) return;
 
-        boton.addEventListener(
+
+        pulsiChat.classList.remove(
+            "active"
+        );
+
+
+        pulsiChat.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        if (pulsiButton) {
+
+            pulsiButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+    };
+
+
+    if (pulsiButton) {
+
+        pulsiButton.addEventListener(
             "click",
             () => {
 
-                const pregunta =
-                    boton.dataset.question ||
-                    boton.textContent.trim();
+                if (
+                    pulsiChat &&
+                    pulsiChat.classList.contains(
+                        "active"
+                    )
+                ) {
 
+                    cerrarPulsi();
 
-                if (pulsiInput) {
+                } else {
 
-                    pulsiInput.value =
-                        pregunta;
-
-                    pulsiInput.focus();
+                    abrirPulsi();
 
                 }
 
@@ -629,194 +580,234 @@ pulsiQuickButtons.forEach(
         );
 
     }
-);
 
 
-/* =====================================================
-   FORMULARIO DE PULSI
-====================================================== */
+    if (pulsiClose) {
 
-if (pulsiForm) {
+        pulsiClose.addEventListener(
+            "click",
+            cerrarPulsi
+        );
 
-    pulsiForm.addEventListener(
-        "submit",
-        (evento) => {
-
-            evento.preventDefault();
+    }
 
 
-            const mensaje =
-                pulsiInput
-                    ? pulsiInput.value.trim()
-                    : "";
+    pulsiQuickButtons.forEach(
+        (boton) => {
+
+            boton.addEventListener(
+                "click",
+                () => {
+
+                    const pregunta =
+                        boton.dataset.question ||
+                        boton.textContent.trim();
 
 
-            if (!mensaje) {
-                return;
-            }
+                    if (pulsiInput) {
 
+                        pulsiInput.value =
+                            pregunta;
 
-            console.log(
-                "Mensaje enviado a Pulsi:",
-                mensaje
+                        pulsiInput.focus();
+
+                    }
+
+                }
             );
-
-
-            /*
-             * PULSI ESTÁ PREPARADO PARA
-             * CONECTARSE A UNA IA REAL.
-             *
-             * Arquitectura futura:
-             *
-             * PULSI
-             *    ↓
-             * BACKEND SEGURO
-             *    ↓
-             * MODELO DE IA
-             *    ↓
-             * RESPUESTA
-             *    ↓
-             * PULSI
-             *
-             * La clave de API NUNCA debe
-             * estar dentro de este archivo.
-             */
 
         }
     );
 
-}
+
+    if (pulsiForm) {
+
+        pulsiForm.addEventListener(
+            "submit",
+            (evento) => {
+
+                evento.preventDefault();
 
 
-/* =====================================================
-   REDUCIR MOVIMIENTO
-====================================================== */
-
-const reducirMovimiento =
-    window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-    );
+                const mensaje =
+                    pulsiInput
+                        ? pulsiInput.value.trim()
+                        : "";
 
 
-if (reducirMovimiento.matches) {
-
-    document.documentElement.classList.add(
-        "reducir-movimiento"
-    );
-
-}
+                if (!mensaje) {
+                    return;
+                }
 
 
-/* =====================================================
-   AÑO AUTOMÁTICO
-====================================================== */
+                console.log(
+                    "Mensaje enviado a Pulsi:",
+                    mensaje
+                );
 
-const elementosAnio =
-    document.querySelectorAll(
-        "[data-year]"
-    );
-
-
-elementosAnio.forEach(
-    (elemento) => {
-
-        elemento.textContent =
-            new Date().getFullYear();
+            }
+        );
 
     }
-);
 
 
-/* =====================================================
-   MENSAJE DE CONSOLA
-====================================================== */
+    /* =====================================================
+       REDUCIR MOVIMIENTO
+       ===================================================== */
 
-console.log(
-    "%cPULSO",
-    "font-size: 24px; font-weight: 800;"
-);
+    const reducirMovimiento =
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        );
 
-console.log(
-    "Sitio iniciado correctamente."
-);
+
+    if (reducirMovimiento.matches) {
+
+        document.documentElement.classList.add(
+            "reducir-movimiento"
+        );
+
+    }
+
+
+    /* =====================================================
+       AÑO AUTOMÁTICO
+       ===================================================== */
+
+    const elementosAnio =
+        document.querySelectorAll(
+            "[data-year]"
+        );
+
+
+    elementosAnio.forEach(
+        (elemento) => {
+
+            elemento.textContent =
+                new Date().getFullYear();
+
+        }
+    );
+
+
+    /* =====================================================
+       MENSAJE DE CONSOLA
+       ===================================================== */
+
+    console.log(
+        "%cPULSO",
+        "font-size: 24px; font-weight: 800;"
+    );
+
+    console.log(
+        "Sitio iniciado correctamente."
+    );
 
 });
+
+
 /* =========================================================
    PULSO — LOGO ECG ANIMADO
-   CANVAS — VERSIÓN FINAL
+   CANVAS — VERSIÓN SUAVE
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const canvas = document.querySelector("#pulsoLogoCanvas");
+    const canvas =
+        document.querySelector(
+            "#pulsoLogoCanvas"
+        );
+
 
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+
+    const ctx =
+        canvas.getContext("2d");
+
 
     if (!ctx) return;
 
 
     /* =====================================================
-       CONFIGURACIÓN GENERAL
+       CONFIGURACIÓN
        ===================================================== */
 
     const W = 1800;
     const H = 300;
 
     const ORANGE = "#ff6a00";
-    const SILVER = "#c9c9c9";
+    const SILVER = "#c8c8c8";
 
-    const DURACION_LOOP = 11000;
+    const LOOP = 11200;
 
 
     /* =====================================================
-       ESCALA RESPONSIVE
+       ESCALA
        ===================================================== */
+
+    let escala = 1;
+    let offsetX = 0;
+    let offsetY = 0;
+    let dpr = 1;
+
 
     const ajustarCanvas = () => {
 
-        const rect = canvas.getBoundingClientRect();
+        const rect =
+            canvas.getBoundingClientRect();
 
-        const dpr = Math.min(
-            window.devicePixelRatio || 1,
-            2
-        );
 
-        canvas.width = Math.max(
-            1,
-            Math.round(rect.width * dpr)
-        );
+        dpr =
+            Math.min(
+                window.devicePixelRatio || 1,
+                2
+            );
 
-        canvas.height = Math.max(
-            1,
-            Math.round(rect.height * dpr)
-        );
 
-        const escala = Math.min(
-            rect.width / W,
-            rect.height / H
-        );
+        canvas.width =
+            Math.max(
+                1,
+                Math.round(
+                    rect.width * dpr
+                )
+            );
 
-        const desplazamientoX =
-            (rect.width - W * escala) / 2;
 
-        const desplazamientoY =
-            (rect.height - H * escala) / 2;
+        canvas.height =
+            Math.max(
+                1,
+                Math.round(
+                    rect.height * dpr
+                )
+            );
 
-        ctx.setTransform(
-            dpr * escala,
-            0,
-            0,
-            dpr * escala,
-            dpr * desplazamientoX,
-            dpr * desplazamientoY
-        );
+
+        escala =
+            Math.min(
+                rect.width / W,
+                rect.height / H
+            );
+
+
+        offsetX =
+            (
+                rect.width -
+                W * escala
+            ) / 2;
+
+
+        offsetY =
+            (
+                rect.height -
+                H * escala
+            ) / 2;
 
     };
 
 
     ajustarCanvas();
+
 
     window.addEventListener(
         "resize",
@@ -828,95 +819,205 @@ document.addEventListener("DOMContentLoaded", () => {
        UTILIDADES
        ===================================================== */
 
-    const limitar = (valor, minimo = 0, maximo = 1) => {
+    const clamp = (
+        valor,
+        minimo = 0,
+        maximo = 1
+    ) => {
 
         return Math.max(
             minimo,
-            Math.min(maximo, valor)
+            Math.min(
+                maximo,
+                valor
+            )
         );
 
     };
 
 
-    const suavizar = (valor) => {
+    const easeInOut = (valor) => {
 
-        valor = limitar(valor);
+        valor = clamp(valor);
 
         return valor < 0.5
             ? 4 * valor * valor * valor
-            : 1 - Math.pow(
-                -2 * valor + 2,
+            : 1 -
+              Math.pow(
+                  -2 * valor + 2,
+                  3
+              ) / 2;
+
+    };
+
+
+    const easeOut = (valor) => {
+
+        valor = clamp(valor);
+
+        return 1 -
+            Math.pow(
+                1 - valor,
                 3
-            ) / 2;
-
-    };
-
-
-    const suavizarSalida = (valor) => {
-
-        valor = limitar(valor);
-
-        return 1 - Math.pow(
-            1 - valor,
-            3
-        );
-
-    };
-
-
-    const interpolar = (a, b, t) => {
-
-        return a + (b - a) * t;
+            );
 
     };
 
 
     /* =====================================================
-       CONSTRUIR TRAZADO
+       CONSTRUCTOR DE TRAZADOS SUAVES
        ===================================================== */
 
-    const crearTrazo = (segmentos) => {
+    const crearRuta = (constructor) => {
 
         const puntos = [];
 
-        segmentos.forEach(
-            ([inicio, final]) => {
+        let actual = null;
 
-                const distancia = Math.hypot(
-                    final[0] - inicio[0],
-                    final[1] - inicio[1]
+
+        const M = (x, y) => {
+
+            actual = { x, y };
+
+            puntos.push({
+                x,
+                y,
+                movimiento: true
+            });
+
+        };
+
+
+        const L = (x, y) => {
+
+            if (!actual) {
+                M(x, y);
+                return;
+            }
+
+
+            const x0 = actual.x;
+            const y0 = actual.y;
+
+
+            const distancia =
+                Math.hypot(
+                    x - x0,
+                    y - y0
                 );
 
-                const pasos = Math.max(
-                    2,
-                    Math.ceil(distancia / 7)
+
+            const pasos =
+                Math.max(
+                    3,
+                    Math.ceil(
+                        distancia / 5
+                    )
                 );
 
-                for (
-                    let i = 0;
-                    i <= pasos;
-                    i++
-                ) {
 
-                    const t = i / pasos;
+            for (
+                let i = 1;
+                i <= pasos;
+                i++
+            ) {
 
-                    puntos.push([
-                        interpolar(
-                            inicio[0],
-                            final[0],
-                            t
-                        ),
-                        interpolar(
-                            inicio[1],
-                            final[1],
-                            t
-                        )
-                    ]);
+                const t =
+                    i / pasos;
 
-                }
+
+                puntos.push({
+                    x:
+                        x0 +
+                        (x - x0) * t,
+
+                    y:
+                        y0 +
+                        (y - y0) * t,
+
+                    movimiento: false
+                });
 
             }
-        );
+
+
+            actual = {
+                x,
+                y
+            };
+
+        };
+
+
+        const C = (
+            c1x,
+            c1y,
+            c2x,
+            c2y,
+            x,
+            y
+        ) => {
+
+            if (!actual) {
+                M(x, y);
+                return;
+            }
+
+
+            const x0 = actual.x;
+            const y0 = actual.y;
+
+
+            const pasos = 28;
+
+
+            for (
+                let i = 1;
+                i <= pasos;
+                i++
+            ) {
+
+                const t =
+                    i / pasos;
+
+
+                const u =
+                    1 - t;
+
+
+                puntos.push({
+                    x:
+                        u * u * u * x0 +
+                        3 * u * u * t * c1x +
+                        3 * u * t * t * c2x +
+                        t * t * t * x,
+
+                    y:
+                        u * u * u * y0 +
+                        3 * u * u * t * c1y +
+                        3 * u * t * t * c2y +
+                        t * t * t * y,
+
+                    movimiento: false
+                });
+
+            }
+
+
+            actual = {
+                x,
+                y
+            };
+
+        };
+
+
+        constructor({
+            M,
+            L,
+            C
+        });
+
 
         return puntos;
 
@@ -924,402 +1025,579 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       DIBUJAR TRAZO
+       DIBUJAR RUTA PROGRESIVAMENTE
        ===================================================== */
 
-    const dibujarTrazo = (
+    const dibujarRuta = (
         puntos,
         progreso,
         opciones = {}
     ) => {
 
+        progreso =
+            clamp(progreso);
+
+
         if (
             !puntos ||
-            puntos.length < 2
+            puntos.length < 2 ||
+            progreso <= 0
         ) {
             return;
         }
 
-        progreso = limitar(progreso);
 
-        if (progreso <= 0) return;
+        const cantidad =
+            Math.max(
+                2,
+                Math.ceil(
+                    puntos.length *
+                    progreso
+                )
+            );
 
-        const cantidad = Math.max(
-            2,
-            Math.ceil(
-                progreso *
-                (puntos.length - 1)
-            )
-        );
 
         ctx.save();
 
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-
-        ctx.lineWidth =
-            opciones.grosor || 5;
-
-        ctx.strokeStyle =
-            opciones.color || ORANGE;
-
-        ctx.shadowColor =
-            opciones.glow || ORANGE;
-
-        ctx.shadowBlur =
-            opciones.glowBlur || 10;
-
-        ctx.globalAlpha =
-            opciones.alpha ?? 1;
 
         ctx.beginPath();
 
-        ctx.moveTo(
-            puntos[0][0],
-            puntos[0][1]
-        );
 
         for (
-            let i = 1;
+            let i = 0;
             i < cantidad;
             i++
         ) {
 
-            ctx.lineTo(
-                puntos[i][0],
-                puntos[i][1]
-            );
+            const punto =
+                puntos[i];
+
+
+            if (punto.movimiento) {
+
+                ctx.moveTo(
+                    punto.x,
+                    punto.y
+                );
+
+            } else {
+
+                ctx.lineTo(
+                    punto.x,
+                    punto.y
+                );
+
+            }
 
         }
 
+
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+
+
+        ctx.lineWidth =
+            opciones.grosor || 5;
+
+
+        ctx.strokeStyle =
+            opciones.color || ORANGE;
+
+
+        ctx.shadowColor =
+            opciones.glow || ORANGE;
+
+
+        ctx.shadowBlur =
+            opciones.glowBlur || 10;
+
+
+        ctx.globalAlpha =
+            opciones.alpha ?? 1;
+
+
         ctx.stroke();
 
+
         ctx.restore();
 
     };
 
 
     /* =====================================================
-       ECG — ENTRADA DESDE EL EXTREMO IZQUIERDO
+       ECG
        ===================================================== */
 
-    const ECG = crearTrazo([
+    const ECG =
+        crearRuta(({ M, L }) => {
 
-        [[-180, 150], [180, 150]],
+            M(-200, 150);
 
-        [[180, 150], [350, 150]],
+            L(200, 150);
 
-        [[350, 150], [405, 150]],
+            L(350, 150);
 
-        [[405, 150], [435, 95]],
+            L(405, 150);
 
-        [[435, 95], [470, 205]],
+            L(435, 95);
 
-        [[470, 205], [515, 120]],
+            L(470, 205);
 
-        [[515, 120], [550, 150]],
+            L(515, 120);
 
-        [[550, 150], [690, 150]]
+            L(550, 150);
 
-    ]);
+            L(690, 150);
+
+        });
 
 
     /* =====================================================
-       CUATRO RAMAS QUE NACEN DEL CENTRO
+       E
        ===================================================== */
 
-    /*
-       Las cuatro ramas parten del mismo punto:
+    const E =
+        crearRuta(({ M, L }) => {
 
-       1 → E
-       2 → B
-       3 → A
-       4 → PULSO
-    */
+            M(690, 150);
+
+            L(690, 65);
+
+            L(775, 65);
+
+            M(690, 150);
+
+            L(755, 150);
+
+            M(690, 150);
+
+            L(690, 235);
+
+            L(775, 235);
+
+        });
 
 
     /* =====================================================
-       RAMA E
+       B
        ===================================================== */
 
-    const ramaE = crearTrazo([
+    const B =
+        crearRuta(({ M, L, C }) => {
 
-        [[690, 150], [690, 65]],
+            M(690, 150);
 
-        [[690, 65], [765, 65]],
+            L(805, 150);
 
-        [[690, 150], [755, 150]],
+            L(805, 65);
 
-        [[690, 150], [690, 235]],
+            L(850, 65);
 
-        [[690, 235], [765, 235]]
 
-    ]);
-
-
-    /* =====================================================
-       RAMA B
-       ===================================================== */
-
-    const ramaB = crearTrazo([
-
-        [[690, 150], [805, 150]],
-
-        [[805, 150], [805, 65]],
-
-        [[805, 65], [855, 65]],
-
-        [[855, 65], [885, 78]],
-
-        [[885, 78], [900, 100]],
-
-        [[900, 100], [900, 118]],
-
-        [[900, 118], [885, 135]],
-
-        [[885, 135], [805, 150]],
-
-        [[805, 150], [865, 150]],
-
-        [[865, 150], [895, 165]],
-
-        [[895, 165], [910, 188]],
-
-        [[910, 188], [910, 205]],
-
-        [[910, 205], [895, 222]],
-
-        [[895, 222], [865, 235]],
-
-        [[865, 235], [805, 235]],
-
-        [[805, 235], [805, 150]]
-
-    ]);
-
-
-    /* =====================================================
-       RAMA A
-       ===================================================== */
-
-    const ramaA = crearTrazo([
-
-        [[690, 150], [965, 150]],
-
-        [[965, 150], [995, 65]],
-
-        [[995, 65], [1045, 235]],
-
-        [[975, 175], [1025, 175]]
-
-    ]);
-
-
-    /* =====================================================
-       RAMA PULSO
-       ===================================================== */
-
-    /*
-       Esta rama sale del centro y se convierte
-       progresivamente en la palabra PULSO.
-    */
-
-
-    /* P */
-
-    const letraP = crearTrazo([
-
-        [[1085, 235], [1085, 65]],
-
-        [[1085, 65], [1130, 65]],
-
-        [[1130, 65], [1160, 80]],
-
-        [[1160, 80], [1170, 105]],
-
-        [[1170, 105], [1160, 130]],
-
-        [[1160, 130], [1130, 145]],
-
-        [[1130, 145], [1085, 145]]
-
-    ]);
-
-
-    /* U */
-
-    const letraU = crearTrazo([
-
-        [[1200, 65], [1200, 195]],
-
-        [[1200, 195], [1210, 220]],
-
-        [[1210, 220], [1235, 235]],
-
-        [[1235, 235], [1260, 235]],
-
-        [[1260, 235], [1285, 220]],
-
-        [[1285, 220], [1295, 195]],
-
-        [[1295, 195], [1295, 65]]
-
-    ]);
-
-
-    /* L */
-
-    const letraL = crearTrazo([
-
-        [[1325, 65], [1325, 235]],
-
-        [[1325, 235], [1385, 235]]
-
-    ]);
-
-
-    /* S */
-
-    const letraS = crearTrazo([
-
-        [[1460, 80], [1440, 68]],
-
-        [[1440, 68], [1400, 68]],
-
-        [[1400, 68], [1378, 82]],
-
-        [[1378, 82], [1378, 108]],
-
-        [[1378, 108], [1395, 128]],
-
-        [[1395, 128], [1440, 148]],
-
-        [[1440, 148], [1460, 168]],
-
-        [[1460, 168], [1460, 200]],
-
-        [[1460, 200], [1438, 220]],
-
-        [[1438, 220], [1400, 235]],
-
-        [[1400, 235], [1368, 218]]
-
-    ]);
-
-
-    /* O */
-
-    const letraO = crearTrazo([
-
-        [[1500, 100], [1510, 75]],
-
-        [[1510, 75], [1535, 65]],
-
-        [[1535, 65], [1560, 75]],
-
-        [[1560, 75], [1575, 100]],
-
-        [[1575, 100], [1575, 200]],
-
-        [[1575, 200], [1560, 225]],
-
-        [[1560, 225], [1535, 235]],
-
-        [[1535, 235], [1510, 225]],
-
-        [[1510, 225], [1500, 200]],
-
-        [[1500, 200], [1500, 100]]
-
-    ]);
-
-
-    const palabraPulso = [
-
-        letraP,
-        letraU,
-        letraL,
-        letraS,
-        letraO
-
-    ];
-
-
-    const ramas = [
-
-        ramaE,
-        ramaB,
-        ramaA
-
-    ];
-
-
-    /* =====================================================
-       GLOW CENTRAL
-       ===================================================== */
-
-    const dibujarGlow = (intensidad) => {
-
-        intensidad = limitar(intensidad);
-
-        if (intensidad <= 0) return;
-
-        ctx.save();
-
-        const gradiente =
-            ctx.createRadialGradient(
-                1050,
-                150,
-                5,
-                1050,
-                150,
-                560
+            C(
+                885, 65,
+                905, 82,
+                905, 105
             );
 
-        gradiente.addColorStop(
-            0,
-            `rgba(255,106,0,${0.18 * intensidad})`
-        );
 
-        gradiente.addColorStop(
-            0.35,
-            `rgba(255,106,0,${0.08 * intensidad})`
-        );
+            C(
+                905, 130,
+                880, 145,
+                805, 150
+            );
 
-        gradiente.addColorStop(
-            1,
-            "rgba(255,106,0,0)"
-        );
 
-        ctx.fillStyle = gradiente;
+            M(805, 150);
 
-        ctx.beginPath();
+            L(850, 150);
 
-        ctx.ellipse(
-            1050,
-            150,
-            560,
-            120,
-            0,
-            0,
-            Math.PI * 2
-        );
 
-        ctx.fill();
+            C(
+                890, 150,
+                915, 170,
+                915, 195
+            );
 
-        ctx.restore();
 
-    };
+            C(
+                915, 220,
+                885, 235,
+                850, 235
+            );
+
+
+            L(805, 235);
+
+            L(805, 150);
+
+        });
 
 
     /* =====================================================
-       DIBUJAR LOGO COMPLETO
+       A
+       ===================================================== */
+
+    const A =
+        crearRuta(({ M, L }) => {
+
+            M(690, 150);
+
+            L(965, 150);
+
+            L(1000, 65);
+
+            L(1045, 235);
+
+            M(975, 175);
+
+            L(1025, 175);
+
+        });
+
+
+    /* =====================================================
+       PULSO
+       ===================================================== */
+
+    /*
+       Esta es la cuarta rama.
+
+       Primero sale del mismo centro que E/B/A
+       y después comienza a dibujar la palabra.
+    */
+
+    const ramaPulso =
+        crearRuta(({ M, L }) => {
+
+            M(690, 150);
+
+            L(1060, 150);
+
+        });
+
+
+    /* =====================================================
+       P
+       ===================================================== */
+
+    const P =
+        crearRuta(({ M, L, C }) => {
+
+            M(1090, 235);
+
+            L(1090, 65);
+
+            L(1130, 65);
+
+
+            C(
+                1160, 65,
+                1175, 82,
+                1175, 105
+            );
+
+
+            C(
+                1175, 130,
+                1158, 145,
+                1130, 145
+            );
+
+
+            L(1090, 145);
+
+        });
+
+
+    /* =====================================================
+       U
+       ===================================================== */
+
+    const U =
+        crearRuta(({ M, L, C }) => {
+
+            M(1200, 65);
+
+            L(1200, 190);
+
+
+            C(
+                1200, 220,
+                1218, 235,
+                1245, 235
+            );
+
+
+            C(
+                1272, 235,
+                1290, 220,
+                1290, 190
+            );
+
+
+            L(1290, 65);
+
+        });
+
+
+    /* =====================================================
+       L
+       ===================================================== */
+
+    const L =
+        crearRuta(({ M, L }) => {
+
+            M(1325, 65);
+
+            L(1325, 235);
+
+            L(1385, 235);
+
+        });
+
+
+    /* =====================================================
+       S
+       ===================================================== */
+
+    const S =
+        crearRuta(({ M, C }) => {
+
+            M(1460, 78);
+
+
+            C(
+                1445, 67,
+                1420, 64,
+                1398, 70
+            );
+
+
+            C(
+                1378, 76,
+                1370, 92,
+                1378, 108
+            );
+
+
+            C(
+                1387, 126,
+                1418, 136,
+                1440, 147
+            );
+
+
+            C(
+                1462, 158,
+                1470, 176,
+                1462, 196
+            );
+
+
+            C(
+                1452, 220,
+                1424, 237,
+                1392, 230
+            );
+
+
+            C(
+                1382, 228,
+                1373, 223,
+                1365, 216
+            );
+
+        });
+
+
+    /* =====================================================
+       O
+       ===================================================== */
+
+    const O =
+        crearRuta(({ M, L, C }) => {
+
+            M(1510, 100);
+
+
+            C(
+                1510, 76,
+                1528, 65,
+                1548, 65
+            );
+
+
+            C(
+                1568, 65,
+                1585, 76,
+                1585, 100
+            );
+
+
+            L(1585, 200);
+
+
+            C(
+                1585, 224,
+                1568, 235,
+                1548, 235
+            );
+
+
+            C(
+                1528, 235,
+                1510, 224,
+                1510, 200
+            );
+
+
+            L(1510, 100);
+
+        });
+
+
+    const letrasPulso = [
+        P,
+        U,
+        L,
+        S,
+        O
+    ];
+
+
+    const ramasEBA = [
+        E,
+        B,
+        A
+    ];
+
+
+    /* =====================================================
+       GLOW
+       ===================================================== */
+
+    const dibujarGlow =
+        (intensidad) => {
+
+            intensidad =
+                clamp(intensidad);
+
+
+            if (intensidad <= 0) {
+                return;
+            }
+
+
+            ctx.save();
+
+
+            const gradiente =
+                ctx.createRadialGradient(
+                    1080,
+                    150,
+                    10,
+                    1080,
+                    150,
+                    600
+                );
+
+
+            gradiente.addColorStop(
+                0,
+                `rgba(255,106,0,${0.16 * intensidad})`
+            );
+
+
+            gradiente.addColorStop(
+                0.4,
+                `rgba(255,106,0,${0.07 * intensidad})`
+            );
+
+
+            gradiente.addColorStop(
+                1,
+                "rgba(255,106,0,0)"
+            );
+
+
+            ctx.fillStyle =
+                gradiente;
+
+
+            ctx.beginPath();
+
+
+            ctx.ellipse(
+                1080,
+                150,
+                600,
+                115,
+                0,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fill();
+
+
+            ctx.restore();
+
+        };
+
+
+    /* =====================================================
+       LÍNEA DE SALIDA
+       ===================================================== */
+
+    const salida =
+        crearRuta(({ M, L }) => {
+
+            M(690, 150);
+
+            L(1050, 150);
+
+            L(1350, 150);
+
+            L(1650, 150);
+
+            L(1980, 150);
+
+        });
+
+
+    /* =====================================================
+       LOGO COMPLETO
        ===================================================== */
 
     const dibujarLogoCompleto = () => {
 
-        dibujarTrazo(
-            ramaE,
+        ramasEBA.forEach(
+            (rama) => {
+
+                dibujarRuta(
+                    rama,
+                    1,
+                    {
+                        color: SILVER,
+                        grosor: 5.5,
+                        glow: ORANGE,
+                        glowBlur: 12
+                    }
+                );
+
+            }
+        );
+
+
+        /*
+         * La cuarta rama llega primero hasta P
+         * y después se dibuja la palabra.
+         */
+
+        dibujarRuta(
+            ramaPulso,
             1,
             {
                 color: SILVER,
@@ -1330,34 +1608,10 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        dibujarTrazo(
-            ramaB,
-            1,
-            {
-                color: SILVER,
-                grosor: 5.5,
-                glow: ORANGE,
-                glowBlur: 12
-            }
-        );
-
-
-        dibujarTrazo(
-            ramaA,
-            1,
-            {
-                color: SILVER,
-                grosor: 5.5,
-                glow: ORANGE,
-                glowBlur: 12
-            }
-        );
-
-
-        palabraPulso.forEach(
+        letrasPulso.forEach(
             (letra) => {
 
-                dibujarTrazo(
+                dibujarRuta(
                     letra,
                     1,
                     {
@@ -1382,437 +1636,451 @@ document.addEventListener("DOMContentLoaded", () => {
         performance.now();
 
 
-    const animar = (ahora) => {
+    const render =
+        (tiempo) => {
 
-        const tiempo =
-            (ahora - inicio) %
-            DURACION_LOOP;
+            /*
+             * Limpiar correctamente el Canvas.
+             */
+
+            ctx.setTransform(
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+            );
 
 
-        ctx.clearRect(
-            -200,
-            -50,
-            W + 400,
-            H + 100
-        );
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
 
 
-        /* =================================================
-           ETAPA 1
-           ECG ENTRA DESDE LA IZQUIERDA
-           0 → 2800 ms
-           ================================================= */
+            /*
+             * Aplicar escala.
+             */
 
-        if (tiempo < 2800) {
+            ctx.setTransform(
+                dpr * escala,
+                0,
+                0,
+                dpr * escala,
+                dpr * offsetX,
+                dpr * offsetY
+            );
 
-            const progreso =
-                suavizarSalida(
-                    tiempo / 2800
+
+            const t =
+                tiempo % LOOP;
+
+
+            /* =============================================
+               ETAPA 1
+               ECG
+               ============================================= */
+
+            if (t < 2700) {
+
+                const progreso =
+                    easeOut(
+                        t / 2700
+                    );
+
+
+                dibujarRuta(
+                    ECG,
+                    progreso,
+                    {
+                        color: ORANGE,
+                        grosor:
+                            1.2 +
+                            4.3 * progreso,
+                        glow: ORANGE,
+                        glowBlur:
+                            4 +
+                            12 * progreso
+                    }
                 );
 
-            dibujarTrazo(
-                ECG,
-                progreso,
-                {
-                    color: ORANGE,
-                    grosor: interpolar(
-                        1.2,
-                        5.5,
-                        progreso
-                    ),
-                    glow: ORANGE,
-                    glowBlur: interpolar(
-                        4,
-                        17,
-                        progreso
-                    )
-                }
-            );
 
+                return;
 
-            requestAnimationFrame(
-                animar
-            );
-
-            return;
-
-        }
-
-
-        /* ECG queda completo */
-
-        dibujarTrazo(
-            ECG,
-            1,
-            {
-                color: ORANGE,
-                grosor: 5.5,
-                glow: ORANGE,
-                glowBlur: 17
             }
-        );
 
 
-        /* =================================================
-           ETAPA 2
-           LAS 4 RAMAS SE CONSTRUYEN
-           2800 → 6000 ms
-           ================================================= */
+            /* ECG COMPLETO */
 
-        if (
-            tiempo >= 2800 &&
-            tiempo < 6000
-        ) {
-
-            const progreso =
-                suavizar(
-                    (tiempo - 2800) / 3200
-                );
-
-
-            /*
-               Las tres ramas EBA avanzan
-               simultáneamente.
-            */
-
-            ramas.forEach(
-                (rama) => {
-
-                    dibujarTrazo(
-                        rama,
-                        progreso,
-                        {
-                            color: SILVER,
-                            grosor: interpolar(
-                                2,
-                                5.5,
-                                progreso
-                            ),
-                            glow: ORANGE,
-                            glowBlur: 13
-                        }
-                    );
-
-                }
-            );
-
-
-            /*
-               PULSO comienza ligeramente después
-               para que la lectura visual sea clara.
-            */
-
-            const progresoPulso =
-                limitar(
-                    (
-                        progreso - 0.08
-                    ) / 0.92
-                );
-
-
-            palabraPulso.forEach(
-                (letra, indice) => {
-
-                    const inicioLetra =
-                        indice / palabraPulso.length;
-
-                    const finLetra =
-                        (indice + 1) /
-                        palabraPulso.length;
-
-                    const progresoLetra =
-                        limitar(
-                            (
-                                progresoPulso -
-                                inicioLetra
-                            ) /
-                            (
-                                finLetra -
-                                inicioLetra
-                            )
-                        );
-
-
-                    dibujarTrazo(
-                        letra,
-                        suavizarSalida(
-                            progresoLetra
-                        ),
-                        {
-                            color: SILVER,
-                            grosor: interpolar(
-                                2,
-                                5.5,
-                                progreso
-                            ),
-                            glow: ORANGE,
-                            glowBlur: 13
-                        }
-                    );
-
-                }
-            );
-
-
-            dibujarGlow(
-                progreso
-            );
-
-
-            requestAnimationFrame(
-                animar
-            );
-
-            return;
-
-        }
-
-
-        /* =================================================
-           ETAPA 3
-           LOGO COMPLETO
-           6000 → 7200 ms
-           ================================================= */
-
-        if (
-            tiempo >= 6000 &&
-            tiempo < 7200
-        ) {
-
-            dibujarLogoCompleto();
-
-            dibujarGlow(1);
-
-            requestAnimationFrame(
-                animar
-            );
-
-            return;
-
-        }
-
-
-        /* =================================================
-           ETAPA 4
-           EL LOGO SE DESARMA
-           7200 → 8700 ms
-           ================================================= */
-
-        if (
-            tiempo >= 7200 &&
-            tiempo < 8700
-        ) {
-
-            const progreso =
-                suavizar(
-                    (tiempo - 7200) /
-                    1500
-                );
-
-
-            /*
-               Las letras desaparecen
-               progresivamente.
-            */
-
-            ramas.forEach(
-                (rama, indice) => {
-
-                    const retraso =
-                        indice * 0.04;
-
-                    const progresoRama =
-                        limitar(
-                            (
-                                progreso -
-                                retraso
-                            ) /
-                            (1 - retraso)
-                        );
-
-
-                    dibujarTrazo(
-                        rama,
-                        1 - progresoRama,
-                        {
-                            color: SILVER,
-                            grosor: interpolar(
-                                5.5,
-                                2,
-                                progreso
-                            ),
-                            glow: ORANGE,
-                            glowBlur: 10
-                        }
-                    );
-
-                }
-            );
-
-
-            palabraPulso.forEach(
-                (letra, indice) => {
-
-                    const retraso =
-                        0.10 +
-                        indice * 0.035;
-
-                    const progresoLetra =
-                        limitar(
-                            (
-                                progreso -
-                                retraso
-                            ) /
-                            (1 - retraso)
-                        );
-
-
-                    dibujarTrazo(
-                        letra,
-                        1 - progresoLetra,
-                        {
-                            color: SILVER,
-                            grosor: interpolar(
-                                5.5,
-                                2,
-                                progreso
-                            ),
-                            glow: ORANGE,
-                            glowBlur: 10
-                        }
-                    );
-
-                }
-            );
-
-
-            /*
-               La línea naranja vuelve a ocupar
-               el espacio del logo.
-            */
-
-            dibujarTrazo(
+            dibujarRuta(
                 ECG,
                 1,
                 {
                     color: ORANGE,
-                    grosor: interpolar(
-                        5.5,
-                        4.5,
-                        progreso
-                    ),
+                    grosor: 5.5,
                     glow: ORANGE,
-                    glowBlur: 14
+                    glowBlur: 16
                 }
             );
 
 
-            dibujarGlow(
-                1 - progreso
-            );
+            /* =============================================
+               ETAPA 2
+               DIVISIÓN EN 4
+               ============================================= */
+
+            if (
+                t >= 2700 &&
+                t < 6100
+            ) {
+
+                const progreso =
+                    easeInOut(
+                        (t - 2700) /
+                        3400
+                    );
 
 
-            requestAnimationFrame(
-                animar
-            );
+                /*
+                 * E, B y A nacen simultáneamente
+                 * desde el mismo centro.
+                 */
 
-            return;
+                ramasEBA.forEach(
+                    (rama) => {
 
-        }
+                        dibujarRuta(
+                            rama,
+                            progreso,
+                            {
+                                color: SILVER,
+                                grosor:
+                                    1.8 +
+                                    3.7 * progreso,
+                                glow: ORANGE,
+                                glowBlur:
+                                    8 +
+                                    7 * progreso
+                            }
+                        );
 
-
-        /* =================================================
-           ETAPA 5
-           LA LÍNEA CONTINÚA HACIA LA DERECHA
-           8700 → 11000 ms
-           ================================================= */
-
-        const progresoSalida =
-            limitar(
-                (tiempo - 8700) /
-                2300
-            );
-
-
-        const suavizadoSalida =
-            suavizarSalida(
-                progresoSalida
-            );
-
-
-        const lineaSalida =
-            crearTrazo([
-
-                [[690, 150], [1050, 150]],
-
-                [[1050, 150], [1350, 150]],
-
-                [[1350, 150], [1650, 150]],
-
-                [[1650, 150], [1950, 150]]
-
-            ]);
+                    }
+                );
 
 
-        /*
-           Primero aparece gruesa,
-           después se afina.
-        */
+                /*
+                 * CUARTA RAMA:
+                 * centro → PULSO
+                 */
 
-        dibujarTrazo(
-            lineaSalida,
-            1,
-            {
-                color: ORANGE,
-                grosor: interpolar(
-                    4.5,
-                    0.8,
-                    suavizadoSalida
-                ),
-                glow: ORANGE,
-                glowBlur: interpolar(
-                    14,
-                    1,
-                    suavizadoSalida
-                ),
-                alpha:
-                    1 -
-                    Math.pow(
-                        progresoSalida,
-                        1.6
-                    )
+                dibujarRuta(
+                    ramaPulso,
+                    progreso,
+                    {
+                        color: SILVER,
+                        grosor:
+                            1.8 +
+                            3.7 * progreso,
+                        glow: ORANGE,
+                        glowBlur:
+                            8 +
+                            7 * progreso
+                    }
+                );
+
+
+                /*
+                 * PULSO se construye letra por letra,
+                 * pero cada letra se dibuja desde cero.
+                 */
+
+                const progresoPulso =
+                    clamp(
+                        (
+                            progreso -
+                            0.12
+                        ) / 0.88
+                    );
+
+
+                letrasPulso.forEach(
+                    (letra, indice) => {
+
+                        const inicioLetra =
+                            indice /
+                            letrasPulso.length;
+
+
+                        const finLetra =
+                            (indice + 1) /
+                            letrasPulso.length;
+
+
+                        const progresoLetra =
+                            clamp(
+                                (
+                                    progresoPulso -
+                                    inicioLetra
+                                ) /
+                                (
+                                    finLetra -
+                                    inicioLetra
+                                )
+                            );
+
+
+                        dibujarRuta(
+                            letra,
+                            easeOut(
+                                progresoLetra
+                            ),
+                            {
+                                color: SILVER,
+                                grosor:
+                                    1.8 +
+                                    3.7 * progreso,
+                                glow: ORANGE,
+                                glowBlur:
+                                    8 +
+                                    7 * progreso
+                            }
+                        );
+
+                    }
+                );
+
+
+                dibujarGlow(
+                    progreso
+                );
+
+
+                return;
+
             }
-        );
 
 
-        requestAnimationFrame(
-            animar
-        );
+            /* =============================================
+               ETAPA 3
+               LOGO COMPLETO
+               ============================================= */
 
-    };
+            if (
+                t >= 6100 &&
+                t < 7500
+            ) {
+
+                dibujarLogoCompleto();
+
+                dibujarGlow(1);
+
+                return;
+
+            }
+
+
+            /* =============================================
+               ETAPA 4
+               CONVERGENCIA
+               ============================================= */
+
+            if (
+                t >= 7500 &&
+                t < 9000
+            ) {
+
+                const progreso =
+                    easeInOut(
+                        (t - 7500) /
+                        1500
+                    );
+
+
+                /*
+                 * Las cuatro ramas se retraen
+                 * simultáneamente.
+                 */
+
+                ramasEBA.forEach(
+                    (rama) => {
+
+                        dibujarRuta(
+                            rama,
+                            1 - progreso,
+                            {
+                                color: SILVER,
+                                grosor:
+                                    5.5 -
+                                    2.5 * progreso,
+                                glow: ORANGE,
+                                glowBlur:
+                                    12 -
+                                    5 * progreso
+                            }
+                        );
+
+                    }
+                );
+
+
+                /*
+                 * La cuarta rama también vuelve
+                 * al centro.
+                 */
+
+                dibujarRuta(
+                    ramaPulso,
+                    1 - progreso,
+                    {
+                        color: SILVER,
+                        grosor:
+                            5.5 -
+                            2.5 * progreso,
+                        glow: ORANGE,
+                        glowBlur:
+                            12 -
+                            5 * progreso
+                    }
+                );
+
+
+                /*
+                 * PULSO se retrae junto con la
+                 * cuarta rama.
+                 */
+
+                letrasPulso.forEach(
+                    (letra) => {
+
+                        dibujarRuta(
+                            letra,
+                            1 - progreso,
+                            {
+                                color: SILVER,
+                                grosor:
+                                    5.5 -
+                                    2.5 * progreso,
+                                glow: ORANGE,
+                                glowBlur:
+                                    12 -
+                                    5 * progreso
+                            }
+                        );
+
+                    }
+                );
+
+
+                /*
+                 * ECG sigue presente debajo.
+                 */
+
+                dibujarRuta(
+                    ECG,
+                    1,
+                    {
+                        color: ORANGE,
+                        grosor:
+                            5.5 -
+                            progreso,
+                        glow: ORANGE,
+                        glowBlur:
+                            16 -
+                            5 * progreso
+                    }
+                );
+
+
+                dibujarGlow(
+                    1 - progreso
+                );
+
+
+                return;
+
+            }
+
+
+            /* =============================================
+               ETAPA 5
+               SALIDA
+               ============================================= */
+
+            const progresoSalida =
+                clamp(
+                    (
+                        t - 9000
+                    ) / 2200
+                );
+
+
+            const salidaSuave =
+                easeInOut(
+                    progresoSalida
+                );
+
+
+            /*
+             * Una sola línea continúa desde
+             * el centro hacia el extremo derecho.
+             */
+
+            dibujarRuta(
+                salida,
+                1,
+                {
+                    color: ORANGE,
+
+                    grosor:
+                        5.2 -
+                        4.4 *
+                        salidaSuave,
+
+                    glow: ORANGE,
+
+                    glowBlur:
+                        14 -
+                        12 *
+                        salidaSuave,
+
+                    alpha:
+                        1 -
+                        Math.pow(
+                            progresoSalida,
+                            1.7
+                        )
+                }
+            );
+
+        };
 
 
     /* =====================================================
-       REDUCIR MOVIMIENTO
+       INICIAR
        ===================================================== */
 
-    const reducirMovimiento =
+    const movimientoReducido =
         window.matchMedia(
             "(prefers-reduced-motion: reduce)"
         ).matches;
 
 
-    if (reducirMovimiento) {
+    if (movimientoReducido) {
 
-        ctx.clearRect(
-            -200,
-            -50,
-            W + 400,
-            H + 100
+        ctx.setTransform(
+            dpr * escala,
+            0,
+            0,
+            dpr * escala,
+            dpr * offsetX,
+            dpr * offsetY
         );
 
 
-        dibujarTrazo(
+        dibujarRuta(
             ECG,
             1,
             {
@@ -1831,12 +2099,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-/* =====================================================
-   INICIAR ANIMACIÓN
-   ===================================================== */
+    const animar =
+        (ahora) => {
 
-requestAnimationFrame(
-    animar
-);
+            render(
+                ahora - inicio
+            );
+
+
+            requestAnimationFrame(
+                animar
+            );
+
+        };
+
+
+    requestAnimationFrame(
+        animar
+    );
 
 });

@@ -1831,12 +1831,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
-       INICIAR ANIMACIÓN
-       ===================================================== */
+/* =====================================================
+   INICIAR ANIMACIÓN
+   ===================================================== */
 
-    requestAnimationFrame(
-        animar
-    );
+requestAnimationFrame(
+    animar
+);
 
 });

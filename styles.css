@@ -452,27 +452,324 @@ ul {
 
 
 /* =========================================================
-   LOGO PRINCIPAL — PULSO
+   PULSO — LOGO ECG ANIMADO
    ========================================================= */
 
-.hero-brand-image {
-    width: clamp(220px, 25vw, 330px);
+.hero-pulso-draw {
+    position: relative;
 
-    height: auto;
+    width: 100vw;
+    max-width: none;
 
-    transform-origin: center;
+    height: 180px;
 
-    animation:
-        logoPulso 4.8s ease-in-out infinite;
+    margin-left: 50%;
+    transform: translateX(-50%);
+
+    margin-bottom: 60px;
+
+    display: block;
+
+    overflow: visible;
+
+    z-index: 3;
+}
+
+
+/* SVG PRINCIPAL */
+
+.pulso-draw-svg {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: visible;
+
+    isolation: isolate;
+}
+
+
+/* =========================================================
+   TRAZOS
+   ========================================================= */
+
+.pulso-trace {
+
+    fill: none;
+
+    stroke: var(--orange);
+
+    stroke-width: 8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+    vector-effect: non-scaling-stroke;
 
     filter:
         drop-shadow(
-            0 0 0 rgba(255,106,0,0)
+            0 0 5px rgba(255,106,0,0.65)
         );
 
-    will-change:
-        transform,
-        filter;
+    opacity: 0;
+
+    stroke-dasharray: 2000;
+
+    stroke-dashoffset: 2000;
+}
+
+
+/* =========================================================
+   ECG
+   ========================================================= */
+
+.pulso-ecg {
+
+    animation:
+        pulsoECG 9s linear infinite;
+}
+
+
+/* =========================================================
+   RAMAS DEL LOGO
+   ========================================================= */
+
+.pulso-branch {
+
+    animation:
+        pulsoBranch 9s ease-in-out infinite;
+}
+
+
+/* E */
+
+.pulso-e {
+    animation-delay: 2.25s;
+}
+
+
+/* B */
+
+.pulso-b {
+    animation-delay: 2.25s;
+}
+
+
+/* A */
+
+.pulso-a {
+    animation-delay: 2.25s;
+}
+
+
+/* PULSO */
+
+.pulso-word {
+    animation-delay: 2.25s;
+}
+
+
+/* =========================================================
+   GLOW
+   ========================================================= */
+
+.pulso-glow {
+
+    fill: none;
+
+    stroke: var(--orange);
+
+    stroke-width: 24;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+    opacity: 0;
+
+    filter:
+        url(#pulsoSoftGlow);
+
+    animation:
+        pulsoGlow 9s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   ANIMACIÓN ECG
+   ========================================================= */
+
+@keyframes pulsoECG {
+
+    0% {
+
+        opacity: 0;
+
+        stroke-dashoffset: 2000;
+
+        stroke-width: 2;
+    }
+
+    8% {
+
+        opacity: 1;
+
+        stroke-dashoffset: 1200;
+
+        stroke-width: 2;
+    }
+
+    25% {
+
+        opacity: 1;
+
+        stroke-dashoffset: 0;
+
+        stroke-width: 8;
+    }
+
+    30% {
+
+        opacity: 1;
+
+        stroke-width: 10;
+    }
+
+    47% {
+
+        opacity: 0;
+
+        stroke-dashoffset: -1000;
+    }
+
+    100% {
+
+        opacity: 0;
+
+        stroke-dashoffset: -1000;
+    }
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE LAS 4 LÍNEAS
+   ========================================================= */
+
+@keyframes pulsoBranch {
+
+    0% {
+
+        opacity: 0;
+
+        stroke-dashoffset: 2000;
+
+        stroke-width: 2;
+    }
+
+    25% {
+
+        opacity: 0;
+
+        stroke-dashoffset: 2000;
+
+        stroke-width: 2;
+    }
+
+    38% {
+
+        opacity: 1;
+
+        stroke-dashoffset: 1000;
+
+        stroke-width: 5;
+    }
+
+    48% {
+
+        opacity: 1;
+
+        stroke-dashoffset: 0;
+
+        stroke-width: 10;
+    }
+
+    64% {
+
+        opacity: 1;
+
+        stroke-dashoffset: 0;
+
+        stroke-width: 10;
+    }
+
+    76% {
+
+        opacity: 1;
+
+        stroke-dashoffset: 1000;
+
+        stroke-width: 5;
+    }
+
+    86% {
+
+        opacity: 0;
+
+        stroke-dashoffset: 2000;
+
+        stroke-width: 2;
+    }
+
+    100% {
+
+        opacity: 0;
+
+        stroke-dashoffset: 2000;
+
+        stroke-width: 2;
+    }
+}
+
+
+/* =========================================================
+   GLOW
+   ========================================================= */
+
+@keyframes pulsoGlow {
+
+    0% {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0;
+    }
+
+    35% {
+        opacity: 0.15;
+    }
+
+    48% {
+        opacity: 0.75;
+    }
+
+    64% {
+        opacity: 0.75;
+    }
+
+    78% {
+        opacity: 0.25;
+    }
+
+    88% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 .hero-container {

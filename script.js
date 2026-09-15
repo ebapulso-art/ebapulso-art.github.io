@@ -743,7 +743,7 @@ console.log(
 });
 /* =========================================================
    PULSO — LOGO ECG ANIMADO
-   CANVAS
+   CANVAS — VERSIÓN FINAL
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -758,25 +758,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CONFIGURACIÓN
+       CONFIGURACIÓN GENERAL
        ===================================================== */
 
-    const DESIGN_WIDTH = 1800;
-    const DESIGN_HEIGHT = 300;
+    const W = 1800;
+    const H = 300;
 
     const ORANGE = "#ff6a00";
-    const SILVER = "#c7c7c7";
+    const SILVER = "#c9c9c9";
 
-    const LOOP_DURATION = 10500;
+    const DURACION_LOOP = 11000;
 
 
     /* =====================================================
-       TAMAÑO DEL CANVAS
+       ESCALA RESPONSIVE
        ===================================================== */
-
-    let scale = 1;
-    let offsetX = 0;
-    let offsetY = 0;
 
     const ajustarCanvas = () => {
 
@@ -787,27 +783,34 @@ document.addEventListener("DOMContentLoaded", () => {
             2
         );
 
-        canvas.width = rect.width * dpr;
-        canvas.height = rect.height * dpr;
-
-        scale = Math.min(
-            rect.width / DESIGN_WIDTH,
-            rect.height / DESIGN_HEIGHT
+        canvas.width = Math.max(
+            1,
+            Math.round(rect.width * dpr)
         );
 
-        offsetX =
-            (rect.width - DESIGN_WIDTH * scale) / 2;
+        canvas.height = Math.max(
+            1,
+            Math.round(rect.height * dpr)
+        );
 
-        offsetY =
-            (rect.height - DESIGN_HEIGHT * scale) / 2;
+        const escala = Math.min(
+            rect.width / W,
+            rect.height / H
+        );
+
+        const desplazamientoX =
+            (rect.width - W * escala) / 2;
+
+        const desplazamientoY =
+            (rect.height - H * escala) / 2;
 
         ctx.setTransform(
-            dpr * scale,
+            dpr * escala,
             0,
             0,
-            dpr * scale,
-            dpr * offsetX,
-            dpr * offsetY
+            dpr * escala,
+            dpr * desplazamientoX,
+            dpr * desplazamientoY
         );
 
     };
@@ -825,7 +828,7 @@ document.addEventListener("DOMContentLoaded", () => {
        UTILIDADES
        ===================================================== */
 
-    const clamp = (valor, minimo, maximo) => {
+    const limitar = (valor, minimo = 0, maximo = 1) => {
 
         return Math.max(
             minimo,
@@ -835,85 +838,85 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
 
-    const easeInOut = (t) => {
+    const suavizar = (valor) => {
 
-        t = clamp(t, 0, 1);
+        valor = limitar(valor);
 
-        return t < 0.5
-            ? 4 * t * t * t
-            : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-    };
-
-
-    const easeOut = (t) => {
-
-        t = clamp(t, 0, 1);
-
-        return 1 - Math.pow(1 - t, 3);
+        return valor < 0.5
+            ? 4 * valor * valor * valor
+            : 1 - Math.pow(
+                -2 * valor + 2,
+                3
+            ) / 2;
 
     };
 
 
-    const lerp = (a, b, t) => {
+    const suavizarSalida = (valor) => {
+
+        valor = limitar(valor);
+
+        return 1 - Math.pow(
+            1 - valor,
+            3
+        );
+
+    };
+
+
+    const interpolar = (a, b, t) => {
 
         return a + (b - a) * t;
 
     };
 
 
-    const distancia = (a, b) => {
-
-        return Math.hypot(
-            b[0] - a[0],
-            b[1] - a[1]
-        );
-
-    };
-
-
     /* =====================================================
-       CONSTRUIR PUNTOS INTERMEDIOS
+       CONSTRUIR TRAZADO
        ===================================================== */
 
-    const construirPuntos = (segmentos) => {
+    const crearTrazo = (segmentos) => {
 
         const puntos = [];
 
-        segmentos.forEach((segmento) => {
+        segmentos.forEach(
+            ([inicio, final]) => {
 
-            const inicio = segmento[0];
-            const final = segmento[1];
-
-            const largo =
-                distancia(inicio, final);
-
-            const pasos =
-                Math.max(
-                    2,
-                    Math.ceil(largo / 8)
+                const distancia = Math.hypot(
+                    final[0] - inicio[0],
+                    final[1] - inicio[1]
                 );
 
-            for (let i = 0; i <= pasos; i++) {
+                const pasos = Math.max(
+                    2,
+                    Math.ceil(distancia / 7)
+                );
 
-                const t = i / pasos;
+                for (
+                    let i = 0;
+                    i <= pasos;
+                    i++
+                ) {
 
-                puntos.push([
-                    lerp(
-                        inicio[0],
-                        final[0],
-                        t
-                    ),
-                    lerp(
-                        inicio[1],
-                        final[1],
-                        t
-                    )
-                ]);
+                    const t = i / pasos;
+
+                    puntos.push([
+                        interpolar(
+                            inicio[0],
+                            final[0],
+                            t
+                        ),
+                        interpolar(
+                            inicio[1],
+                            final[1],
+                            t
+                        )
+                    ]);
+
+                }
 
             }
-
-        });
+        );
 
         return puntos;
 
@@ -921,29 +924,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       DIBUJAR UNA LÍNEA PROGRESIVAMENTE
+       DIBUJAR TRAZO
        ===================================================== */
 
-    const dibujarPuntos = (
+    const dibujarTrazo = (
         puntos,
         progreso,
         opciones = {}
     ) => {
 
-        if (!puntos || puntos.length < 2) {
+        if (
+            !puntos ||
+            puntos.length < 2
+        ) {
             return;
         }
 
-        progreso = clamp(progreso, 0, 1);
+        progreso = limitar(progreso);
 
-        const cantidad =
-            Math.max(
-                2,
-                Math.floor(
-                    progreso *
-                    (puntos.length - 1)
-                ) + 1
-            );
+        if (progreso <= 0) return;
+
+        const cantidad = Math.max(
+            2,
+            Math.ceil(
+                progreso *
+                (puntos.length - 1)
+            )
+        );
 
         ctx.save();
 
@@ -961,6 +968,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         ctx.shadowBlur =
             opciones.glowBlur || 10;
+
+        ctx.globalAlpha =
+            opciones.alpha ?? 1;
 
         ctx.beginPath();
 
@@ -990,123 +1000,138 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ECG PRINCIPAL
+       ECG — ENTRADA DESDE EL EXTREMO IZQUIERDO
        ===================================================== */
 
-    const ecg = construirPuntos([
+    const ECG = crearTrazo([
 
-        [[-120, 150], [180, 150]],
+        [[-180, 150], [180, 150]],
 
-        [[180, 150], [360, 150]],
+        [[180, 150], [350, 150]],
 
-        [[360, 150], [410, 150]],
+        [[350, 150], [405, 150]],
 
-        [[410, 150], [440, 95]],
+        [[405, 150], [435, 95]],
 
-        [[440, 95], [475, 205]],
+        [[435, 95], [470, 205]],
 
-        [[475, 205], [520, 125]],
+        [[470, 205], [515, 120]],
 
-        [[520, 125], [555, 150]],
+        [[515, 120], [550, 150]],
 
-        [[555, 150], [720, 150]]
+        [[550, 150], [690, 150]]
 
     ]);
 
 
     /* =====================================================
-       LÍNEA DE SALIDA
+       CUATRO RAMAS QUE NACEN DEL CENTRO
        ===================================================== */
 
-    const salida = construirPuntos([
+    /*
+       Las cuatro ramas parten del mismo punto:
 
-        [[720, 150], [1050, 150]],
+       1 → E
+       2 → B
+       3 → A
+       4 → PULSO
+    */
 
-        [[1050, 150], [1350, 150]],
 
-        [[1350, 150], [1650, 150]],
+    /* =====================================================
+       RAMA E
+       ===================================================== */
 
-        [[1650, 150], [1920, 150]]
+    const ramaE = crearTrazo([
+
+        [[690, 150], [690, 65]],
+
+        [[690, 65], [765, 65]],
+
+        [[690, 150], [755, 150]],
+
+        [[690, 150], [690, 235]],
+
+        [[690, 235], [765, 235]]
 
     ]);
 
 
     /* =====================================================
-       E
+       RAMA B
        ===================================================== */
 
-    const letraE = construirPuntos([
+    const ramaB = crearTrazo([
 
-        [[720, 150], [720, 65]],
+        [[690, 150], [805, 150]],
 
-        [[720, 65], [790, 65]],
+        [[805, 150], [805, 65]],
 
-        [[720, 150], [785, 150]],
+        [[805, 65], [855, 65]],
 
-        [[720, 150], [720, 235]],
+        [[855, 65], [885, 78]],
 
-        [[720, 235], [790, 235]]
+        [[885, 78], [900, 100]],
+
+        [[900, 100], [900, 118]],
+
+        [[900, 118], [885, 135]],
+
+        [[885, 135], [805, 150]],
+
+        [[805, 150], [865, 150]],
+
+        [[865, 150], [895, 165]],
+
+        [[895, 165], [910, 188]],
+
+        [[910, 188], [910, 205]],
+
+        [[910, 205], [895, 222]],
+
+        [[895, 222], [865, 235]],
+
+        [[865, 235], [805, 235]],
+
+        [[805, 235], [805, 150]]
 
     ]);
 
 
     /* =====================================================
-       B
+       RAMA A
        ===================================================== */
 
-    const letraB = construirPuntos([
+    const ramaA = crearTrazo([
 
-        [[815, 65], [815, 235]],
+        [[690, 150], [965, 150]],
 
-        [[815, 65], [870, 65]],
+        [[965, 150], [995, 65]],
 
-        [[870, 65], [900, 80]],
+        [[995, 65], [1045, 235]],
 
-        [[900, 80], [910, 105]],
-
-        [[910, 105], [900, 125]],
-
-        [[900, 125], [815, 150]],
-
-        [[815, 150], [875, 150]],
-
-        [[875, 150], [905, 165]],
-
-        [[905, 165], [915, 190]],
-
-        [[915, 190], [900, 215]],
-
-        [[900, 215], [870, 235]],
-
-        [[870, 235], [815, 235]]
+        [[975, 175], [1025, 175]]
 
     ]);
 
 
     /* =====================================================
-       A
+       RAMA PULSO
        ===================================================== */
 
-    const letraA = construirPuntos([
-
-        [[940, 235], [990, 65]],
-
-        [[990, 65], [1040, 235]],
-
-        [[965, 155], [1018, 155]]
-
-    ]);
+    /*
+       Esta rama sale del centro y se convierte
+       progresivamente en la palabra PULSO.
+    */
 
 
-    /* =====================================================
-       P
-       ===================================================== */
+    /* P */
 
-    const letraP = construirPuntos([
+    const letraP = crearTrazo([
 
-        [[1080, 235], [1080, 65]],
+        [[1085, 235], [1085, 65]],
 
-        [[1080, 65], [1130, 65]],
+        [[1085, 65], [1130, 65]],
 
         [[1130, 65], [1160, 80]],
 
@@ -1116,114 +1141,101 @@ document.addEventListener("DOMContentLoaded", () => {
 
         [[1160, 130], [1130, 145]],
 
-        [[1130, 145], [1080, 145]]
+        [[1130, 145], [1085, 145]]
 
     ]);
 
 
-    /* =====================================================
-       U
-       ===================================================== */
+    /* U */
 
-    const letraU = construirPuntos([
+    const letraU = crearTrazo([
 
         [[1200, 65], [1200, 195]],
 
-        [[1200, 195], [1215, 225]],
+        [[1200, 195], [1210, 220]],
 
-        [[1215, 225], [1245, 235]],
+        [[1210, 220], [1235, 235]],
 
-        [[1245, 235], [1275, 225]],
+        [[1235, 235], [1260, 235]],
 
-        [[1275, 225], [1290, 195]],
+        [[1260, 235], [1285, 220]],
 
-        [[1290, 195], [1290, 65]]
+        [[1285, 220], [1295, 195]],
 
-    ]);
-
-
-    /* =====================================================
-       L
-       ===================================================== */
-
-    const letraL = construirPuntos([
-
-        [[1320, 65], [1320, 235]],
-
-        [[1320, 235], [1380, 235]]
+        [[1295, 195], [1295, 65]]
 
     ]);
 
 
-    /* =====================================================
-       S
-       ===================================================== */
+    /* L */
 
-    const letraS = construirPuntos([
+    const letraL = crearTrazo([
 
-        [[1460, 80], [1435, 65]],
+        [[1325, 65], [1325, 235]],
 
-        [[1435, 65], [1395, 65]],
-
-        [[1395, 65], [1375, 80]],
-
-        [[1375, 80], [1375, 110]],
-
-        [[1375, 110], [1395, 130]],
-
-        [[1395, 130], [1440, 150]],
-
-        [[1440, 150], [1460, 175]],
-
-        [[1460, 175], [1460, 205]],
-
-        [[1460, 205], [1440, 225]],
-
-        [[1440, 225], [1400, 235]],
-
-        [[1400, 235], [1370, 220]]
+        [[1325, 235], [1385, 235]]
 
     ]);
 
 
-    /* =====================================================
-       O
-       ===================================================== */
+    /* S */
 
-    const letraO = construirPuntos([
+    const letraS = crearTrazo([
 
-        [[1500, 95], [1515, 70]],
+        [[1460, 80], [1440, 68]],
 
-        [[1515, 70], [1545, 65]],
+        [[1440, 68], [1400, 68]],
 
-        [[1545, 65], [1570, 80]],
+        [[1400, 68], [1378, 82]],
 
-        [[1570, 80], [1580, 110]],
+        [[1378, 82], [1378, 108]],
 
-        [[1580, 110], [1580, 190]],
+        [[1378, 108], [1395, 128]],
 
-        [[1580, 190], [1570, 220]],
+        [[1395, 128], [1440, 148]],
 
-        [[1570, 220], [1545, 235]],
+        [[1440, 148], [1460, 168]],
 
-        [[1545, 235], [1515, 230]],
+        [[1460, 168], [1460, 200]],
 
-        [[1515, 230], [1500, 205]],
+        [[1460, 200], [1438, 220]],
 
-        [[1500, 205], [1500, 95]]
+        [[1438, 220], [1400, 235]],
+
+        [[1400, 235], [1368, 218]]
 
     ]);
 
 
-    /* =====================================================
-       TODAS LAS PARTES DEL LOGO
-       ===================================================== */
+    /* O */
 
-    const logoPartes = [
+    const letraO = crearTrazo([
 
-        letraE,
-        letraB,
-        letraA,
+        [[1500, 100], [1510, 75]],
+
+        [[1510, 75], [1535, 65]],
+
+        [[1535, 65], [1560, 75]],
+
+        [[1560, 75], [1575, 100]],
+
+        [[1575, 100], [1575, 200]],
+
+        [[1575, 200], [1560, 225]],
+
+        [[1560, 225], [1535, 235]],
+
+        [[1535, 235], [1510, 225]],
+
+        [[1510, 225], [1500, 200]],
+
+        [[1500, 200], [1500, 100]]
+
+    ]);
+
+
+    const palabraPulso = [
+
         letraP,
         letraU,
         letraL,
@@ -1233,11 +1245,22 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
 
+    const ramas = [
+
+        ramaE,
+        ramaB,
+        ramaA
+
+    ];
+
+
     /* =====================================================
-       DIBUJAR GLOW
+       GLOW CENTRAL
        ===================================================== */
 
-    const dibujarGlowCentral = (intensidad) => {
+    const dibujarGlow = (intensidad) => {
+
+        intensidad = limitar(intensidad);
 
         if (intensidad <= 0) return;
 
@@ -1247,20 +1270,20 @@ document.addEventListener("DOMContentLoaded", () => {
             ctx.createRadialGradient(
                 1050,
                 150,
-                10,
+                5,
                 1050,
                 150,
-                500
+                560
             );
 
         gradiente.addColorStop(
             0,
-            `rgba(255,106,0,${0.16 * intensidad})`
+            `rgba(255,106,0,${0.18 * intensidad})`
         );
 
         gradiente.addColorStop(
-            0.45,
-            `rgba(255,106,0,${0.07 * intensidad})`
+            0.35,
+            `rgba(255,106,0,${0.08 * intensidad})`
         );
 
         gradiente.addColorStop(
@@ -1275,7 +1298,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.ellipse(
             1050,
             150,
-            500,
+            560,
             120,
             0,
             0,
@@ -1290,23 +1313,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       DIBUJAR UNA PARTE DEL LOGO
+       DIBUJAR LOGO COMPLETO
        ===================================================== */
 
-    const dibujarParteLogo = (
-        puntos,
-        progreso,
-        grosor
-    ) => {
+    const dibujarLogoCompleto = () => {
 
-        dibujarPuntos(
-            puntos,
-            progreso,
+        dibujarTrazo(
+            ramaE,
+            1,
             {
                 color: SILVER,
-                grosor,
+                grosor: 5.5,
                 glow: ORANGE,
                 glowBlur: 12
+            }
+        );
+
+
+        dibujarTrazo(
+            ramaB,
+            1,
+            {
+                color: SILVER,
+                grosor: 5.5,
+                glow: ORANGE,
+                glowBlur: 12
+            }
+        );
+
+
+        dibujarTrazo(
+            ramaA,
+            1,
+            {
+                color: SILVER,
+                grosor: 5.5,
+                glow: ORANGE,
+                glowBlur: 12
+            }
+        );
+
+
+        palabraPulso.forEach(
+            (letra) => {
+
+                dibujarTrazo(
+                    letra,
+                    1,
+                    {
+                        color: SILVER,
+                        grosor: 5.5,
+                        glow: ORANGE,
+                        glowBlur: 12
+                    }
+                );
+
             }
         );
 
@@ -1314,341 +1375,419 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       LOOP
+       ANIMACIÓN
        ===================================================== */
 
-    let inicio = performance.now();
+    const inicio =
+        performance.now();
 
 
     const animar = (ahora) => {
 
-        const transcurrido =
-            ahora - inicio;
-
         const tiempo =
-            transcurrido % LOOP_DURATION;
+            (ahora - inicio) %
+            DURACION_LOOP;
 
 
         ctx.clearRect(
-            0,
-            0,
-            DESIGN_WIDTH,
-            DESIGN_HEIGHT
+            -200,
+            -50,
+            W + 400,
+            H + 100
         );
 
 
         /* =================================================
-           1 — ECG ENTRANDO
-           0 → 2600 ms
+           ETAPA 1
+           ECG ENTRA DESDE LA IZQUIERDA
+           0 → 2800 ms
            ================================================= */
 
-        if (tiempo < 2600) {
+        if (tiempo < 2800) {
 
             const progreso =
-                easeOut(
-                    tiempo / 2600
+                suavizarSalida(
+                    tiempo / 2800
                 );
 
-            const grosor =
-                lerp(
-                    1.5,
-                    5.5,
-                    progreso
-                );
-
-            dibujarPuntos(
-                ecg,
+            dibujarTrazo(
+                ECG,
                 progreso,
                 {
                     color: ORANGE,
-                    grosor,
+                    grosor: interpolar(
+                        1.2,
+                        5.5,
+                        progreso
+                    ),
                     glow: ORANGE,
-                    glowBlur: 16
+                    glowBlur: interpolar(
+                        4,
+                        17,
+                        progreso
+                    )
                 }
             );
 
-            requestAnimationFrame(animar);
+
+            requestAnimationFrame(
+                animar
+            );
 
             return;
+
         }
 
 
-        /* =================================================
-           ECG COMPLETO
-           ================================================= */
+        /* ECG queda completo */
 
-        dibujarPuntos(
-            ecg,
+        dibujarTrazo(
+            ECG,
             1,
             {
                 color: ORANGE,
                 grosor: 5.5,
                 glow: ORANGE,
-                glowBlur: 16
+                glowBlur: 17
             }
         );
 
 
         /* =================================================
-           2 — LOGO SE CONSTRUYE
-           2600 → 5900 ms
+           ETAPA 2
+           LAS 4 RAMAS SE CONSTRUYEN
+           2800 → 6000 ms
            ================================================= */
 
         if (
-            tiempo >= 2600 &&
-            tiempo < 5900
+            tiempo >= 2800 &&
+            tiempo < 6000
         ) {
 
-            const progresoGlobal =
-                (tiempo - 2600) / 3300;
-
             const progreso =
-                easeInOut(
-                    progresoGlobal
+                suavizar(
+                    (tiempo - 2800) / 3200
                 );
 
-            const cantidad =
-                logoPartes.length;
 
-            logoPartes.forEach(
-                (parte, indice) => {
+            /*
+               Las tres ramas EBA avanzan
+               simultáneamente.
+            */
 
-                    const inicioParte =
-                        indice / cantidad;
+            ramas.forEach(
+                (rama) => {
 
-                    const finParte =
-                        (indice + 1) / cantidad;
-
-                    const progresoParte =
-                        clamp(
-                            (
-                                progreso -
-                                inicioParte
-                            ) /
-                            (
-                                finParte -
-                                inicioParte
+                    dibujarTrazo(
+                        rama,
+                        progreso,
+                        {
+                            color: SILVER,
+                            grosor: interpolar(
+                                2,
+                                5.5,
+                                progreso
                             ),
-                            0,
-                            1
-                        );
-
-                    dibujarParteLogo(
-                        parte,
-                        easeOut(
-                            progresoParte
-                        ),
-                        lerp(
-                            2,
-                            5.5,
-                            progreso
-                        )
+                            glow: ORANGE,
+                            glowBlur: 13
+                        }
                     );
 
                 }
             );
 
 
-            dibujarGlowCentral(
+            /*
+               PULSO comienza ligeramente después
+               para que la lectura visual sea clara.
+            */
+
+            const progresoPulso =
+                limitar(
+                    (
+                        progreso - 0.08
+                    ) / 0.92
+                );
+
+
+            palabraPulso.forEach(
+                (letra, indice) => {
+
+                    const inicioLetra =
+                        indice / palabraPulso.length;
+
+                    const finLetra =
+                        (indice + 1) /
+                        palabraPulso.length;
+
+                    const progresoLetra =
+                        limitar(
+                            (
+                                progresoPulso -
+                                inicioLetra
+                            ) /
+                            (
+                                finLetra -
+                                inicioLetra
+                            )
+                        );
+
+
+                    dibujarTrazo(
+                        letra,
+                        suavizarSalida(
+                            progresoLetra
+                        ),
+                        {
+                            color: SILVER,
+                            grosor: interpolar(
+                                2,
+                                5.5,
+                                progreso
+                            ),
+                            glow: ORANGE,
+                            glowBlur: 13
+                        }
+                    );
+
+                }
+            );
+
+
+            dibujarGlow(
                 progreso
             );
 
 
-            requestAnimationFrame(animar);
-
-            return;
-        }
-
-
-        /* =================================================
-           3 — LOGO COMPLETO
-           5900 → 7000 ms
-           ================================================= */
-
-        if (
-            tiempo >= 5900 &&
-            tiempo < 7000
-        ) {
-
-            logoPartes.forEach(
-                (parte) => {
-
-                    dibujarParteLogo(
-                        parte,
-                        1,
-                        5.5
-                    );
-
-                }
+            requestAnimationFrame(
+                animar
             );
 
-
-            dibujarGlowCentral(1);
-
-
-            requestAnimationFrame(animar);
-
             return;
+
         }
 
 
         /* =================================================
-           4 — LOGO SE DESARMA
-           7000 → 8300 ms
+           ETAPA 3
+           LOGO COMPLETO
+           6000 → 7200 ms
            ================================================= */
 
         if (
-            tiempo >= 7000 &&
-            tiempo < 8300
+            tiempo >= 6000 &&
+            tiempo < 7200
+        ) {
+
+            dibujarLogoCompleto();
+
+            dibujarGlow(1);
+
+            requestAnimationFrame(
+                animar
+            );
+
+            return;
+
+        }
+
+
+        /* =================================================
+           ETAPA 4
+           EL LOGO SE DESARMA
+           7200 → 8700 ms
+           ================================================= */
+
+        if (
+            tiempo >= 7200 &&
+            tiempo < 8700
         ) {
 
             const progreso =
-                easeInOut(
-                    (tiempo - 7000) / 1300
+                suavizar(
+                    (tiempo - 7200) /
+                    1500
                 );
 
 
-            logoPartes.forEach(
-                (parte, indice) => {
+            /*
+               Las letras desaparecen
+               progresivamente.
+            */
+
+            ramas.forEach(
+                (rama, indice) => {
 
                     const retraso =
-                        indice * 0.055;
+                        indice * 0.04;
 
-                    const progresoParte =
-                        clamp(
+                    const progresoRama =
+                        limitar(
                             (
                                 progreso -
                                 retraso
                             ) /
-                            (1 - retraso),
-                            0,
-                            1
+                            (1 - retraso)
                         );
 
 
-                    dibujarParteLogo(
-                        parte,
-                        1 - progresoParte,
-                        lerp(
-                            5.5,
-                            3,
-                            progreso
-                        )
+                    dibujarTrazo(
+                        rama,
+                        1 - progresoRama,
+                        {
+                            color: SILVER,
+                            grosor: interpolar(
+                                5.5,
+                                2,
+                                progreso
+                            ),
+                            glow: ORANGE,
+                            glowBlur: 10
+                        }
                     );
 
                 }
             );
 
 
-            dibujarGlowCentral(
-                1 - progreso
-            );
+            palabraPulso.forEach(
+                (letra, indice) => {
+
+                    const retraso =
+                        0.10 +
+                        indice * 0.035;
+
+                    const progresoLetra =
+                        limitar(
+                            (
+                                progreso -
+                                retraso
+                            ) /
+                            (1 - retraso)
+                        );
 
 
-            /* Línea central volviendo a aparecer */
+                    dibujarTrazo(
+                        letra,
+                        1 - progresoLetra,
+                        {
+                            color: SILVER,
+                            grosor: interpolar(
+                                5.5,
+                                2,
+                                progreso
+                            ),
+                            glow: ORANGE,
+                            glowBlur: 10
+                        }
+                    );
 
-            dibujarPuntos(
-                salida,
-                progreso,
-                {
-                    color: ORANGE,
-                    grosor: lerp(
-                        3,
-                        5,
-                        progreso
-                    ),
-                    glow: ORANGE,
-                    glowBlur: 15
                 }
             );
 
 
-            requestAnimationFrame(animar);
+            /*
+               La línea naranja vuelve a ocupar
+               el espacio del logo.
+            */
+
+            dibujarTrazo(
+                ECG,
+                1,
+                {
+                    color: ORANGE,
+                    grosor: interpolar(
+                        5.5,
+                        4.5,
+                        progreso
+                    ),
+                    glow: ORANGE,
+                    glowBlur: 14
+                }
+            );
+
+
+            dibujarGlow(
+                1 - progreso
+            );
+
+
+            requestAnimationFrame(
+                animar
+            );
 
             return;
+
         }
 
 
         /* =================================================
-           5 — LÍNEA SALE HACIA LA DERECHA
-           8300 → 10500 ms
+           ETAPA 5
+           LA LÍNEA CONTINÚA HACIA LA DERECHA
+           8700 → 11000 ms
            ================================================= */
 
         const progresoSalida =
-            clamp(
-                (tiempo - 8300) / 2200,
-                0,
-                1
+            limitar(
+                (tiempo - 8700) /
+                2300
             );
 
-        const progresoSuave =
-            easeInOut(
+
+        const suavizadoSalida =
+            suavizarSalida(
                 progresoSalida
             );
 
 
-        dibujarPuntos(
-            salida,
+        const lineaSalida =
+            crearTrazo([
+
+                [[690, 150], [1050, 150]],
+
+                [[1050, 150], [1350, 150]],
+
+                [[1350, 150], [1650, 150]],
+
+                [[1650, 150], [1950, 150]]
+
+            ]);
+
+
+        /*
+           Primero aparece gruesa,
+           después se afina.
+        */
+
+        dibujarTrazo(
+            lineaSalida,
             1,
             {
                 color: ORANGE,
-                grosor: lerp(
+                grosor: interpolar(
                     4.5,
-                    1,
-                    progresoSuave
+                    0.8,
+                    suavizadoSalida
                 ),
                 glow: ORANGE,
-                glowBlur: lerp(
+                glowBlur: interpolar(
                     14,
-                    2,
-                    progresoSuave
-                )
-            }
-        );
-
-
-        /* Fade real de la línea final */
-
-        const fade =
-            1 - Math.pow(
-                progresoSalida,
-                1.7
-            );
-
-
-        ctx.save();
-
-        ctx.globalAlpha =
-            clamp(
-                fade,
-                0,
-                1
-            );
-
-
-        dibujarPuntos(
-            salida,
-            1,
-            {
-                color: ORANGE,
-                grosor: lerp(
-                    4,
-                    0.7,
-                    progresoSuave
-                ),
-                glow: ORANGE,
-                glowBlur: lerp(
-                    12,
                     1,
-                    progresoSuave
-                )
+                    suavizadoSalida
+                ),
+                alpha:
+                    1 -
+                    Math.pow(
+                        progresoSalida,
+                        1.6
+                    )
             }
         );
 
-        ctx.restore();
 
-
-        requestAnimationFrame(animar);
+        requestAnimationFrame(
+            animar
+        );
 
     };
 
@@ -1657,24 +1796,24 @@ document.addEventListener("DOMContentLoaded", () => {
        REDUCIR MOVIMIENTO
        ===================================================== */
 
-    const movimientoReducido =
+    const reducirMovimiento =
         window.matchMedia(
             "(prefers-reduced-motion: reduce)"
         ).matches;
 
 
-    if (movimientoReducido) {
+    if (reducirMovimiento) {
 
         ctx.clearRect(
-            0,
-            0,
-            DESIGN_WIDTH,
-            DESIGN_HEIGHT
+            -200,
+            -50,
+            W + 400,
+            H + 100
         );
 
 
-        dibujarPuntos(
-            ecg,
+        dibujarTrazo(
+            ECG,
             1,
             {
                 color: ORANGE,
@@ -1685,17 +1824,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        logoPartes.forEach(
-            (parte) => {
-
-                dibujarParteLogo(
-                    parte,
-                    1,
-                    5
-                );
-
-            }
-        );
+        dibujarLogoCompleto();
 
         return;
 
@@ -1703,9 +1832,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       INICIAR
+       INICIAR ANIMACIÓN
        ===================================================== */
 
-    requestAnimationFrame(animar);
+    requestAnimationFrame(
+        animar
+    );
 
 });

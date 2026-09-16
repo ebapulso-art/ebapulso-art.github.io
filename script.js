@@ -1,85 +1,42 @@
 /* ============================================================
    PULSO — SCRIPT PRINCIPAL
-   ============================================================
-
-   Logo:
-   - ECG naranja desde el borde izquierdo
-   - 4 líneas
-   - 3 líneas forman juntas el símbolo EBA
-   - 1 línea forma PULSO debajo
-   - Las 4 líneas continúan hacia la derecha
-   - Las 4 líneas se unen
-   - Una sola línea continúa hasta el borde derecho
-   - Loop continuo
-
-   No utiliza el PNG del logo para la animación.
+   Logo animado: ECG → EBA + PULSO → retracción → ECG
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
 
     "use strict";
 
-
-    /* ============================================================
-       CONFIGURACIÓN GENERAL
-       ============================================================ */
+    /* =========================================================
+       CONFIGURACIÓN
+       ========================================================= */
 
     const reduceMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    if (reduceMotion) {
-        document.documentElement.classList.add(
-            "reducir-movimiento"
-        );
-    }
 
+    /* =========================================================
+       AÑO DEL FOOTER
+       ========================================================= */
 
-    /* ============================================================
-       AÑO AUTOMÁTICO
-       ============================================================ */
-
-    document.querySelectorAll("[data-year]").forEach((element) => {
-        element.textContent = new Date().getFullYear();
+    document.querySelectorAll("[data-year]").forEach((el) => {
+        el.textContent = new Date().getFullYear();
     });
 
 
-    /* ============================================================
+    /* =========================================================
        NAVBAR
-       ============================================================ */
+       ========================================================= */
 
-    const menuToggle =
-        document.querySelector("#menu-toggle");
-
-    const navMenu =
-        document.querySelector("#nav-menu");
-
-
-    function abrirMenu() {
-
-        if (!navMenu) return;
-
-        navMenu.classList.add("active");
-
-        if (menuToggle) {
-            menuToggle.classList.add("active");
-            menuToggle.setAttribute(
-                "aria-expanded",
-                "true"
-            );
-        }
-
-        document.body.classList.add(
-            "menu-abierto"
-        );
-    }
-
+    const menuToggle = document.querySelector("#menu-toggle");
+    const navMenu = document.querySelector("#nav-menu");
 
     function cerrarMenu() {
 
-        if (!navMenu) return;
-
-        navMenu.classList.remove("active");
+        if (navMenu) {
+            navMenu.classList.remove("active");
+        }
 
         if (menuToggle) {
             menuToggle.classList.remove("active");
@@ -89,9 +46,25 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         }
 
-        document.body.classList.remove(
-            "menu-abierto"
-        );
+        document.body.classList.remove("menu-abierto");
+    }
+
+
+    function abrirMenu() {
+
+        if (navMenu) {
+            navMenu.classList.add("active");
+        }
+
+        if (menuToggle) {
+            menuToggle.classList.add("active");
+            menuToggle.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+        }
+
+        document.body.classList.add("menu-abierto");
     }
 
 
@@ -104,58 +77,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
         menuToggle.addEventListener(
             "click",
-            () => {
+            (event) => {
+
+                event.stopPropagation();
 
                 if (
                     navMenu &&
-                    navMenu.classList.contains(
-                        "active"
-                    )
+                    navMenu.classList.contains("active")
                 ) {
                     cerrarMenu();
                 } else {
                     abrirMenu();
                 }
-
             }
         );
     }
 
 
-    /* ============================================================
-       NAVEGACIÓN INTERNA
-       ============================================================ */
+    /* =========================================================
+       LINKS
+       ========================================================= */
 
-    const links =
-        document.querySelectorAll(
-            'a[href^="#"]'
-        );
-
-
-    links.forEach((link) => {
+    document.querySelectorAll(
+        'a[href^="#"]'
+    ).forEach((link) => {
 
         link.addEventListener(
             "click",
             (event) => {
 
-                const href =
-                    link.getAttribute(
-                        "href"
-                    );
+                const id =
+                    link.getAttribute("href");
 
                 if (
-                    !href ||
-                    href === "#"
+                    !id ||
+                    id === "#"
                 ) {
                     return;
                 }
 
-                const target =
-                    document.querySelector(
-                        href
-                    );
+                const destino =
+                    document.querySelector(id);
 
-                if (!target) {
+                if (!destino) {
                     return;
                 }
 
@@ -164,25 +128,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 cerrarMenu();
 
                 const navbar =
-                    document.querySelector(
-                        ".navbar"
-                    );
+                    document.querySelector(".navbar");
 
-                const navbarHeight =
+                const alturaNavbar =
                     navbar
                         ? navbar.offsetHeight
                         : 0;
 
-                const top =
-                    target.getBoundingClientRect()
-                        .top +
+                const posicion =
+                    destino.getBoundingClientRect().top +
                     window.scrollY -
-                    navbarHeight;
+                    alturaNavbar;
 
                 window.scrollTo({
                     top: Math.max(
                         0,
-                        top
+                        posicion
                     ),
                     behavior:
                         reduceMotion
@@ -196,46 +157,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* ============================================================
-       CERRAR MENÚ AL HACER CLICK AFUERA
-       ============================================================ */
-
     document.addEventListener(
         "click",
         (event) => {
 
-            if (!navMenu || !menuToggle) {
-                return;
-            }
-
             if (
-                !navMenu.classList.contains(
-                    "active"
-                )
+                navMenu &&
+                navMenu.classList.contains("active") &&
+                !navMenu.contains(event.target) &&
+                !menuToggle.contains(event.target)
             ) {
-                return;
+                cerrarMenu();
             }
-
-            if (
-                navMenu.contains(
-                    event.target
-                ) ||
-                menuToggle.contains(
-                    event.target
-                )
-            ) {
-                return;
-            }
-
-            cerrarMenu();
 
         }
     );
 
-
-    /* ============================================================
-       ESCAPE
-       ============================================================ */
 
     document.addEventListener(
         "keydown",
@@ -249,29 +186,24 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    /* ============================================================
-       NAVBAR AL HACER SCROLL
-       ============================================================ */
+    /* =========================================================
+       NAVBAR SCROLL
+       ========================================================= */
 
     const navbar =
-        document.querySelector(
-            ".navbar"
-        );
+        document.querySelector(".navbar");
 
 
     function actualizarNavbar() {
 
-        if (!navbar) return;
-
-        if (window.scrollY > 40) {
-            navbar.classList.add(
-                "scrolled"
-            );
-        } else {
-            navbar.classList.remove(
-                "scrolled"
-            );
+        if (!navbar) {
+            return;
         }
+
+        navbar.classList.toggle(
+            "scrolled",
+            window.scrollY > 35
+        );
 
     }
 
@@ -287,11 +219,11 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarNavbar();
 
 
-    /* ============================================================
-       ANIMACIONES DE SECCIONES
-       ============================================================ */
+    /* =========================================================
+       APARICIÓN DE SECCIONES
+       ========================================================= */
 
-    const elementos =
+    const elementosAnimados =
         document.querySelectorAll(
             [
                 ".section-heading",
@@ -306,8 +238,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     if (
-        !reduceMotion &&
-        "IntersectionObserver" in window
+        "IntersectionObserver" in window &&
+        !reduceMotion
     ) {
 
         const observer =
@@ -338,79 +270,1674 @@ document.addEventListener("DOMContentLoaded", () => {
                 {
                     threshold: 0.12,
                     rootMargin:
-                        "0px 0px -40px 0px"
+                        "0px 0px -30px 0px"
                 }
             );
 
 
-        elementos.forEach(
+        elementosAnimados.forEach(
             (elemento) => {
-                observer.observe(
-                    elemento
-                );
+                observer.observe(elemento);
             }
         );
 
     } else {
 
-        elementos.forEach(
+        elementosAnimados.forEach(
             (elemento) => {
-                elemento.classList.add(
-                    "visible"
-                );
+                elemento.classList.add("visible");
             }
         );
 
     }
 
 
-    /* ============================================================
-       FORMULARIO
-       ============================================================ */
+    /* =========================================================
+       =========================================================
+       PULSO — LOGO ECG
+       =========================================================
+       ========================================================= */
 
-    const formulario =
+    const canvas =
         document.querySelector(
-            "#project-form"
-        );
-
-    const formStatus =
-        document.querySelector(
-            "#form-status"
+            "#pulsoLogoCanvas"
         );
 
 
-    if (formulario) {
+    if (canvas) {
 
-        formulario.addEventListener(
-            "submit",
-            (event) => {
+        const ctx =
+            canvas.getContext("2d");
 
-                event.preventDefault();
 
-                if (formStatus) {
+        if (!ctx) {
+            return;
+        }
 
-                    formStatus.textContent =
-                        "Tu proyecto está listo para ser enviado.";
 
-                    formStatus.classList.add(
-                        "active"
+        /* =====================================================
+           COLORES
+           ===================================================== */
+
+        const NARANJA =
+            "#ff6a00";
+
+        const NARANJA_CLARO =
+            "#ff8533";
+
+        const PLATA =
+            "#c8cdd2";
+
+        const PLATA_CLARA =
+            "#f0f2f4";
+
+
+        /* =====================================================
+           TAMAÑO LÓGICO
+           ===================================================== */
+
+        const W = 1800;
+        const H = 360;
+
+        let dpr = 1;
+        let scale = 1;
+        let offsetX = 0;
+        let offsetY = 0;
+
+
+        function ajustarCanvas() {
+
+            const rect =
+                canvas.getBoundingClientRect();
+
+
+            dpr =
+                Math.min(
+                    window.devicePixelRatio || 1,
+                    2
+                );
+
+
+            canvas.width =
+                Math.max(
+                    1,
+                    Math.round(
+                        rect.width * dpr
+                    )
+                );
+
+
+            canvas.height =
+                Math.max(
+                    1,
+                    Math.round(
+                        rect.height * dpr
+                    )
+                );
+
+
+            scale =
+                Math.min(
+                    rect.width / W,
+                    rect.height / H
+                );
+
+
+            if (
+                !Number.isFinite(scale) ||
+                scale <= 0
+            ) {
+                scale = 1;
+            }
+
+
+            offsetX =
+                (
+                    rect.width -
+                    W * scale
+                ) / 2;
+
+
+            offsetY =
+                (
+                    rect.height -
+                    H * scale
+                ) / 2;
+
+        }
+
+
+        window.addEventListener(
+            "resize",
+            ajustarCanvas
+        );
+
+
+        ajustarCanvas();
+
+
+        /* =====================================================
+           UTILIDADES
+           ===================================================== */
+
+        function clamp(
+            value
+        ) {
+
+            return Math.max(
+                0,
+                Math.min(
+                    1,
+                    value
+                )
+            );
+
+        }
+
+
+        function easeInOut(
+            value
+        ) {
+
+            value =
+                clamp(value);
+
+            return (
+                value < 0.5
+                    ? 2 * value * value
+                    : 1 -
+                      Math.pow(
+                          -2 * value + 2,
+                          2
+                      ) / 2
+            );
+
+        }
+
+
+        function easeOut(
+            value
+        ) {
+
+            value =
+                clamp(value);
+
+            return 1 -
+                Math.pow(
+                    1 - value,
+                    3
+                );
+
+        }
+
+
+        function easeIn(
+            value
+        ) {
+
+            value =
+                clamp(value);
+
+            return value * value * value;
+
+        }
+
+
+        function punto(
+            x,
+            y
+        ) {
+
+            return {
+                x,
+                y
+            };
+
+        }
+
+
+        function interpolar(
+            a,
+            b,
+            t
+        ) {
+
+            return (
+                a +
+                (b - a) * t
+            );
+
+        }
+
+
+        /* =====================================================
+           ECG DE ENTRADA
+           ===================================================== */
+
+        const entrada = [
+
+            punto(-120, 180),
+
+            punto(20, 180),
+
+            punto(130, 180),
+
+            punto(220, 180),
+
+            punto(290, 180),
+
+            punto(350, 179),
+
+            /*
+             * pequeño cambio de pulso
+             */
+
+            punto(380, 171),
+
+            punto(402, 188),
+
+            punto(425, 180),
+
+            punto(465, 180),
+
+            /*
+             * pulso principal
+             */
+
+            punto(500, 180),
+
+            punto(525, 112),
+
+            punto(548, 244),
+
+            punto(575, 180)
+
+        ];
+
+
+        /* =====================================================
+           PUNTO CENTRAL
+           ===================================================== */
+
+        const CENTRO_X = 575;
+
+
+        /* =====================================================
+           =====================================================
+           LAS 3 LÍNEAS DEL SÍMBOLO EBA
+           =====================================================
+           =====================================================
+
+           IMPORTANTE:
+
+           No son:
+           línea 1 = E
+           línea 2 = B
+           línea 3 = A
+
+           Las tres forman juntas el símbolo.
+        */
+
+
+        /* =====================================================
+           LÍNEA EBA — SUPERIOR
+           ===================================================== */
+
+        const eba1 = [
+
+            punto(CENTRO_X, 166),
+
+            punto(625, 145),
+
+            punto(680, 125),
+
+            punto(750, 125),
+
+            punto(820, 125),
+
+            punto(860, 125),
+
+            punto(885, 138),
+
+            punto(898, 154),
+
+            punto(898, 170)
+
+        ];
+
+
+        /* =====================================================
+           LÍNEA EBA — CENTRAL
+           ===================================================== */
+
+        const eba2 = [
+
+            punto(CENTRO_X, 180),
+
+            punto(625, 180),
+
+            punto(690, 180),
+
+            punto(755, 180),
+
+            punto(820, 180),
+
+            punto(865, 180),
+
+            punto(895, 168),
+
+            punto(895, 150),
+
+            punto(880, 136)
+
+        ];
+
+
+        /* =====================================================
+           LÍNEA EBA — INFERIOR / DIAGONAL
+           ===================================================== */
+
+        const eba3 = [
+
+            punto(CENTRO_X, 194),
+
+            punto(620, 215),
+
+            punto(670, 238),
+
+            punto(720, 255),
+
+            punto(760, 190),
+
+            punto(805, 258),
+
+            punto(850, 238),
+
+            punto(895, 205),
+
+            punto(940, 180)
+
+        ];
+
+
+        /* =====================================================
+           CUARTA LÍNEA — PULSO
+           =====================================================
+
+           Esta línea queda debajo del símbolo.
+        */
+
+        const pulso = [
+
+            /*
+             * Entrada desde el centro
+             */
+
+            punto(CENTRO_X, 208),
+
+            punto(610, 250),
+
+            punto(610, 302),
+
+            punto(630, 302),
+
+            punto(630, 265),
+
+            punto(660, 265),
+
+            punto(680, 278),
+
+            punto(680, 302),
+
+            punto(720, 302),
+
+            punto(720, 255),
+
+            pointSafe(720, 255),
+
+            /*
+             * U
+             */
+
+            punto(750, 255),
+
+            punto(750, 290),
+
+            punto(765, 302),
+
+            punto(785, 302),
+
+            punto(800, 290),
+
+            punto(800, 255),
+
+            /*
+             * L
+             */
+
+            punto(835, 255),
+
+            punto(835, 302),
+
+            punto(870, 302),
+
+            /*
+             * S
+             */
+
+            punto(915, 255),
+
+            punto(880, 255),
+
+            punto(868, 265),
+
+            punto(880, 276),
+
+            punto(910, 282),
+
+            punto(920, 292),
+
+            punto(908, 302),
+
+            punto(875, 302),
+
+            /*
+             * O
+             */
+
+            punto(960, 255),
+
+            punto(995, 255),
+
+            punto(1008, 268),
+
+            punto(1008, 289),
+
+            punto(995, 302),
+
+            punto(960, 302),
+
+            punto(947, 289),
+
+            punto(947, 268),
+
+            punto(960, 255),
+
+            /*
+             * salida
+             */
+
+            punto(1045, 280)
+
+        ];
+
+
+        /*
+         * Evita cualquier error si un navegador
+         * encuentra un punto repetido.
+         */
+
+        function pointSafe(
+            x,
+            y
+        ) {
+
+            return punto(
+                x,
+                y
+            );
+
+        }
+
+
+        /* =====================================================
+           EXTENSIONES DESPUÉS DEL LOGO
+           ===================================================== */
+
+        const salida1 = [
+
+            punto(898, 170),
+
+            punto(1020, 170),
+
+            punto(1120, 168),
+
+            punto(1220, 172),
+
+            punto(1320, 168),
+
+            punto(1430, 180)
+
+        ];
+
+
+        const salida2 = [
+
+            punto(880, 136),
+
+            punto(1000, 140),
+
+            punto(1110, 142),
+
+            punto(1220, 138),
+
+            punto(1330, 145),
+
+            punto(1430, 180)
+
+        ];
+
+
+        const salida3 = [
+
+            punto(940, 180),
+
+            punto(1030, 190),
+
+            punto(1130, 188),
+
+            punto(1230, 192),
+
+            punto(1330, 188),
+
+            punto(1430, 180)
+
+        ];
+
+
+        const salida4 = [
+
+            punto(1045, 280),
+
+            punto(1110, 275),
+
+            punto(1210, 272),
+
+            punto(1310, 270),
+
+            punto(1430, 180)
+
+        ];
+
+
+        const salidas = [
+            salida1,
+            salida2,
+            salida3,
+            salida4
+        ];
+
+
+        /* =====================================================
+           ECG FINAL
+           ===================================================== */
+
+        const finalECG = [
+
+            punto(1430, 180),
+
+            punto(1510, 180),
+
+            punto(1580, 180),
+
+            punto(1640, 179),
+
+            punto(1710, 181),
+
+            punto(1780, 180),
+
+            punto(1880, 180)
+
+        ];
+
+
+        /* =====================================================
+           DIBUJAR RUTA
+           ===================================================== */
+
+        function dibujarRuta(
+            puntos,
+            progreso,
+            color,
+            grosor,
+            glow
+        ) {
+
+            if (
+                !puntos ||
+                puntos.length < 2
+            ) {
+                return;
+            }
+
+
+            progreso =
+                clamp(progreso);
+
+
+            if (progreso <= 0) {
+                return;
+            }
+
+
+            ctx.save();
+
+
+            ctx.strokeStyle =
+                color;
+
+            ctx.lineWidth =
+                grosor;
+
+            ctx.lineCap =
+                "round";
+
+            ctx.lineJoin =
+                "round";
+
+
+            if (glow > 0) {
+
+                ctx.shadowColor =
+                    color;
+
+                ctx.shadowBlur =
+                    glow;
+
+            }
+
+
+            const segmentos =
+                puntos.length - 1;
+
+
+            const recorrido =
+                progreso *
+                segmentos;
+
+
+            const completos =
+                Math.floor(
+                    recorrido
+                );
+
+
+            const parcial =
+                recorrido -
+                completos;
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                puntos[0].x,
+                puntos[0].y
+            );
+
+
+            for (
+                let i = 1;
+                i <= completos &&
+                i < puntos.length;
+                i++
+            ) {
+
+                ctx.lineTo(
+                    puntos[i].x,
+                    puntos[i].y
+                );
+
+            }
+
+
+            if (
+                completos <
+                segmentos
+            ) {
+
+                const a =
+                    puntos[completos];
+
+                const b =
+                    puntos[
+                        completos + 1
+                    ];
+
+
+                ctx.lineTo(
+
+                    interpolar(
+                        a.x,
+                        b.x,
+                        parcial
+                    ),
+
+                    interpolar(
+                        a.y,
+                        b.y,
+                        parcial
+                    )
+
+                );
+
+            }
+
+
+            ctx.stroke();
+
+
+            ctx.restore();
+
+        }
+
+
+        /* =====================================================
+           PUNTO LUMINOSO DEL ECG
+           ===================================================== */
+
+        function dibujarPunto(
+            x,
+            y,
+            intensidad = 1
+        ) {
+
+            ctx.save();
+
+
+            ctx.shadowColor =
+                NARANJA;
+
+            ctx.shadowBlur =
+                25 * intensidad;
+
+
+            ctx.fillStyle =
+                NARANJA_CLARO;
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y,
+                4 * intensidad,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+
+            ctx.restore();
+
+        }
+
+
+        /* =====================================================
+           GLOW DEL CENTRO
+           ===================================================== */
+
+        function dibujarGlowCentral(
+            intensidad
+        ) {
+
+            if (
+                intensidad <= 0
+            ) {
+                return;
+            }
+
+
+            const gradient =
+                ctx.createRadialGradient(
+                    760,
+                    185,
+                    10,
+                    760,
+                    185,
+                    300
+                );
+
+
+            gradient.addColorStop(
+                0,
+                `rgba(255,106,0,${0.13 * intensidad})`
+            );
+
+
+            gradient.addColorStop(
+                0.45,
+                `rgba(255,106,0,${0.055 * intensidad})`
+            );
+
+
+            gradient.addColorStop(
+                1,
+                "rgba(255,106,0,0)"
+            );
+
+
+            ctx.save();
+
+            ctx.fillStyle =
+                gradient;
+
+            ctx.fillRect(
+                350,
+                20,
+                900,
+                320
+            );
+
+            ctx.restore();
+
+        }
+
+
+        /* =====================================================
+           DIBUJAR ECG DE ENTRADA
+           ===================================================== */
+
+        function dibujarEntrada(
+            progreso
+        ) {
+
+            dibujarRuta(
+                entrada,
+                progreso,
+                NARANJA,
+                2.8,
+                13
+            );
+
+
+            if (
+                progreso > 0
+            ) {
+
+                const indice =
+                    Math.min(
+                        entrada.length - 1,
+                        Math.floor(
+                            progreso *
+                            (entrada.length - 1)
+                        )
+                    );
+
+
+                const actual =
+                    entrada[indice];
+
+
+                dibujarPunto(
+                    actual.x,
+                    actual.y,
+                    0.7
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           DIBUJAR EBA + PULSO
+           ===================================================== */
+
+        function dibujarLogo(
+            progreso
+        ) {
+
+            /*
+             * Las tres líneas superiores
+             * se construyen juntas.
+             */
+
+            dibujarRuta(
+                eba1,
+                progreso,
+                PLATA,
+                5,
+                12
+            );
+
+
+            dibujarRuta(
+                eba2,
+                progreso,
+                PLATA_CLARA,
+                5,
+                14
+            );
+
+
+            dibujarRuta(
+                eba3,
+                progreso,
+                PLATA,
+                5,
+                13
+            );
+
+
+            /*
+             * Cuarta línea:
+             * PULSO abajo.
+             */
+
+            dibujarRuta(
+                pulso,
+                progreso,
+                PLATA_CLARA,
+                4.5,
+                11
+            );
+
+        }
+
+
+        /* =====================================================
+           DIBUJAR LAS 4 LÍNEAS DE SALIDA
+           ===================================================== */
+
+        function dibujarSalidas(
+            progreso
+        ) {
+
+            salidas.forEach(
+                (ruta) => {
+
+                    dibujarRuta(
+                        ruta,
+                        progreso,
+                        NARANJA,
+                        2.8,
+                        13
                     );
 
                 }
+            );
 
-                console.log(
-                    "Formulario de PULSO enviado."
+        }
+
+
+        /* =====================================================
+           RETRACCIÓN
+           =====================================================
+
+           Acá está la diferencia importante:
+
+           NO desaparece el logo.
+
+           Las cuatro líneas se recorren
+           de atrás hacia adelante.
+        */
+
+        function dibujarRetraccion(
+            progreso
+        ) {
+
+            progreso =
+                clamp(progreso);
+
+
+            const inverso =
+                1 - easeInOut(
+                    progreso
+                );
+
+
+            /*
+             * EBA
+             */
+
+            dibujarRuta(
+                eba1,
+                inverso,
+                PLATA,
+                5,
+                12
+            );
+
+
+            dibujarRuta(
+                eba2,
+                inverso,
+                PLATA_CLARA,
+                5,
+                14
+            );
+
+
+            dibujarRuta(
+                eba3,
+                inverso,
+                PLATA,
+                5,
+                13
+            );
+
+
+            /*
+             * PULSO
+             */
+
+            dibujarRuta(
+                pulso,
+                inverso,
+                PLATA_CLARA,
+                4.5,
+                11
+            );
+
+        }
+
+
+        /* =====================================================
+           BORRADO SUAVE DEL LOGO
+           ===================================================== */
+
+        function dibujarRetraccionConSalida(
+            progreso
+        ) {
+
+            const t =
+                clamp(progreso);
+
+
+            /*
+             * Primero se retraen las líneas.
+             */
+
+            dibujarRetraccion(
+                t
+            );
+
+
+            /*
+             * Mientras se retraen,
+             * la señal naranja va recuperando
+             * el eje central.
+             */
+
+            const regreso =
+                easeInOut(t);
+
+
+            /*
+             * Línea naranja que vuelve
+             * al punto central.
+             */
+
+            const p1 =
+                interpolar(
+                    1430,
+                    575,
+                    regreso
+                );
+
+
+            dibujarRuta(
+                [
+                    punto(
+                        p1,
+                        180
+                    ),
+                    punto(
+                        1500,
+                        180
+                    )
+                ],
+                0.01,
+                NARANJA,
+                2.8,
+                12
+            );
+
+        }
+
+
+        /* =====================================================
+           ECG FINAL
+           ===================================================== */
+
+        function dibujarFinal(
+            progreso
+        ) {
+
+            dibujarRuta(
+                finalECG,
+                progreso,
+                NARANJA,
+                2.5,
+                10
+            );
+
+        }
+
+
+        /* =====================================================
+           FASES
+           ===================================================== */
+
+        const FASE_ENTRADA =
+            1700;
+
+        const FASE_FORMACION =
+            2600;
+
+        const FASE_HOLD =
+            550;
+
+        const FASE_RETRACCION =
+            2300;
+
+        const FASE_SALIDA =
+            1700;
+
+
+        const DURACION_TOTAL =
+            FASE_ENTRADA +
+            FASE_FORMACION +
+            FASE_HOLD +
+            FASE_RETRACCION +
+            FASE_SALIDA;
+
+
+        /* =====================================================
+           ESCENA
+           ===================================================== */
+
+        function dibujarEscena(
+            tiempo
+        ) {
+
+            ctx.setTransform(
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+            );
+
+
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            ctx.save();
+
+
+            ctx.scale(
+                dpr,
+                dpr
+            );
+
+
+            ctx.translate(
+                offsetX,
+                offsetY
+            );
+
+
+            ctx.scale(
+                scale,
+                scale
+            );
+
+
+            /*
+             * Glow central muy suave.
+             */
+
+            dibujarGlowCentral(
+                0.7
+            );
+
+
+            /* =================================================
+               FASE 1 — ENTRA ECG
+               ================================================= */
+
+            if (
+                tiempo <
+                FASE_ENTRADA
+            ) {
+
+                const p =
+                    easeInOut(
+                        tiempo /
+                        FASE_ENTRADA
+                    );
+
+
+                dibujarEntrada(
+                    p
                 );
 
             }
-        );
+
+
+            /* =================================================
+               FASE 2 — FORMACIÓN
+               ================================================= */
+
+            const inicioFormacion =
+                FASE_ENTRADA;
+
+            const finFormacion =
+                inicioFormacion +
+                FASE_FORMACION;
+
+
+            if (
+                tiempo >= inicioFormacion &&
+                tiempo < finFormacion
+            ) {
+
+                dibujarEntrada(
+                    1
+                );
+
+
+                const p =
+                    easeInOut(
+                        (
+                            tiempo -
+                            inicioFormacion
+                        ) /
+                        FASE_FORMACION
+                    );
+
+
+                dibujarLogo(
+                    p
+                );
+
+            }
+
+
+            /* =================================================
+               FASE 3 — LOGO COMPLETO
+               ================================================= */
+
+            const inicioHold =
+                finFormacion;
+
+            const finHold =
+                inicioHold +
+                FASE_HOLD;
+
+
+            if (
+                tiempo >= inicioHold &&
+                tiempo < finHold
+            ) {
+
+                dibujarEntrada(
+                    1
+                );
+
+
+                dibujarLogo(
+                    1
+                );
+
+
+                /*
+                 * El brillo respira muy suavemente.
+                 */
+
+                const respiracion =
+                    (
+                        Math.sin(
+                            tiempo * 0.012
+                        ) + 1
+                    ) / 2;
+
+
+                dibujarGlowCentral(
+                    0.75 +
+                    respiracion * 0.25
+                );
+
+            }
+
+
+            /* =================================================
+               FASE 4 — RETRACCIÓN
+               ================================================= */
+
+            const inicioRetraccion =
+                finHold;
+
+            const finRetraccion =
+                inicioRetraccion +
+                FASE_RETRACCION;
+
+
+            if (
+                tiempo >= inicioRetraccion &&
+                tiempo < finRetraccion
+            ) {
+
+                dibujarEntrada(
+                    1
+                );
+
+
+                const p =
+                    (
+                        tiempo -
+                        inicioRetraccion
+                    ) /
+                    FASE_RETRACCION;
+
+
+                dibujarRetraccion(
+                    p
+                );
+
+
+                /*
+                 * La señal naranja va recuperando
+                 * el eje central.
+                 */
+
+                const recuperacion =
+                    easeInOut(p);
+
+
+                /*
+                 * Punto central naranja.
+                 */
+
+                dibujarPunto(
+                    interpolar(
+                        1430,
+                        575,
+                        recuperacion
+                    ),
+                    180,
+                    0.65
+                );
+
+            }
+
+
+            /* =================================================
+               FASE 5 — ECG VUELVE A SALIR
+               ================================================= */
+
+            const inicioSalida =
+                finRetraccion;
+
+
+            if (
+                tiempo >= inicioSalida
+            ) {
+
+                const p =
+                    clamp(
+                        (
+                            tiempo -
+                            inicioSalida
+                        ) /
+                        FASE_SALIDA
+                    );
+
+
+                /*
+                 * ECG comienza desde el centro.
+                 */
+
+                const nuevaLinea = [
+
+                    punto(
+                        575,
+                        180
+                    ),
+
+                    punto(
+                        680,
+                        180
+                    ),
+
+                    punto(
+                        780,
+                        180
+                    ),
+
+                    punto(
+                        860,
+                        180
+                    ),
+
+                    punto(
+                        920,
+                        180
+                    ),
+
+                    punto(
+                        960,
+                        170
+                    ),
+
+                    punto(
+                        985,
+                        190
+                    ),
+
+                    punto(
+                        1010,
+                        180
+                    ),
+
+                    punto(
+                        1120,
+                        180
+                    ),
+
+                    punto(
+                        1230,
+                        180
+                    ),
+
+                    punto(
+                        1350,
+                        180
+                    ),
+
+                    punto(
+                        1470,
+                        180
+                    ),
+
+                    punto(
+                        1590,
+                        180
+                    ),
+
+                    punto(
+                        1720,
+                        180
+                    ),
+
+                    punto(
+                        1880,
+                        180
+                    )
+
+                ];
+
+
+                dibujarRuta(
+                    nuevaLinea,
+                    easeOut(p),
+                    NARANJA,
+                    2.5,
+                    10
+                );
+
+            }
+
+
+            ctx.restore();
+
+        }
+
+
+        /* =====================================================
+           ANIMACIÓN
+           ===================================================== */
+
+        let inicio =
+            performance.now();
+
+
+        function animar(
+            timestamp
+        ) {
+
+            const tiempo =
+                (
+                    timestamp -
+                    inicio
+                ) %
+                DURACION_TOTAL;
+
+
+            dibujarEscena(
+                tiempo
+            );
+
+
+            requestAnimationFrame(
+                animar
+            );
+
+        }
+
+
+        if (reduceMotion) {
+
+            /*
+             * Si el usuario tiene activado
+             * reducir movimiento, mostramos
+             * el logo completo.
+             */
+
+            ctx.setTransform(
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+            );
+
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            ctx.save();
+
+            ctx.scale(
+                dpr,
+                dpr
+            );
+
+            ctx.translate(
+                offsetX,
+                offsetY
+            );
+
+            ctx.scale(
+                scale,
+                scale
+            );
+
+            dibujarGlowCentral(
+                1
+            );
+
+            dibujarLogo(
+                1
+            );
+
+            ctx.restore();
+
+        } else {
+
+            requestAnimationFrame(
+                animar
+            );
+
+        }
+
+
+        /* =====================================================
+           REINICIO AL VOLVER AL HERO
+           ===================================================== */
+
+        const hero =
+            document.querySelector(
+                "#inicio"
+            );
+
+
+        if (
+            hero &&
+            "IntersectionObserver" in window
+        ) {
+
+            const heroObserver =
+                new IntersectionObserver(
+                    (entries) => {
+
+                        entries.forEach(
+                            (entry) => {
+
+                                if (
+                                    entry.isIntersecting
+                                ) {
+
+                                    inicio =
+                                        performance.now();
+
+                                }
+
+                            }
+                        );
+
+                    },
+                    {
+                        threshold: 0.15
+                    }
+                );
+
+
+            heroObserver.observe(
+                hero
+            );
+
+        }
 
     }
 
 
-    /* ============================================================
+    /* =========================================================
        PULSI
-       ============================================================ */
+       ========================================================= */
 
     const pulsiButton =
         document.querySelector(
@@ -427,6 +1954,11 @@ document.addEventListener("DOMContentLoaded", () => {
             "#pulsi-close"
         );
 
+    const pulsiMessages =
+        document.querySelector(
+            "#pulsi-messages"
+        );
+
     const pulsiForm =
         document.querySelector(
             "#pulsi-form"
@@ -437,20 +1969,12 @@ document.addEventListener("DOMContentLoaded", () => {
             "#pulsi-input"
         );
 
-    const pulsiMessages =
-        document.querySelector(
-            "#pulsi-messages"
-        );
-
-    const pulsiQuick =
-        document.querySelectorAll(
-            ".pulsi-quick button"
-        );
-
 
     function abrirPulsi() {
 
-        if (!pulsiChat) return;
+        if (!pulsiChat) {
+            return;
+        }
 
         pulsiChat.classList.add(
             "active"
@@ -486,7 +2010,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function cerrarPulsi() {
 
-        if (!pulsiChat) return;
+        if (!pulsiChat) {
+            return;
+        }
 
         pulsiChat.classList.remove(
             "active"
@@ -513,24 +2039,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         pulsiButton.addEventListener(
             "click",
-            () => {
-
-                if (
-                    pulsiChat &&
-                    pulsiChat.classList.contains(
-                        "active"
-                    )
-                ) {
-
-                    cerrarPulsi();
-
-                } else {
-
-                    abrirPulsi();
-
-                }
-
-            }
+            abrirPulsi
         );
 
     }
@@ -546,39 +2055,47 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    function agregarMensaje(
+    function mensajePulsi(
         texto,
         tipo
     ) {
 
-        if (!pulsiMessages) return;
+        if (!pulsiMessages) {
+            return;
+        }
 
-        const mensaje =
+
+        const elemento =
             document.createElement(
                 "div"
             );
 
-        mensaje.className =
+
+        elemento.className =
             tipo === "user"
                 ? "pulsi-message pulsi-message-user"
                 : "pulsi-message pulsi-message-ai";
 
 
-        const parrafo =
+        const textoElemento =
             document.createElement(
                 "p"
             );
 
-        parrafo.textContent =
+
+        textoElemento.textContent =
             texto;
 
-        mensaje.appendChild(
-            parrafo
+
+        elemento.appendChild(
+            textoElemento
         );
 
+
         pulsiMessages.appendChild(
-            mensaje
+            elemento
         );
+
 
         pulsiMessages.scrollTop =
             pulsiMessages.scrollHeight;
@@ -586,10 +2103,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    const respuestas = [
+    const respuestasPulsi = [
 
         {
-            palabras: [
+            claves: [
                 "servicio",
                 "servicios"
             ],
@@ -599,43 +2116,41 @@ document.addEventListener("DOMContentLoaded", () => {
         },
 
         {
-            palabras: [
-                "pulso",
-                "qué es pulso",
-                "que es pulso"
-            ],
-
-            respuesta:
-                "PULSO es un estudio creativo enfocado en transformar ideas en identidades y experiencias digitales."
-        },
-
-        {
-            palabras: [
+            claves: [
                 "web",
-                "página",
                 "pagina",
+                "página",
                 "sitio"
             ],
 
             respuesta:
-                "Sí. Podemos crear una página web pensada específicamente para la identidad y las necesidades de tu proyecto."
+                "PULSO puede crear una página web adaptada a la identidad y necesidades de tu proyecto."
         },
 
         {
-            palabras: [
+            claves: [
                 "contacto",
-                "proyecto",
-                "idea"
+                "hablar",
+                "proyecto"
             ],
 
             respuesta:
                 "Podés contarnos tu idea desde el formulario de proyecto y empezar a darle forma junto a PULSO."
+        },
+
+        {
+            claves: [
+                "pulso"
+            ],
+
+            respuesta:
+                "PULSO es un estudio creativo enfocado en transformar ideas en identidades y experiencias digitales."
         }
 
     ];
 
 
-    function obtenerRespuesta(
+    function responderPulsi(
         pregunta
     ) {
 
@@ -650,27 +2165,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         for (
-            const item of respuestas
+            const item of respuestasPulsi
         ) {
 
             const coincide =
-                item.palabras.some(
-                    (palabra) => {
-
-                        const normalizada =
-                            palabra
-                                .toLowerCase()
+                item.claves.some(
+                    (clave) =>
+                        texto.includes(
+                            clave
                                 .normalize("NFD")
                                 .replace(
                                     /[\u0300-\u036f]/g,
                                     ""
-                                );
-
-                        return texto.includes(
-                            normalizada
-                        );
-
-                    }
+                                )
+                        )
                 );
 
 
@@ -683,81 +2191,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return (
             "Todavía no tengo esa información conectada. " +
-            "Podés contarme un poco más o utilizar el formulario para hablar con PULSO."
+            "Podés contarme un poco más o usar el formulario para hablar con PULSO."
         );
 
     }
-
-
-    async function responderPulsi(
-        pregunta
-    ) {
-
-        /*
-         * FUTURO:
-         *
-         * Acá se conectará la IA REAL de Pulsi
-         * mediante un backend seguro.
-         *
-         * La API key NUNCA irá acá.
-         */
-
-        return obtenerRespuesta(
-            pregunta
-        );
-
-    }
-
-
-    pulsiQuick.forEach(
-        (button) => {
-
-            button.addEventListener(
-                "click",
-                async () => {
-
-                    const pregunta =
-                        button.dataset.question ||
-                        button.textContent.trim();
-
-                    if (!pregunta) {
-                        return;
-                    }
-
-                    agregarMensaje(
-                        pregunta,
-                        "user"
-                    );
-
-                    const respuesta =
-                        await responderPulsi(
-                            pregunta
-                        );
-
-                    setTimeout(
-                        () => {
-
-                            agregarMensaje(
-                                respuesta,
-                                "ai"
-                            );
-
-                        },
-                        220
-                    );
-
-                }
-            );
-
-        }
-    );
 
 
     if (pulsiForm) {
 
         pulsiForm.addEventListener(
             "submit",
-            async (event) => {
+            (event) => {
 
                 event.preventDefault();
 
@@ -774,26 +2218,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 pulsiInput.value = "";
 
-                agregarMensaje(
+                mensajePulsi(
                     pregunta,
                     "user"
                 );
 
-                const respuesta =
-                    await responderPulsi(
-                        pregunta
-                    );
 
                 setTimeout(
                     () => {
 
-                        agregarMensaje(
-                            respuesta,
+                        mensajePulsi(
+                            responderPulsi(
+                                pregunta
+                            ),
                             "ai"
                         );
 
                     },
-                    220
+                    250
                 );
 
             }
@@ -802,1904 +2244,61 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* ============================================================
-       ============================================================
-       PULSO — LOGO ECG
-       ============================================================
-       ============================================================ */
-
-    const canvas =
-        document.querySelector(
-            "#pulsoLogoCanvas"
-        );
-
-
-    if (!canvas) {
-        return;
-    }
-
-
-    const ctx =
-        canvas.getContext(
-            "2d"
-        );
-
-
-    if (!ctx) {
-        return;
-    }
-
-
-    /* ============================================================
-       COLORES
-       ============================================================ */
-
-    const ORANGE =
-        "#ff6a00";
-
-    const ORANGE_SOFT =
-        "#ff8533";
-
-    const SILVER =
-        "#c8c8c8";
-
-    const SILVER_LIGHT =
-        "#eeeeee";
-
-
-    /* ============================================================
-       ESPACIO DE DISEÑO
-       ============================================================ */
-
-    const DESIGN_WIDTH =
-        1800;
-
-    const DESIGN_HEIGHT =
-        360;
-
-
-    const CENTER_Y =
-        180;
-
-
-    /*
-     * ECG entra desde mucho antes del logo.
-     */
-    const START_X =
-        -100;
-
-
-    /*
-     * Punto donde la señal comienza
-     * a transformarse.
-     */
-    const SPLIT_X =
-        520;
-
-
-    /*
-     * Punto donde las 4 líneas
-     * vuelven a una.
-     */
-    const MERGE_X =
-        1510;
-
-
-    /*
-     * Borde derecho.
-     */
-    const END_X =
-        1900;
-
-
-    /* ============================================================
-       TIEMPOS
-       ============================================================ */
-
-    const DURACION_ENTRADA =
-        1900;
-
-    const DURACION_LOGO =
-        3000;
-
-    const DURACION_SALIDA =
-        2600;
-
-    const DURACION_UNION =
-        1600;
-
-    const DURACION_FINAL =
-        1700;
-
-
-    const DURACION_TOTAL =
-        DURACION_ENTRADA +
-        DURACION_LOGO +
-        DURACION_SALIDA +
-        DURACION_UNION +
-        DURACION_FINAL;
-
-
-    /* ============================================================
-       ESCALA CANVAS
-       ============================================================ */
-
-    let dpr = 1;
-
-    let scale = 1;
-
-    let offsetX = 0;
-
-    let offsetY = 0;
-
-
-    function resizeCanvas() {
-
-        const rect =
-            canvas.getBoundingClientRect();
-
-
-        dpr =
-            Math.min(
-                window.devicePixelRatio || 1,
-                2
-            );
-
-
-        canvas.width =
-            Math.max(
-                1,
-                Math.round(
-                    rect.width * dpr
-                )
-            );
-
-
-        canvas.height =
-            Math.max(
-                1,
-                Math.round(
-                    rect.height * dpr
-                )
-            );
-
-
-        scale =
-            Math.min(
-                rect.width /
-                    DESIGN_WIDTH,
-
-                rect.height /
-                    DESIGN_HEIGHT
-            );
-
-
-        if (
-            !Number.isFinite(scale) ||
-            scale <= 0
-        ) {
-            scale = 1;
-        }
-
-
-        offsetX =
-            (
-                rect.width -
-                DESIGN_WIDTH * scale
-            ) / 2;
-
-
-        offsetY =
-            (
-                rect.height -
-                DESIGN_HEIGHT * scale
-            ) / 2;
-
-    }
-
-
-    window.addEventListener(
-        "resize",
-        resizeCanvas
-    );
-
-
-    resizeCanvas();
-
-
-    /* ============================================================
-       UTILIDADES
-       ============================================================ */
-
-    function clamp(
-        value,
-        min = 0,
-        max = 1
-    ) {
-
-        return Math.max(
-            min,
-            Math.min(
-                max,
-                value
-            )
-        );
-
-    }
-
-
-    function easeInOut(
-        value
-    ) {
-
-        value =
-            clamp(value);
-
-        return value < 0.5
-
-            ? 2 * value * value
-
-            : 1 -
-              Math.pow(
-                  -2 * value + 2,
-                  2
-              ) / 2;
-
-    }
-
-
-    function easeOut(
-        value
-    ) {
-
-        value =
-            clamp(value);
-
-        return 1 -
-            Math.pow(
-                1 - value,
-                3
-            );
-
-    }
-
-
-    function lerp(
-        a,
-        b,
-        t
-    ) {
-
-        return a +
-            (b - a) * t;
-
-    }
-
-
-    function P(
-        x,
-        y
-    ) {
-
-        return {
-            x,
-            y
-        };
-
-    }
-
-
-    /* ============================================================
-       ECG DE ENTRADA
-       ============================================================ */
-
-    const ecgEntrada = [
-
-        P(
-            START_X,
-            CENTER_Y
-        ),
-
-        P(
-            60,
-            CENTER_Y
-        ),
-
-        P(
-            150,
-            CENTER_Y
-        ),
-
-        P(
-            220,
-            CENTER_Y - 1
-        ),
-
-        P(
-            280,
-            CENTER_Y + 1
-        ),
-
-        P(
-            335,
-            CENTER_Y
-        ),
-
-        /*
-         * pequeño pulso
-         */
-        P(
-            375,
-            CENTER_Y - 8
-        ),
-
-        P(
-            405,
-            CENTER_Y + 8
-        ),
-
-        P(
-            438,
-            CENTER_Y
-        ),
-
-        /*
-         * pulso principal
-         */
-        P(
-            465,
-            CENTER_Y
-        ),
-
-        P(
-            492,
-            CENTER_Y - 62
-        ),
-
-        P(
-            518,
-            CENTER_Y + 48
-        ),
-
-        P(
-            SPLIT_X,
-            CENTER_Y
-        )
-
-    ];
-
-
-    /* ============================================================
-       LAS 4 LÍNEAS DEL LOGO
-       ============================================================
-
-       Las primeras 3 NO representan cada una una letra.
-
-       Las tres trabajan juntas para construir el símbolo EBA.
-
-       La cuarta construye PULSO abajo.
-       ============================================================ */
-
-
-    /* ============================================================
-       LÍNEA 1 — PARTE SUPERIOR EBA
-       ============================================================ */
-
-    const linea1 = [
-
-        P(
-            SPLIT_X,
-            162
-        ),
-
-        P(
-            575,
-            145
-        ),
-
-        P(
-            625,
-            125
-        ),
-
-        P(
-            680,
-            125
-        ),
-
-        P(
-            735,
-            125
-        ),
-
-        P(
-            790,
-            125
-        ),
-
-        P(
-            830,
-            125
-        ),
-
-        P(
-            850,
-            137
-        ),
-
-        P(
-            865,
-            153
-        ),
-
-        P(
-            865,
-            166
-        )
-
-    ];
-
-
-    /* ============================================================
-       LÍNEA 2 — CENTRO EBA
-       ============================================================ */
-
-    const linea2 = [
-
-        P(
-            SPLIT_X,
-            CENTER_Y
-        ),
-
-        P(
-            580,
-            CENTER_Y
-        ),
-
-        P(
-            635,
-            CENTER_Y
-        ),
-
-        P(
-            690,
-            CENTER_Y
-        ),
-
-        P(
-            745,
-            CENTER_Y
-        ),
-
-        P(
-            800,
-            CENTER_Y
-        ),
-
-        P(
-            845,
-            CENTER_Y
-        ),
-
-        P(
-            870,
-            170
-        ),
-
-        P(
-            870,
-            150
-        ),
-
-        P(
-            858,
-            135
-        )
-
-    ];
-
-
-    /* ============================================================
-       LÍNEA 3 — DIAGONAL / A
-       ============================================================ */
-
-    const linea3 = [
-
-        P(
-            SPLIT_X,
-            198
-        ),
-
-        P(
-            570,
-            220
-        ),
-
-        P(
-            615,
-            242
-        ),
-
-        P(
-            665,
-            260
-        ),
-
-        P(
-            715,
-            270
-        ),
-
-        /*
-         * pico central
-         */
-        P(
-            760,
-            202
-        ),
-
-        P(
-            805,
-            270
-        ),
-
-        P(
-            850,
-            250
-        ),
-
-        P(
-            890,
-            220
-        ),
-
-        P(
-            930,
-            198
-        )
-
-    ];
-
-
-    /* ============================================================
-       LÍNEA 4 — PULSO
-       ============================================================
-
-       PULSO queda debajo del símbolo.
-
-       Todo es un único recorrido.
-       ============================================================ */
-
-    const linea4 = [
-
-        /*
-         * entrada
-         */
-        P(
-            SPLIT_X,
-            214
-        ),
-
-        /*
-         * P
-         */
-        P(
-            545,
-            300
-        ),
-
-        P(
-            545,
-            248
-        ),
-
-        P(
-            570,
-            248
-        ),
-
-        P(
-            592,
-            258
-        ),
-
-        P(
-            592,
-            275
-        ),
-
-        P(
-            570,
-            285
-        ),
-
-        P(
-            545,
-            285
-        ),
-
-        /*
-         * pequeño enlace
-         */
-        P(
-            620,
-            285
-        ),
-
-        /*
-         * U
-         */
-        P(
-            620,
-            250
-        ),
-
-        P(
-            620,
-            282
-        ),
-
-        P(
-            632,
-            300
-        ),
-
-        P(
-            650,
-            300
-        ),
-
-        P(
-            662,
-            282
-        ),
-
-        P(
-            662,
-            250
-        ),
-
-        /*
-         * enlace
-         */
-        P(
-            690,
-            250
-        ),
-
-        /*
-         * L
-         */
-        P(
-            690,
-            300
-        ),
-
-        P(
-            725,
-            300
-        ),
-
-        /*
-         * enlace
-         */
-        P(
-            750,
-            300
-        ),
-
-        /*
-         * S
-         */
-        P(
-            785,
-            250
-        ),
-
-        P(
-            755,
-            250
-        ),
-
-        P(
-            742,
-            260
-        ),
-
-        P(
-            750,
-            274
-        ),
-
-        P(
-            780,
-            280
-        ),
-
-        P(
-            790,
-            290
-        ),
-
-        P(
-            780,
-            300
-        ),
-
-        P(
-            750,
-            300
-        ),
-
-        /*
-         * enlace
-         */
-        P(
-            820,
-            300
-        ),
-
-        /*
-         * O
-         */
-        P(
-            845,
-            250
-        ),
-
-        P(
-            875,
-            250
-        ),
-
-        P(
-            888,
-            265
-        ),
-
-        P(
-            888,
-            285
-        ),
-
-        P(
-            875,
-            300
-        ),
-
-        P(
-            845,
-            300
-        ),
-
-        P(
-            832,
-            285
-        ),
-
-        P(
-            832,
-            265
-        ),
-
-        P(
-            845,
-            250
-        ),
-
-        /*
-         * salida
-         */
-        P(
-            940,
-            275
-        )
-
-    ];
-
-
-    /* ============================================================
-       EXTENSIONES DE LAS 4 LÍNEAS
-       ============================================================ */
-
-    const extension1 = [
-
-        P(
-            865,
-            166
-        ),
-
-        P(
-            980,
-            168
-        ),
-
-        P(
-            1080,
-            160
-        ),
-
-        P(
-            1180,
-            165
-        ),
-
-        P(
-            1280,
-            158
-        ),
-
-        P(
-            MERGE_X,
-            CENTER_Y
-        )
-
-    ];
-
-
-    const extension2 = [
-
-        P(
-            858,
-            135
-        ),
-
-        P(
-            970,
-            138
-        ),
-
-        P(
-            1080,
-            145
-        ),
-
-        P(
-            1180,
-            140
-        ),
-
-        P(
-            1290,
-            145
-        ),
-
-        P(
-            MERGE_X,
-            CENTER_Y
-        )
-
-    ];
-
-
-    const extension3 = [
-
-        P(
-            930,
-            198
-        ),
-
-        P(
-            1000,
-            202
-        ),
-
-        P(
-            1100,
-            195
-        ),
-
-        P(
-            1200,
-            202
-        ),
-
-        P(
-            1300,
-            195
-        ),
-
-        P(
-            MERGE_X,
-            CENTER_Y
-        )
-
-    ];
-
-
-    const extension4 = [
-
-        P(
-            940,
-            275
-        ),
-
-        P(
-            1010,
-            270
-        ),
-
-        P(
-            1110,
-            268
-        ),
-
-        P(
-            1210,
-            270
-        ),
-
-        P(
-            1310,
-            265
-        ),
-
-        P(
-            MERGE_X,
-            CENTER_Y
-        )
-
-    ];
-
-
-    const extensiones = [
-
-        extension1,
-        extension2,
-        extension3,
-        extension4
-
-    ];
-
-
-    /* ============================================================
-       LÍNEA FINAL
-       ============================================================ */
-
-    const lineaFinal = [
-
-        P(
-            MERGE_X,
-            CENTER_Y
-        ),
-
-        P(
-            1570,
-            CENTER_Y
-        ),
-
-        P(
-            1630,
-            CENTER_Y - 2
-        ),
-
-        P(
-            1690,
-            CENTER_Y + 1
-        ),
-
-        P(
-            1750,
-            CENTER_Y
-        ),
-
-        P(
-            1810,
-            CENTER_Y - 1
-        ),
-
-        P(
-            END_X,
-            CENTER_Y
-        )
-
-    ];
-
-
-    /* ============================================================
-       FUNCIÓN — DIBUJAR PARTE DE UNA RUTA
-       ============================================================ */
-
-    function dibujarRuta(
-        puntos,
-        progreso,
-        color,
-        grosor,
-        glow
-    ) {
-
-        if (
-            !puntos ||
-            puntos.length < 2
-        ) {
-            return;
-        }
-
-
-        progreso =
-            clamp(progreso);
-
-
-        if (progreso <= 0) {
-            return;
-        }
-
-
-        ctx.save();
-
-
-        ctx.strokeStyle =
-            color;
-
-        ctx.lineWidth =
-            grosor;
-
-        ctx.lineCap =
-            "round";
-
-        ctx.lineJoin =
-            "round";
-
-
-        if (glow > 0) {
-
-            ctx.shadowColor =
-                color;
-
-            ctx.shadowBlur =
-                glow;
-
-        }
-
-
-        const segmentos =
-            puntos.length - 1;
-
-
-        const exact =
-            progreso *
-            segmentos;
-
-
-        const completos =
-            Math.floor(
-                exact
-            );
-
-
-        const parcial =
-            exact -
-            completos;
-
-
-        ctx.beginPath();
-
-
-        ctx.moveTo(
-            puntos[0].x,
-            puntos[0].y
-        );
-
-
-        for (
-            let i = 1;
-            i <= completos &&
-            i < puntos.length;
-            i++
-        ) {
-
-            ctx.lineTo(
-                puntos[i].x,
-                puntos[i].y
-            );
-
-        }
-
-
-        if (
-            completos <
-            segmentos
-        ) {
-
-            const a =
-                puntos[
-                    completos
-                ];
-
-            const b =
-                puntos[
-                    completos + 1
-                ];
-
-
-            ctx.lineTo(
-
-                lerp(
-                    a.x,
-                    b.x,
-                    parcial
-                ),
-
-                lerp(
-                    a.y,
-                    b.y,
-                    parcial
-                )
-
-            );
-
-        }
-
-
-        ctx.stroke();
-
-        ctx.restore();
-
-    }
-
-
-    /* ============================================================
-       DIBUJAR ECG DE ENTRADA
-       ============================================================ */
-
-    function dibujarEntrada(
-        progreso
-    ) {
-
-        dibujarRuta(
-            ecgEntrada,
-            progreso,
-            ORANGE,
-            3,
-            15
-        );
-
-    }
-
-
-    /* ============================================================
-       DIBUJAR LAS 4 LÍNEAS DEL LOGO
-       ============================================================ */
-
-    function dibujarCuatroLineas(
-        progreso
-    ) {
-
-        /*
-         * Las primeras tres forman EBA.
-         */
-
-        dibujarRuta(
-            linea1,
-            progreso,
-            SILVER,
-            5,
-            15
-        );
-
-
-        dibujarRuta(
-            linea2,
-            progreso,
-            SILVER_LIGHT,
-            5,
-            16
-        );
-
-
-        dibujarRuta(
-            linea3,
-            progreso,
-            SILVER,
-            5,
-            15
-        );
-
-
-        /*
-         * Cuarta línea:
-         * PULSO abajo.
-         */
-
-        dibujarRuta(
-            linea4,
-            progreso,
-            SILVER_LIGHT,
-            4.8,
-            13
-        );
-
-    }
-
-
-    /* ============================================================
-       DIBUJAR EXTENSIONES
-       ============================================================ */
-
-    function dibujarExtensiones(
-        progreso
-    ) {
-
-        extensiones.forEach(
-            (
-                ruta,
-                index
-            ) => {
-
-                dibujarRuta(
-                    ruta,
-                    progreso,
-                    ORANGE,
-                    3,
-                    14
-                );
-
-            }
-        );
-
-    }
-
-
-    /* ============================================================
-       UNIÓN DE LAS 4 LÍNEAS
-       ============================================================ */
-
-    function dibujarUnion(
-        progreso
-    ) {
-
-        progreso =
-            easeInOut(
-                progreso
-            );
-
-
-        /*
-         * Las líneas comienzan separadas
-         * y progresivamente se llevan
-         * hacia CENTER_Y.
-         */
-
-        extensiones.forEach(
-            (
-                ruta
-            ) => {
-
-                const transformada =
-                    ruta.map(
-                        (punto) => {
-
-                            return P(
-                                punto.x,
-
-                                lerp(
-                                    punto.y,
-                                    CENTER_Y,
-                                    progreso
-                                )
-
+    document.querySelectorAll(
+        ".pulsi-quick button"
+    ).forEach(
+        (button) => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const pregunta =
+                        button.dataset.question ||
+                        button.textContent.trim();
+
+                    if (!pregunta) {
+                        return;
+                    }
+
+                    mensajePulsi(
+                        pregunta,
+                        "user"
+                    );
+
+
+                    setTimeout(
+                        () => {
+
+                            mensajePulsi(
+                                responderPulsi(
+                                    pregunta
+                                ),
+                                "ai"
                             );
 
-                        }
+                        },
+                        250
                     );
 
-
-                dibujarRuta(
-                    transformada,
-                    1,
-                    ORANGE,
-                    lerp(
-                        3,
-                        2.5,
-                        progreso
-                    ),
-                    lerp(
-                        14,
-                        10,
-                        progreso
-                    )
-                );
-
-            }
-        );
-
-    }
-
-
-    /* ============================================================
-       LÍNEA FINAL
-       ============================================================ */
-
-    function dibujarLineaFinal(
-        progreso
-    ) {
-
-        progreso =
-            easeOut(
-                progreso
-            );
-
-
-        dibujarRuta(
-            lineaFinal,
-            progreso,
-            ORANGE,
-            lerp(
-                2.5,
-                1.1,
-                progreso
-            ),
-            lerp(
-                12,
-                4,
-                progreso
-            )
-        );
-
-    }
-
-
-    /* ============================================================
-       GLOW GENERAL
-       ============================================================ */
-
-    function dibujarGlow() {
-
-        const gradient =
-            ctx.createRadialGradient(
-                DESIGN_WIDTH * 0.48,
-                CENTER_Y,
-                20,
-
-                DESIGN_WIDTH * 0.48,
-                CENTER_Y,
-                430
-            );
-
-
-        gradient.addColorStop(
-            0,
-            "rgba(255,106,0,0.12)"
-        );
-
-
-        gradient.addColorStop(
-            0.45,
-            "rgba(255,106,0,0.045)"
-        );
-
-
-        gradient.addColorStop(
-            1,
-            "rgba(255,106,0,0)"
-        );
-
-
-        ctx.save();
-
-
-        ctx.fillStyle =
-            gradient;
-
-
-        ctx.fillRect(
-            0,
-            0,
-            DESIGN_WIDTH,
-            DESIGN_HEIGHT
-        );
-
-
-        ctx.restore();
-
-    }
-
-
-    /* ============================================================
-       PULSO FINAL VARIABLE
-       ============================================================ */
-
-    function crearPulsoFinal(
-        tiempo
-    ) {
-
-        const puntos = [];
-
-        const cantidad = 40;
-
-
-        for (
-            let i = 0;
-            i <= cantidad;
-            i++
-        ) {
-
-            const t =
-                i / cantidad;
-
-
-            const x =
-                lerp(
-                    MERGE_X,
-                    END_X,
-                    t
-                );
-
-
-            /*
-             * Movimiento extremadamente leve.
-             *
-             * No queremos un zigzag exagerado.
-             */
-
-            const onda =
-                Math.sin(
-                    t * 8 +
-                    tiempo * 0.0012
-                ) * 1.5;
-
-
-            puntos.push(
-                P(
-                    x,
-                    CENTER_Y + onda
-                )
-            );
-
-        }
-
-
-        return puntos;
-
-    }
-
-
-    /* ============================================================
-       ESCENA COMPLETA
-       ============================================================ */
-
-    function dibujarEscena(
-        tiempo
-    ) {
-
-        ctx.setTransform(
-            1,
-            0,
-            0,
-            1,
-            0,
-            0
-        );
-
-
-        ctx.clearRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        ctx.save();
-
-
-        ctx.scale(
-            dpr,
-            dpr
-        );
-
-
-        ctx.translate(
-            offsetX,
-            offsetY
-        );
-
-
-        ctx.scale(
-            scale,
-            scale
-        );
-
-
-        dibujarGlow();
-
-
-        /* ========================================================
-           FASE 1
-           ECG ENTRANDO
-           ======================================================== */
-
-        if (
-            tiempo <
-            DURACION_ENTRADA
-        ) {
-
-            const progreso =
-                easeInOut(
-                    tiempo /
-                    DURACION_ENTRADA
-                );
-
-
-            dibujarEntrada(
-                progreso
-            );
-
-        }
-
-
-        /* ========================================================
-           FASE 2
-           CONSTRUCCIÓN DEL LOGO
-           ======================================================== */
-
-        const inicioLogo =
-            DURACION_ENTRADA;
-
-
-        const finLogo =
-            inicioLogo +
-            DURACION_LOGO;
-
-
-        if (
-            tiempo >= inicioLogo &&
-            tiempo < finLogo
-        ) {
-
-            /*
-             * ECG ya llegó al centro.
-             */
-
-            dibujarEntrada(
-                1
-            );
-
-
-            const progreso =
-                easeInOut(
-                    (
-                        tiempo -
-                        inicioLogo
-                    ) /
-                    DURACION_LOGO
-                );
-
-
-            dibujarCuatroLineas(
-                progreso
-            );
-
-        }
-
-
-        /* ========================================================
-           FASE 3
-           LOGO COMPLETO + LAS 4 LÍNEAS SALEN
-           ======================================================== */
-
-        const inicioSalida =
-            finLogo;
-
-
-        const finSalida =
-            inicioSalida +
-            DURACION_SALIDA;
-
-
-        if (
-            tiempo >= inicioSalida &&
-            tiempo < finSalida
-        ) {
-
-            /*
-             * Logo completo.
-             */
-
-            dibujarEntrada(
-                1
-            );
-
-
-            dibujarCuatroLineas(
-                1
-            );
-
-
-            /*
-             * Las 4 líneas empiezan a continuar.
-             */
-
-            const progreso =
-                easeInOut(
-                    (
-                        tiempo -
-                        inicioSalida
-                    ) /
-                    DURACION_SALIDA
-                );
-
-
-            dibujarExtensiones(
-                progreso
-            );
-
-        }
-
-
-        /* ========================================================
-           FASE 4
-           LAS 4 LÍNEAS SE UNEN
-           ======================================================== */
-
-        const inicioUnion =
-            finSalida;
-
-
-        const finUnion =
-            inicioUnion +
-            DURACION_UNION;
-
-
-        if (
-            tiempo >= inicioUnion &&
-            tiempo < finUnion
-        ) {
-
-            /*
-             * Logo todavía visible.
-             */
-
-            dibujarEntrada(
-                1
-            );
-
-
-            dibujarCuatroLineas(
-                1
-            );
-
-
-            /*
-             * Extensiones completas.
-             */
-
-            dibujarExtensiones(
-                1
-            );
-
-
-            const progreso =
-                (
-                    tiempo -
-                    inicioUnion
-                ) /
-                DURACION_UNION;
-
-
-            dibujarUnion(
-                progreso
-            );
-
-        }
-
-
-        /* ========================================================
-           FASE 5
-           UNA SOLA LÍNEA
-           ======================================================== */
-
-        const inicioFinal =
-            finUnion;
-
-
-        if (
-            tiempo >= inicioFinal
-        ) {
-
-            const progreso =
-                clamp(
-                    (
-                        tiempo -
-                        inicioFinal
-                    ) /
-                    DURACION_FINAL
-                );
-
-
-            /*
-             * Una sola línea nace exactamente
-             * desde el centro.
-             */
-
-            dibujarLineaFinal(
-                progreso
-            );
-
-
-            /*
-             * Pequeña variación orgánica
-             * mientras avanza.
-             */
-
-            if (
-                progreso > 0.55
-            ) {
-
-                const pulso =
-                    crearPulsoFinal(
-                        tiempo
-                    );
-
-
-                const progresoPulso =
-                    clamp(
-                        (
-                            progreso -
-                            0.55
-                        ) / 0.45
-                    );
-
-
-                dibujarRuta(
-                    pulso,
-                    progresoPulso,
-                    ORANGE,
-                    lerp(
-                        2.1,
-                        1.1,
-                        progreso
-                    ),
-                    lerp(
-                        9,
-                        3,
-                        progreso
-                    )
-                );
-
-            }
-
-        }
-
-
-        ctx.restore();
-
-    }
-
-
-    /* ============================================================
-       ANIMACIÓN
-       ============================================================ */
-
-    let animationStart =
-        performance.now();
-
-
-    function animar(
-        timestamp
-    ) {
-
-        if (
-            !document.body.contains(
-                canvas
-            )
-        ) {
-            return;
-        }
-
-
-        const tiempo =
-            (
-                timestamp -
-                animationStart
-            ) %
-            DURACION_TOTAL;
-
-
-        dibujarEscena(
-            tiempo
-        );
-
-
-        requestAnimationFrame(
-            animar
-        );
-
-    }
-
-
-    /* ============================================================
-       REDUCED MOTION
-       ============================================================ */
-
-    if (reduceMotion) {
-
-        /*
-         * Estado estático final.
-         */
-
-        dibujarEscena(
-            DURACION_TOTAL - 10
-        );
-
-    } else {
-
-        requestAnimationFrame(
-            animar
-        );
-
-    }
-
-
-    /* ============================================================
-       REINICIO CUANDO SE VUELVE AL HERO
-       ============================================================ */
-
-    const hero =
-        document.querySelector(
-            "#inicio"
-        );
-
-
-    if (
-        hero &&
-        "IntersectionObserver" in window
-    ) {
-
-        const heroObserver =
-            new IntersectionObserver(
-                (entries) => {
-
-                    entries.forEach(
-                        (entry) => {
-
-                            if (
-                                entry.isIntersecting
-                            ) {
-
-                                /*
-                                 * Reinicia la señal
-                                 * desde la izquierda.
-                                 */
-
-                                animationStart =
-                                    performance.now();
-
-                            }
-
-                        }
-                    );
-
-                },
-                {
-                    threshold: 0.1
                 }
             );
 
-
-        heroObserver.observe(
-            hero
-        );
-
-    }
+        }
+    );
 
 
-    /* ============================================================
-       FINAL
-       ============================================================ */
+    /* =========================================================
+       FIN
+       ========================================================= */
 
     console.log(
         "%cPULSO",
-        [
-            "font-size:24px",
-            "font-weight:800",
-            "letter-spacing:5px",
-            "color:#ff6a00"
-        ].join(";")
+        "color:#ff6a00;font-size:24px;font-weight:800;letter-spacing:5px"
     );
 
     console.log(
-        "Sistema PULSO iniciado correctamente."
+        "Sistema PULSO iniciado."
     );
 
 });

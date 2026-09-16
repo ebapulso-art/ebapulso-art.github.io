@@ -1,101 +1,241 @@
+/* ============================================================
+   PULSO — SCRIPT PRINCIPAL
+   ============================================================
+
+   Incluye:
+   1. Navegación
+   2. Menú responsive
+   3. Scroll suave
+   4. Animaciones de aparición
+   5. Formulario
+   6. Pulsi
+   7. Año automático
+   8. Logo ECG animado en Canvas
+
+   IMPORTANTE:
+   El logo ECG es UNA SOLA ANIMACIÓN CONTINUA.
+   No utiliza PNG ni SVG para construir el logo.
+   ============================================================ */
+
 document.addEventListener("DOMContentLoaded", () => {
 
+    /* ========================================================
+       VARIABLES GENERALES
+       ======================================================== */
 
-/* =====================================================
-   NAVBAR
-   ===================================================== */
+    const html = document.documentElement;
+    const body = document.body;
 
-const navbar = document.querySelector(".navbar");
+    const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-const actualizarNavbar = () => {
-    if (!navbar) return;
-
-    navbar.classList.toggle(
-        "scrolled",
-        window.scrollY > 40
-    );
-};
-
-window.addEventListener(
-    "scroll",
-    actualizarNavbar
-);
-
-actualizarNavbar();
+    if (prefersReducedMotion) {
+        html.classList.add("reducir-movimiento");
+    }
 
 
-/* =====================================================
-   MENÚ MOBILE
-   ===================================================== */
+    /* ========================================================
+       AÑO AUTOMÁTICO
+       ======================================================== */
 
-const menuToggle =
-    document.querySelector("#menu-toggle");
-
-const navMenu =
-    document.querySelector("#nav-menu");
-
-if (menuToggle && navMenu) {
-
-    menuToggle.addEventListener("click", () => {
-
-        const abierto =
-            navMenu.classList.toggle("activo");
-
-        menuToggle.classList.toggle(
-            "activo",
-            abierto
-        );
-
-        menuToggle.setAttribute(
-            "aria-expanded",
-            abierto ? "true" : "false"
-        );
-
+    document.querySelectorAll("[data-year]").forEach((elemento) => {
+        elemento.textContent = new Date().getFullYear();
     });
 
 
-    navMenu.querySelectorAll("a").forEach((enlace) => {
+    /* ========================================================
+       MENÚ PRINCIPAL
+       ======================================================== */
 
-        enlace.addEventListener("click", () => {
+    const menuToggle = document.querySelector("#menu-toggle");
+    const navMenu = document.querySelector("#nav-menu");
 
-            navMenu.classList.remove("activo");
+    function abrirMenu() {
+        if (!navMenu) return;
 
-            menuToggle.classList.remove("activo");
+        navMenu.classList.add("active");
 
-            menuToggle.setAttribute(
-                "aria-expanded",
-                "false"
+        if (menuToggle) {
+            menuToggle.classList.add("active");
+            menuToggle.setAttribute("aria-expanded", "true");
+        }
+
+        body.classList.add("menu-abierto");
+    }
+
+    function cerrarMenu() {
+        if (!navMenu) return;
+
+        navMenu.classList.remove("active");
+
+        if (menuToggle) {
+            menuToggle.classList.remove("active");
+            menuToggle.setAttribute("aria-expanded", "false");
+        }
+
+        body.classList.remove("menu-abierto");
+    }
+
+    function alternarMenu() {
+        if (!navMenu) return;
+
+        if (navMenu.classList.contains("active")) {
+            cerrarMenu();
+        } else {
+            abrirMenu();
+        }
+    }
+
+    if (menuToggle) {
+        menuToggle.setAttribute("aria-expanded", "false");
+
+        menuToggle.addEventListener("click", alternarMenu);
+    }
+
+
+    /* ========================================================
+       LINKS DEL MENÚ
+       ======================================================== */
+
+    const linksNavegacion = document.querySelectorAll(
+        ".nav-menu a, .nav-cta, .hero-buttons a, .contact-item"
+    );
+
+    linksNavegacion.forEach((link) => {
+
+        link.addEventListener("click", (evento) => {
+
+            const href = link.getAttribute("href");
+
+            if (!href || !href.startsWith("#")) {
+                return;
+            }
+
+            const destino = document.querySelector(href);
+
+            if (!destino) {
+                return;
+            }
+
+            evento.preventDefault();
+
+            cerrarMenu();
+
+            const navbar = document.querySelector(".navbar");
+
+            const alturaNavbar = navbar
+                ? navbar.offsetHeight
+                : 0;
+
+            const posicion =
+                destino.getBoundingClientRect().top +
+                window.scrollY -
+                alturaNavbar;
+
+            window.scrollTo({
+                top: Math.max(0, posicion),
+                behavior: prefersReducedMotion
+                    ? "auto"
+                    : "smooth"
+            });
+
+            history.replaceState(
+                null,
+                "",
+                href
             );
-
         });
 
     });
 
-}
+
+    /* ========================================================
+       CERRAR MENÚ AL HACER CLICK FUERA
+       ======================================================== */
+
+    document.addEventListener("click", (evento) => {
+
+        if (!navMenu || !menuToggle) return;
+
+        const menuEstaAbierto =
+            navMenu.classList.contains("active");
+
+        if (!menuEstaAbierto) return;
+
+        const clickDentroMenu =
+            navMenu.contains(evento.target);
+
+        const clickBoton =
+            menuToggle.contains(evento.target);
+
+        if (!clickDentroMenu && !clickBoton) {
+            cerrarMenu();
+        }
+
+    });
 
 
-/* =====================================================
-   ANIMACIONES AL HACER SCROLL
-   ===================================================== */
+    /* ========================================================
+       ESCAPE PARA CERRAR MENÚ
+       ======================================================== */
 
-const elementosAnimados =
-    document.querySelectorAll(
+    document.addEventListener("keydown", (evento) => {
+
+        if (evento.key === "Escape") {
+            cerrarMenu();
+        }
+
+    });
+
+
+    /* ========================================================
+       HEADER AL HACER SCROLL
+       ======================================================== */
+
+    const navbar = document.querySelector(".navbar");
+
+    function actualizarNavbar() {
+
+        if (!navbar) return;
+
+        if (window.scrollY > 40) {
+            navbar.classList.add("scrolled");
+        } else {
+            navbar.classList.remove("scrolled");
+        }
+
+    }
+
+    window.addEventListener(
+        "scroll",
+        actualizarNavbar,
+        { passive: true }
+    );
+
+    actualizarNavbar();
+
+
+    /* ========================================================
+       ANIMACIONES DE ENTRADA
+       ======================================================== */
+
+    const elementosAnimados = document.querySelectorAll(
         ".section-heading, " +
-        ".nosotros-text, " +
-        ".concept-card, " +
         ".service-card, " +
         ".project-card, " +
         ".process-step, " +
         ".why-card, " +
-        ".cta, " +
-        ".contact-item"
+        ".contact-item, " +
+        ".form-group"
     );
 
+    if (
+        !prefersReducedMotion &&
+        "IntersectionObserver" in window
+    ) {
 
-if ("IntersectionObserver" in window) {
-
-    const observer =
-        new IntersectionObserver(
+        const observer = new IntersectionObserver(
             (entradas, observador) => {
 
                 entradas.forEach((entrada) => {
@@ -117,454 +257,621 @@ if ("IntersectionObserver" in window) {
             },
             {
                 threshold: 0.12,
-                rootMargin: "0px 0px -40px 0px"
+                rootMargin: "0px 0px -50px 0px"
             }
         );
 
+        elementosAnimados.forEach((elemento) => {
+            observer.observe(elemento);
+        });
 
-    elementosAnimados.forEach((elemento) => {
+    } else {
 
-        elemento.classList.add("reveal");
-
-        observer.observe(elemento);
-
-    });
-
-} else {
-
-    elementosAnimados.forEach((elemento) => {
-
-        elemento.classList.add("visible");
-
-    });
-
-}
-
-
-/* =====================================================
-   ANIMACIONES ESCALONADAS
-   ===================================================== */
-
-const grupos = [
-    ".concepts-grid",
-    ".services-grid",
-    ".projects-track",
-    ".why-grid",
-    ".process-grid"
-];
-
-
-grupos.forEach((selector) => {
-
-    const grupo =
-        document.querySelector(selector);
-
-    if (!grupo) return;
-
-
-    Array.from(grupo.children).forEach(
-        (elemento, indice) => {
-
-            elemento.style.setProperty(
-                "--animation-delay",
-                `${indice * 80}ms`
-            );
-
-        }
-    );
-
-});
-
-
-/* =====================================================
-   ENLACES INTERNOS
-   ===================================================== */
-
-const enlacesInternos =
-    document.querySelectorAll(
-        'a[href^="#"]'
-    );
-
-
-enlacesInternos.forEach((enlace) => {
-
-    enlace.addEventListener(
-        "click",
-        (evento) => {
-
-            const destinoId =
-                enlace.getAttribute("href");
-
-
-            if (
-                !destinoId ||
-                destinoId === "#"
-            ) {
-                return;
-            }
-
-
-            const destino =
-                document.querySelector(
-                    destinoId
-                );
-
-
-            if (!destino) {
-                return;
-            }
-
-
-            evento.preventDefault();
-
-
-            destino.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-        }
-    );
-
-});
-
-
-/* =====================================================
-   BOTÓN VOLVER ARRIBA
-   ===================================================== */
-
-let botonArriba =
-    document.querySelector(
-        ".btn-volver-arriba"
-    );
-
-
-if (!botonArriba) {
-
-    botonArriba =
-        document.createElement("button");
-
-    botonArriba.className =
-        "btn-volver-arriba";
-
-    botonArriba.type = "button";
-
-    botonArriba.setAttribute(
-        "aria-label",
-        "Volver arriba"
-    );
-
-    botonArriba.innerHTML = "↑";
-
-    document.body.appendChild(
-        botonArriba
-    );
-
-}
-
-
-const actualizarBotonArriba = () => {
-
-    botonArriba.classList.toggle(
-        "visible",
-        window.scrollY > 600
-    );
-
-};
-
-
-window.addEventListener(
-    "scroll",
-    actualizarBotonArriba
-);
-
-
-actualizarBotonArriba();
-
-
-botonArriba.addEventListener(
-    "click",
-    () => {
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
+        elementosAnimados.forEach((elemento) => {
+            elemento.classList.add("visible");
         });
 
     }
-);
 
 
-/* =====================================================
-   FORMULARIO
-   ===================================================== */
+    /* ========================================================
+       FORMULARIO DE PROYECTO
+       ======================================================== */
 
-const formulario =
-    document.querySelector(
-        "#project-form"
-    );
+    const formulario =
+        document.querySelector("#project-form");
 
+    const formStatus =
+        document.querySelector("#form-status");
 
-const mensajeFormulario =
-    document.querySelector(
-        "#form-status"
-    );
+    if (formulario) {
 
+        formulario.addEventListener(
+            "submit",
+            (evento) => {
 
-if (formulario) {
+                evento.preventDefault();
 
-    formulario.addEventListener(
-        "submit",
-        (evento) => {
+                if (formStatus) {
 
-            evento.preventDefault();
+                    formStatus.textContent =
+                        "Tu proyecto está listo para ser enviado.";
 
+                    formStatus.classList.add(
+                        "active"
+                    );
 
-            if (!formulario.checkValidity()) {
-
-                formulario.reportValidity();
-
-                return;
-
-            }
-
-
-            if (mensajeFormulario) {
-
-                mensajeFormulario.textContent =
-                    "¡Perfecto! Tu proyecto está listo para ser enviado.";
-
-                mensajeFormulario.classList.add(
-                    "visible"
-                );
-
-            }
-
-
-            console.log(
-                "Formulario validado correctamente."
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   PREVISUALIZACIÓN DE IMÁGENES
-   ===================================================== */
-
-const inputImagenes =
-    document.querySelector(
-        "#imagenes-referencia"
-    );
-
-
-const previewImagenes =
-    document.querySelector(
-        "#image-preview-grid"
-    );
-
-
-if (
-    inputImagenes &&
-    previewImagenes
-) {
-
-    inputImagenes.addEventListener(
-        "change",
-        () => {
-
-            previewImagenes.innerHTML = "";
-
-
-            const archivos =
-                Array.from(
-                    inputImagenes.files || []
-                );
-
-
-            archivos.forEach((archivo) => {
-
-                if (
-                    !archivo.type.startsWith(
-                        "image/"
-                    )
-                ) {
-                    return;
                 }
 
+                /*
+                 * ------------------------------------------------
+                 * IMPORTANTE
+                 * ------------------------------------------------
+                 *
+                 * Acá queda preparado el punto de conexión
+                 * para el backend de PULSO.
+                 *
+                 * No ponemos claves API acá.
+                 *
+                 * Cuando conectemos el backend:
+                 *
+                 * formulario
+                 *      ↓
+                 * backend seguro
+                 *      ↓
+                 * Firebase / correo / IA
+                 *
+                 * ------------------------------------------------
+                 */
 
-                const contenedor =
-                    document.createElement(
-                        "div"
+                console.log(
+                    "Formulario PULSO enviado."
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ========================================================
+       CAMPOS DE FORMULARIO — PREVISUALIZACIÓN DE IMÁGENES
+       ======================================================== */
+
+    const inputImagenes =
+        document.querySelector(
+            'input[type="file"]'
+        );
+
+    const previewImagenes =
+        document.querySelector(
+            "#preview-imagenes"
+        );
+
+    if (
+        inputImagenes &&
+        previewImagenes
+    ) {
+
+        inputImagenes.addEventListener(
+            "change",
+            () => {
+
+                previewImagenes.innerHTML = "";
+
+                const archivos =
+                    Array.from(
+                        inputImagenes.files || []
                     );
 
+                archivos.forEach((archivo) => {
 
-                contenedor.className =
-                    "image-preview-item";
+                    if (
+                        !archivo.type.startsWith(
+                            "image/"
+                        )
+                    ) {
+                        return;
+                    }
 
+                    const lector =
+                        new FileReader();
 
-                const imagen =
-                    document.createElement(
-                        "img"
-                    );
+                    lector.onload = (evento) => {
 
+                        const contenedor =
+                            document.createElement(
+                                "div"
+                            );
 
-                imagen.src =
-                    URL.createObjectURL(
+                        contenedor.className =
+                            "preview-imagen";
+
+                        const imagen =
+                            document.createElement(
+                                "img"
+                            );
+
+                        imagen.src =
+                            evento.target.result;
+
+                        imagen.alt =
+                            archivo.name;
+
+                        contenedor.appendChild(
+                            imagen
+                        );
+
+                        previewImagenes.appendChild(
+                            contenedor
+                        );
+
+                    };
+
+                    lector.readAsDataURL(
                         archivo
                     );
 
+                });
 
-                imagen.alt =
-                    "Imagen de referencia";
+            }
+        );
+
+    }
 
 
-                imagen.addEventListener(
-                    "load",
-                    () => {
+    /* ========================================================
+       PULSI
+       ======================================================== */
 
-                        URL.revokeObjectURL(
-                            imagen.src
+    const pulsiButton =
+        document.querySelector(
+            "#pulsi-button"
+        );
+
+    const pulsiChat =
+        document.querySelector(
+            "#pulsi-chat"
+        );
+
+    const pulsiClose =
+        document.querySelector(
+            "#pulsi-close"
+        );
+
+    const pulsiInput =
+        document.querySelector(
+            "#pulsi-input"
+        );
+
+    const pulsiForm =
+        document.querySelector(
+            "#pulsi-form"
+        );
+
+    const pulsiMessages =
+        document.querySelector(
+            "#pulsi-messages"
+        );
+
+    const pulsiQuickButtons =
+        document.querySelectorAll(
+            ".pulsi-quick button"
+        );
+
+
+    /* ========================================================
+       ABRIR PULSI
+       ======================================================== */
+
+    function abrirPulsi() {
+
+        if (!pulsiChat) return;
+
+        pulsiChat.classList.add(
+            "active"
+        );
+
+        pulsiChat.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        if (pulsiButton) {
+
+            pulsiButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+        }
+
+        if (pulsiInput) {
+
+            setTimeout(() => {
+                pulsiInput.focus();
+            }, 180);
+
+        }
+
+    }
+
+
+    /* ========================================================
+       CERRAR PULSI
+       ======================================================== */
+
+    function cerrarPulsi() {
+
+        if (!pulsiChat) return;
+
+        pulsiChat.classList.remove(
+            "active"
+        );
+
+        pulsiChat.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        if (pulsiButton) {
+
+            pulsiButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+    }
+
+
+    /* ========================================================
+       BOTÓN PULSI
+       ======================================================== */
+
+    if (pulsiButton) {
+
+        pulsiButton.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    pulsiChat &&
+                    pulsiChat.classList.contains(
+                        "active"
+                    )
+                ) {
+
+                    cerrarPulsi();
+
+                } else {
+
+                    abrirPulsi();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ========================================================
+       CERRAR PULSI
+       ======================================================== */
+
+    if (pulsiClose) {
+
+        pulsiClose.addEventListener(
+            "click",
+            cerrarPulsi
+        );
+
+    }
+
+
+    /* ========================================================
+       RESPUESTAS LOCALES DE PULSI
+       
+       Esto NO pretende reemplazar la IA real.
+       Sirve como funcionamiento provisional hasta
+       conectar el backend.
+       ======================================================== */
+
+    const respuestasPulsi = [
+
+        {
+            claves: [
+                "qué hacen",
+                "que hacen",
+                "qué es pulso",
+                "que es pulso",
+                "pulso"
+            ],
+
+            respuesta:
+                "En PULSO creamos identidades, piezas visuales y experiencias digitales pensadas para que cada proyecto tenga una presencia propia."
+        },
+
+        {
+            claves: [
+                "servicios",
+                "qué servicios",
+                "que servicios"
+            ],
+
+            respuesta:
+                "Trabajamos identidad visual, diseño gráfico, páginas web y experiencias digitales."
+        },
+
+        {
+            claves: [
+                "página",
+                "pagina",
+                "web",
+                "sitio"
+            ],
+
+            respuesta:
+                "Sí. Podemos crear una página pensada específicamente para tu proyecto, desde la estructura visual hasta la experiencia digital."
+        },
+
+        {
+            claves: [
+                "contacto",
+                "hablar",
+                "idea",
+                "proyecto"
+            ],
+
+            respuesta:
+                "Podés contarnos tu idea desde el formulario de proyecto y analizar qué necesita PULSO para llevarla a la realidad."
+        }
+
+    ];
+
+
+    /* ========================================================
+       AGREGAR MENSAJE DE PULSI
+       ======================================================== */
+
+    function agregarMensajePulsi(
+        texto,
+        tipo = "ai"
+    ) {
+
+        if (!pulsiMessages) return;
+
+        const mensaje =
+            document.createElement("div");
+
+        mensaje.className =
+            tipo === "user"
+                ? "pulsi-message pulsi-message-user"
+                : "pulsi-message pulsi-message-ai";
+
+        const parrafo =
+            document.createElement("p");
+
+        parrafo.textContent = texto;
+
+        mensaje.appendChild(parrafo);
+
+        pulsiMessages.appendChild(
+            mensaje
+        );
+
+        pulsiMessages.scrollTop =
+            pulsiMessages.scrollHeight;
+
+    }
+
+
+    /* ========================================================
+       RESPUESTA LOCAL
+       ======================================================== */
+
+    function buscarRespuestaLocal(
+        pregunta
+    ) {
+
+        const texto =
+            pregunta
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(
+                    /[\u0300-\u036f]/g,
+                    ""
+                );
+
+        for (
+            const respuesta of respuestasPulsi
+        ) {
+
+            const coincide =
+                respuesta.claves.some(
+                    (clave) => {
+
+                        const claveNormalizada =
+                            clave
+                                .toLowerCase()
+                                .normalize("NFD")
+                                .replace(
+                                    /[\u0300-\u036f]/g,
+                                    ""
+                                );
+
+                        return texto.includes(
+                            claveNormalizada
                         );
 
                     }
                 );
 
+            if (coincide) {
+                return respuesta.respuesta;
+            }
 
-                contenedor.appendChild(
-                    imagen
-                );
+        }
+
+        return null;
+
+    }
 
 
-                previewImagenes.appendChild(
-                    contenedor
-                );
+    /* ========================================================
+       RESPUESTA DE PULSI
+       ======================================================== */
 
-            });
+    async function responderPulsi(
+        pregunta
+    ) {
+
+        /*
+         * ----------------------------------------------------
+         * FUTURO BACKEND
+         * ----------------------------------------------------
+         *
+         * Acá se conectará la IA REAL.
+         *
+         * Ejemplo futuro:
+         *
+         * const respuesta = await fetch(
+         *     "/api/pulsi",
+         *     {
+         *         method: "POST",
+         *         headers: {
+         *             "Content-Type":
+         *                 "application/json"
+         *         },
+         *         body: JSON.stringify({
+         *             message: pregunta
+         *         })
+         *     }
+         * );
+         *
+         * ----------------------------------------------------
+         */
+
+        const respuestaLocal =
+            buscarRespuestaLocal(
+                pregunta
+            );
+
+        if (respuestaLocal) {
+
+            return respuestaLocal;
+
+        }
+
+        return (
+            "No tengo todavía esa información conectada a mi conocimiento. " +
+            "Podés contarme un poco más sobre lo que necesitás o ir al formulario para hablar directamente con PULSO."
+        );
+
+    }
+
+
+    /* ========================================================
+       BOTONES RÁPIDOS
+       ======================================================== */
+
+    pulsiQuickButtons.forEach(
+        (boton) => {
+
+            boton.addEventListener(
+                "click",
+                async () => {
+
+                    const pregunta =
+                        boton.dataset.question ||
+                        boton.textContent.trim();
+
+                    if (!pregunta) return;
+
+                    agregarMensajePulsi(
+                        pregunta,
+                        "user"
+                    );
+
+                    const respuesta =
+                        await responderPulsi(
+                            pregunta
+                        );
+
+                    setTimeout(() => {
+
+                        agregarMensajePulsi(
+                            respuesta,
+                            "ai"
+                        );
+
+                    }, 250);
+
+                }
+            );
 
         }
     );
 
-}
 
+    /* ========================================================
+       FORMULARIO PULSI
+       ======================================================== */
 
-/* =====================================================
-   PULSI
-   ===================================================== */
+    if (pulsiForm) {
 
-const pulsiButton =
-    document.querySelector(
-        "#pulsi-button"
-    );
+        pulsiForm.addEventListener(
+            "submit",
+            async (evento) => {
 
+                evento.preventDefault();
 
-const pulsiChat =
-    document.querySelector(
-        "#pulsi-chat"
-    );
+                if (!pulsiInput) return;
 
+                const mensaje =
+                    pulsiInput.value.trim();
 
-const pulsiClose =
-    document.querySelector(
-        "#pulsi-close"
-    );
+                if (!mensaje) return;
 
+                pulsiInput.value = "";
 
-const pulsiInput =
-    document.querySelector(
-        "#pulsi-input"
-    );
+                agregarMensajePulsi(
+                    mensaje,
+                    "user"
+                );
 
+                const respuesta =
+                    await responderPulsi(
+                        mensaje
+                    );
 
-const pulsiForm =
-    document.querySelector(
-        "#pulsi-form"
-    );
+                setTimeout(() => {
 
+                    agregarMensajePulsi(
+                        respuesta,
+                        "ai"
+                    );
 
-const pulsiQuickButtons =
-    document.querySelectorAll(
-        ".pulsi-quick button"
-    );
+                }, 250);
 
-
-const abrirPulsi = () => {
-
-    if (!pulsiChat) return;
-
-
-    pulsiChat.classList.add(
-        "active"
-    );
-
-
-    pulsiChat.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-
-    if (pulsiButton) {
-
-        pulsiButton.setAttribute(
-            "aria-expanded",
-            "true"
+            }
         );
 
     }
 
 
-    if (pulsiInput) {
+    /* ========================================================
+       CERRAR PULSI CON ESCAPE
+       ======================================================== */
 
-        setTimeout(() => {
-
-            pulsiInput.focus();
-
-        }, 150);
-
-    }
-
-};
-
-
-const cerrarPulsi = () => {
-
-    if (!pulsiChat) return;
-
-
-    pulsiChat.classList.remove(
-        "active"
-    );
-
-
-    pulsiChat.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-
-    if (pulsiButton) {
-
-        pulsiButton.setAttribute(
-            "aria-expanded",
-            "false"
-        );
-
-    }
-
-};
-
-
-if (pulsiButton) {
-
-    pulsiButton.addEventListener(
-        "click",
-        () => {
+    document.addEventListener(
+        "keydown",
+        (evento) => {
 
             if (
+                evento.key === "Escape" &&
                 pulsiChat &&
                 pulsiChat.classList.contains(
                     "active"
@@ -573,2280 +880,1409 @@ if (pulsiButton) {
 
                 cerrarPulsi();
 
-            } else {
-
-                abrirPulsi();
-
             }
 
         }
     );
 
-}
 
+    /* ========================================================
+       ========================================================
+       PULSO — LOGO ECG
+       CANVAS
+       ========================================================
+       ======================================================== */
 
-if (pulsiClose) {
-
-    pulsiClose.addEventListener(
-        "click",
-        cerrarPulsi
-    );
-
-}
-
-
-pulsiQuickButtons.forEach(
-    (boton) => {
-
-        boton.addEventListener(
-            "click",
-            () => {
-
-                const pregunta =
-                    boton.dataset.question ||
-                    boton.textContent.trim();
-
-
-                if (pulsiInput) {
-
-                    pulsiInput.value =
-                        pregunta;
-
-                    pulsiInput.focus();
-
-                }
-
-            }
+    const canvas =
+        document.querySelector(
+            "#pulsoLogoCanvas"
         );
 
-    }
-);
+    if (canvas) {
 
+        const ctx =
+            canvas.getContext("2d");
 
-if (pulsiForm) {
+        if (ctx) {
 
-    pulsiForm.addEventListener(
-        "submit",
-        (evento) => {
+            /* =================================================
+               CONFIGURACIÓN
+               ================================================= */
 
-            evento.preventDefault();
+            const COLORS = {
 
+                orange: "#ff6a00",
 
-            const mensaje =
-                pulsiInput
-                    ? pulsiInput.value.trim()
-                    : "";
+                orangeLight: "#ff8533",
 
+                silver: "#c8c8c8",
 
-            if (!mensaje) {
-                return;
-            }
+                silverLight: "#eeeeee",
 
+                background:
+                    "rgba(255, 106, 0, 0.08)"
 
-            console.log(
-                "Mensaje enviado a Pulsi:",
-                mensaje
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   REDUCIR MOVIMIENTO
-   ===================================================== */
-
-const reducirMovimiento =
-    window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-    );
-
-
-if (reducirMovimiento.matches) {
-
-    document.documentElement.classList.add(
-        "reducir-movimiento"
-    );
-
-}
-
-
-/* =====================================================
-   AÑO AUTOMÁTICO
-   ===================================================== */
-
-const elementosAnio =
-    document.querySelectorAll(
-        "[data-year]"
-    );
-
-
-elementosAnio.forEach(
-    (elemento) => {
-
-        elemento.textContent =
-            new Date().getFullYear();
-
-    }
-);
-
-
-/* =====================================================
-   MENSAJE DE CONSOLA
-   ===================================================== */
-
-console.log(
-    "%cPULSO",
-    "font-size: 24px; font-weight: 800;"
-);
-
-console.log(
-    "Sitio iniciado correctamente."
-);
-
-});
-
-
-
-/* =========================================================
-   PULSO — LOGO ECG ANIMADO
-   CANVAS
-   ========================================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-
-const canvas =
-    document.querySelector(
-        "#pulsoLogoCanvas"
-    );
-
-
-if (!canvas) return;
-
-
-const ctx =
-    canvas.getContext("2d");
-
-
-if (!ctx) return;
-
-
-
-/* =====================================================
-   CONFIGURACIÓN GENERAL
-   ===================================================== */
-
-const W = 1800;
-const H = 300;
-
-const ORANGE = "#ff6a00";
-const SILVER = "#c8c8c8";
-
-const DURACION = 11200;
-
-
-/*
- * Punto exacto donde el ECG se divide.
- */
-const SPLIT_X = 690;
-const CENTER_Y = 150;
-
-
-/*
- * Punto donde las cuatro líneas
- * vuelven a ser una.
- */
-const MERGE_X = 1690;
-
-
-/*
- * Punto final de la línea.
- */
-const END_X = 1900;
-
-
-
-/* =====================================================
-   ESCALA DEL CANVAS
-   ===================================================== */
-
-let escala = 1;
-let offsetX = 0;
-let offsetY = 0;
-let dpr = 1;
-
-
-const ajustarCanvas = () => {
-
-    const rect =
-        canvas.getBoundingClientRect();
-
-
-    dpr =
-        Math.min(
-            window.devicePixelRatio || 1,
-            2
-        );
-
-
-    canvas.width =
-        Math.max(
-            1,
-            Math.round(
-                rect.width * dpr
-            )
-        );
-
-
-    canvas.height =
-        Math.max(
-            1,
-            Math.round(
-                rect.height * dpr
-            )
-        );
-
-
-    escala =
-        Math.min(
-            rect.width / W,
-            rect.height / H
-        );
-
-
-    offsetX =
-        (
-            rect.width -
-            W * escala
-        ) / 2;
-
-
-    offsetY =
-        (
-            rect.height -
-            H * escala
-        ) / 2;
-
-};
-
-
-ajustarCanvas();
-
-
-window.addEventListener(
-    "resize",
-    ajustarCanvas
-);
-
-
-
-/* =====================================================
-   UTILIDADES
-   ===================================================== */
-
-const clamp = (
-    valor,
-    minimo = 0,
-    maximo = 1
-) => {
-
-    return Math.max(
-        minimo,
-        Math.min(
-            maximo,
-            valor
-        )
-    );
-
-};
-
-
-const easeInOut = (valor) => {
-
-    valor = clamp(valor);
-
-    return valor < 0.5
-        ? 4 * valor * valor * valor
-        : 1 -
-          Math.pow(
-              -2 * valor + 2,
-              3
-          ) / 2;
-
-};
-
-
-const easeOut = (valor) => {
-
-    valor = clamp(valor);
-
-    return 1 -
-        Math.pow(
-            1 - valor,
-            3
-        );
-
-};
-
-
-
-/* =====================================================
-   CREAR POLILÍNEA
-   ===================================================== */
-
-const crearLinea = (
-    puntos
-) => {
-
-    const resultado = [];
-
-    for (
-        let i = 0;
-        i < puntos.length - 1;
-        i++
-    ) {
-
-        const a = puntos[i];
-        const b = puntos[i + 1];
-
-        const distancia =
-            Math.hypot(
-                b.x - a.x,
-                b.y - a.y
-            );
-
-        const pasos =
-            Math.max(
-                4,
-                Math.ceil(
-                    distancia / 4
-                )
-            );
-
-
-        for (
-            let j = 0;
-            j < pasos;
-            j++
-        ) {
-
-            const t =
-                j / pasos;
-
-
-            resultado.push({
-                x:
-                    a.x +
-                    (b.x - a.x) * t,
-
-                y:
-                    a.y +
-                    (b.y - a.y) * t
-            });
-
-        }
-
-    }
-
-
-    resultado.push(
-        puntos[puntos.length - 1]
-    );
-
-
-    return resultado;
-
-};
-
-
-
-/* =====================================================
-   CURVA BÉZIER
-   ===================================================== */
-
-const curva =
-    (
-        p0,
-        p1,
-        p2,
-        p3,
-        pasos = 40
-    ) => {
-
-        const puntos = [];
-
-
-        for (
-            let i = 0;
-            i <= pasos;
-            i++
-        ) {
-
-            const t =
-                i / pasos;
-
-            const u =
-                1 - t;
-
-
-            puntos.push({
-
-                x:
-                    u * u * u * p0.x +
-                    3 * u * u * t * p1.x +
-                    3 * u * t * t * p2.x +
-                    t * t * t * p3.x,
-
-                y:
-                    u * u * u * p0.y +
-                    3 * u * u * t * p1.y +
-                    3 * u * t * t * p2.y +
-                    t * t * t * p3.y
-
-            });
-
-        }
-
-
-        return puntos;
-
-    };
-
-
-
-/* =====================================================
-   CONSTRUCTOR DE TRAZADOS
-   ===================================================== */
-
-const crearRuta = (
-    constructor
-) => {
-
-    const puntos = [];
-
-    let actual = null;
-
-
-    const M = (
-        x,
-        y
-    ) => {
-
-        actual = {
-            x,
-            y
-        };
-
-        puntos.push({
-            x,
-            y,
-            movimiento: true
-        });
-
-    };
-
-
-    const L = (
-        x,
-        y
-    ) => {
-
-        if (!actual) {
-
-            M(
-                x,
-                y
-            );
-
-            return;
-
-        }
-
-
-        const tramo =
-            crearLinea([
-                actual,
-                {
-                    x,
-                    y
-                }
-            ]);
-
-
-        tramo.shift();
-
-
-        tramo.forEach(
-            (punto) => {
-
-                puntos.push({
-                    ...punto,
-                    movimiento: false
-                });
-
-            }
-        );
-
-
-        actual = {
-            x,
-            y
-        };
-
-    };
-
-
-    const C = (
-        c1x,
-        c1y,
-        c2x,
-        c2y,
-        x,
-        y
-    ) => {
-
-        if (!actual) {
-
-            M(
-                x,
-                y
-            );
-
-            return;
-
-        }
-
-
-        const tramo =
-            curva(
-                actual,
-                {
-                    x: c1x,
-                    y: c1y
-                },
-                {
-                    x: c2x,
-                    y: c2y
-                },
-                {
-                    x,
-                    y
-                },
-                36
-            );
-
-
-        tramo.shift();
-
-
-        tramo.forEach(
-            (punto) => {
-
-                puntos.push({
-                    ...punto,
-                    movimiento: false
-                });
-
-            }
-        );
-
-
-        actual = {
-            x,
-            y
-        };
-
-    };
-
-
-    constructor({
-        M,
-        L,
-        C
-    });
-
-
-    return puntos;
-
-};
-
-
-
-/* =====================================================
-   DIBUJAR UNA RUTA
-   ===================================================== */
-
-const dibujarRuta = (
-    puntos,
-    progreso,
-    opciones = {}
-) => {
-
-    progreso =
-        clamp(progreso);
-
-
-    if (
-        !puntos ||
-        puntos.length < 2 ||
-        progreso <= 0
-    ) {
-        return;
-    }
-
-
-    const cantidad =
-        Math.max(
-            2,
-            Math.ceil(
-                puntos.length *
-                progreso
-            )
-        );
-
-
-    ctx.save();
-
-
-    ctx.beginPath();
-
-
-    for (
-        let i = 0;
-        i < cantidad;
-        i++
-    ) {
-
-        const punto =
-            puntos[i];
-
-
-        if (punto.movimiento) {
-
-            ctx.moveTo(
-                punto.x,
-                punto.y
-            );
-
-        } else {
-
-            ctx.lineTo(
-                punto.x,
-                punto.y
-            );
-
-        }
-
-    }
-
-
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-
-    ctx.lineWidth =
-        opciones.grosor || 5;
-
-
-    ctx.strokeStyle =
-        opciones.color || ORANGE;
-
-
-    ctx.shadowColor =
-        opciones.glow || ORANGE;
-
-
-    ctx.shadowBlur =
-        opciones.glowBlur || 10;
-
-
-    ctx.globalAlpha =
-        opciones.alpha ?? 1;
-
-
-    ctx.stroke();
-
-
-    ctx.restore();
-
-};
-
-
-
-/* =====================================================
-   ECG DE ENTRADA
-   ===================================================== */
-
-/*
- * El pulso entra desde FUERA de la pantalla.
- *
- * La forma va cambiando:
- *
- * recta
- * → pequeña subida
- * → pico
- * → caída
- * → segundo pico
- * → regreso al centro
- */
-
-const ECG =
-    crearRuta(({ M, L, C }) => {
-
-        M(-220, CENTER_Y);
-
-        L(80, CENTER_Y);
-
-        L(190, CENTER_Y);
-
-        L(260, CENTER_Y - 2);
-
-        L(320, CENTER_Y + 4);
-
-        C(
-            345,
-            158,
-            355,
-            125,
-            370,
-            105
-        );
-
-        C(
-            382,
-            88,
-            395,
-            82,
-            405,
-            95
-        );
-
-        C(
-            420,
-            115,
-            425,
-            195,
-            440,
-            208
-        );
-
-        C(
-            452,
-            218,
-            468,
-            175,
-            485,
-            132
-        );
-
-        C(
-            500,
-            96,
-            515,
-            116,
-            530,
-            139
-        );
-
-        C(
-            548,
-            164,
-            565,
-            152,
-            585,
-            150
-        );
-
-        L(SPLIT_X, CENTER_Y);
-
-    });
-
-
-
-/* =====================================================
-   LAS 4 RAMAS
-   ===================================================== */
-
-/*
- * IMPORTANTE:
- *
- * Las primeras tres ramas NO son:
- *
- * 1 = E
- * 2 = B
- * 3 = A
- *
- * Las tres trabajan juntas para construir
- * el símbolo EBA.
- *
- * La cuarta rama construye PULSO.
- */
-
-
-
-/* =====================================================
-   RAMA 1 — PARTE SUPERIOR DEL SÍMBOLO
-   ===================================================== */
-
-const rama1 =
-    crearRuta(({ M, L, C }) => {
-
-        M(SPLIT_X, CENTER_Y);
-
-        L(730, 118);
-
-        L(760, 92);
-
-        L(800, 72);
-
-        L(850, 72);
-
-        L(900, 72);
-
-        L(950, 72);
-
-        L(985, 88);
-
-        L(1010, 110);
-
-        L(1035, 125);
-
-    });
-
-
-
-/* =====================================================
-   RAMA 2 — PARTE CENTRAL DEL SÍMBOLO
-   ===================================================== */
-
-const rama2 =
-    crearRuta(({ M, L, C }) => {
-
-        M(SPLIT_X, CENTER_Y);
-
-        L(735, CENTER_Y);
-
-        L(780, CENTER_Y);
-
-        L(825, CENTER_Y);
-
-        L(870, CENTER_Y);
-
-        L(915, CENTER_Y);
-
-        L(955, CENTER_Y);
-
-        L(995, 142);
-
-        L(1035, CENTER_Y);
-
-    });
-
-
-
-/* =====================================================
-   RAMA 3 — PARTE INFERIOR DEL SÍMBOLO
-   ===================================================== */
-
-const rama3 =
-    crearRuta(({ M, L, C }) => {
-
-        M(SPLIT_X, CENTER_Y);
-
-        L(730, 182);
-
-        L(760, 208);
-
-        L(805, 228);
-
-        L(855, 228);
-
-        L(905, 228);
-
-        L(950, 228);
-
-        L(990, 210);
-
-        L(1015, 188);
-
-        L(1035, 175);
-
-    });
-
-
-
-/* =====================================================
-   RAMA 4 — PULSO
-   ===================================================== */
-
-/*
- * Esta rama comienza exactamente en el mismo
- * punto que las otras tres.
- *
- * Primero baja suavemente.
- * Después empieza a construir PULSO.
- */
-
-const rama4 =
-    crearRuta(({ M, L, C }) => {
-
-        M(SPLIT_X, CENTER_Y);
-
-        L(720, 160);
-
-        L(750, 174);
-
-        L(780, 188);
-
-        L(805, 194);
-
-        L(830, 194);
-
-        L(850, 188);
-
-        L(865, 178);
-
-        L(875, 164);
-
-        L(875, 145);
-
-        L(885, 128);
-
-        L(900, 120);
-
-        L(920, 120);
-
-        L(940, 128);
-
-        L(952, 143);
-
-        L(958, 160);
-
-        L(958, 178);
-
-        L(970, 190);
-
-        L(990, 194);
-
-        L(1015, 194);
-
-        L(1040, 188);
-
-        L(1065, 176);
-
-        L(1085, 160);
-
-    });
-
-
-
-/* =====================================================
-   EBA — DETALHES INTERNOS
-   ===================================================== */
-
-/*
- * Esses traços completam o símbolo.
- *
- * Eles aparecem depois que as três linhas
- * principais chegam à região central.
- */
-
-
-/* Traço superior / detalhe EBA */
-
-const ebaSuperior =
-    crearRuta(({ M, L }) => {
-
-        M(775, 92);
-
-        L(825, 92);
-
-        L(875, 92);
-
-        L(925, 92);
-
-    });
-
-
-/* Traço central */
-
-const ebaCentro =
-    crearRuta(({ M, L }) => {
-
-        M(790, CENTER_Y);
-
-        L(835, CENTER_Y);
-
-        L(880, CENTER_Y);
-
-        L(925, CENTER_Y);
-
-    });
-
-
-/* Traço inferior */
-
-const ebaInferior =
-    crearRuta(({ M, L }) => {
-
-        M(775, 208);
-
-        L(825, 208);
-
-        L(875, 208);
-
-        L(925, 208);
-
-    });
-
-
-
-/* =====================================================
-   PULSO — LETRA P
-   ===================================================== */
-
-const letraP =
-    crearRuta(({ M, L, C }) => {
-
-        M(1110, 205);
-
-        L(1110, 95);
-
-        L(1145, 95);
-
-        C(
-            1170,
-            95,
-            1185,
-            110,
-            1185,
-            128
-        );
-
-        C(
-            1185,
-            146,
-            1170,
-            158,
-            1145,
-            158
-        );
-
-        L(1110, 158);
-
-    });
-
-
-
-/* =====================================================
-   PULSO — LETRA U
-   ===================================================== */
-
-const letraU =
-    crearRuta(({ M, L, C }) => {
-
-        M(1210, 95);
-
-        L(1210, 175);
-
-        C(
-            1210,
-            198,
-            1225,
-            208,
-            1245,
-            208
-        );
-
-        C(
-            1265,
-            208,
-            1280,
-            198,
-            1280,
-            175
-        );
-
-        L(1280, 95);
-
-    });
-
-
-
-/* =====================================================
-   PULSO — LETRA L
-   ===================================================== */
-
-const letraL =
-    crearRuta(({ M, L }) => {
-
-        M(1310, 95);
-
-        L(1310, 208);
-
-        L(1370, 208);
-
-    });
-
-
-
-/* =====================================================
-   PULSO — LETRA S
-   ===================================================== */
-
-const letraS =
-    crearRuta(({ M, C }) => {
-
-        M(1460, 105);
-
-        C(
-            1445,
-            94,
-            1420,
-            90,
-            1400,
-            100
-        );
-
-        C(
-            1380,
-            110,
-            1385,
-            132,
-            1405,
-            142
-        );
-
-        C(
-            1425,
-            152,
-            1455,
-            155,
-            1465,
-            172
-        );
-
-        C(
-            1475,
-            190,
-            1455,
-            208,
-            1430,
-            208
-        );
-
-        C(
-            1410,
-            208,
-            1395,
-            202,
-            1385,
-            192
-        );
-
-    });
-
-
-
-/* =====================================================
-   PULSO — LETRA O
-   ===================================================== */
-
-const letraO =
-    crearRuta(({ M, L, C }) => {
-
-        M(1510, 125);
-
-        C(
-            1510,
-            105,
-            1525,
-            95,
-            1545,
-            95
-        );
-
-        C(
-            1565,
-            95,
-            1580,
-            105,
-            1580,
-            125
-        );
-
-        L(1580, 178);
-
-        C(
-            1580,
-            198,
-            1565,
-            208,
-            1545,
-            208
-        );
-
-        C(
-            1525,
-            208,
-            1510,
-            198,
-            1510,
-            178
-        );
-
-        L(1510, 125);
-
-    });
-
-
-
-/* =====================================================
-   CONTINUACIONES
-   ===================================================== */
-
-/*
- * MUY IMPORTANTE:
- *
- * Las líneas NO vuelven hacia atrás.
- *
- * Una vez terminado el logo,
- * cada rama continúa físicamente hacia la derecha.
- *
- * Las cuatro mantienen su separación.
- */
-
-
-/* Rama superior */
-
-const continuacion1 =
-    crearRuta(({ M, L, C }) => {
-
-        M(1035, 125);
-
-        C(
-            1100,
-            108,
-            1180,
-            95,
-            1260,
-            92
-        );
-
-        C(
-            1350,
-            88,
-            1430,
-            92,
-            1510,
-            100
-        );
-
-        L(1600, 108);
-
-        C(
-            1640,
-            112,
-            1670,
-            128,
-            MERGE_X,
-            CENTER_Y
-        );
-
-    });
-
-
-/* Rama central */
-
-const continuacion2 =
-    crearRuta(({ M, L, C }) => {
-
-        M(1035, CENTER_Y);
-
-        C(
-            1140,
-            148,
-            1240,
-            146,
-            1340,
-            148
-        );
-
-        C(
-            1440,
-            149,
-            1530,
-            149,
-            1600,
-            150
-        );
-
-        C(
-            1640,
-            150,
-            1670,
-            150,
-            MERGE_X,
-            CENTER_Y
-        );
-
-    });
-
-
-/* Rama inferior */
-
-const continuacion3 =
-    crearRuta(({ M, L, C }) => {
-
-        M(1035, 175);
-
-        C(
-            1120,
-            192,
-            1200,
-            205,
-            1290,
-            208
-        );
-
-        C(
-            1400,
-            212,
-            1510,
-            205,
-            1600,
-            190
-        );
-
-        C(
-            1640,
-            184,
-            1670,
-            170,
-            MERGE_X,
-            CENTER_Y
-        );
-
-    });
-
-
-/* Rama PULSO */
-
-const continuacion4 =
-    crearRuta(({ M, L, C }) => {
-
-        M(1580, 178);
-
-        C(
-            1600,
-            190,
-            1615,
-            205,
-            1625,
-            208
-        );
-
-        C(
-            1640,
-            210,
-            1655,
-            198,
-            1665,
-            180
-        );
-
-        C(
-            1675,
-            165,
-            1680,
-            155,
-            MERGE_X,
-            CENTER_Y
-        );
-
-    });
-
-
-
-/* =====================================================
-   LÍNEA FINAL
-   ===================================================== */
-
-/*
- * Las cuatro ramas llegan EXACTAMENTE al mismo punto.
- *
- * Desde aquí ya existe una sola línea.
- */
-
-const lineaFinal =
-    crearRuta(({ M, L, C }) => {
-
-        M(MERGE_X, CENTER_Y);
-
-        C(
-            1730,
-            CENTER_Y,
-            1780,
-            CENTER_Y,
-            1810,
-            CENTER_Y
-        );
-
-        L(END_X, CENTER_Y);
-
-    });
-
-
-
-/* =====================================================
-   COLECCIONES
-   ===================================================== */
-
-const ramas =
-    [
-        rama1,
-        rama2,
-        rama3,
-        rama4
-    ];
-
-
-const continuaciones =
-    [
-        continuacion1,
-        continuacion2,
-        continuacion3,
-        continuacion4
-    ];
-
-
-const detallesEBA =
-    [
-        ebaSuperior,
-        ebaCentro,
-        ebaInferior
-    ];
-
-
-const letrasPulso =
-    [
-        letraP,
-        letraU,
-        letraL,
-        letraS,
-        letraO
-    ];
-
-
-
-/* =====================================================
-   GLOW
-   ===================================================== */
-
-const dibujarGlow =
-    (intensidad) => {
-
-        intensidad =
-            clamp(intensidad);
-
-
-        if (intensidad <= 0) {
-            return;
-        }
-
-
-        ctx.save();
-
-
-        const gradiente =
-            ctx.createRadialGradient(
-                1100,
-                CENTER_Y,
-                20,
-                1100,
-                CENTER_Y,
-                650
-            );
-
-
-        gradiente.addColorStop(
-            0,
-            `rgba(255,106,0,${0.18 * intensidad})`
-        );
-
-
-        gradiente.addColorStop(
-            0.35,
-            `rgba(255,106,0,${0.08 * intensidad})`
-        );
-
-
-        gradiente.addColorStop(
-            1,
-            "rgba(255,106,0,0)"
-        );
-
-
-        ctx.fillStyle =
-            gradiente;
-
-
-        ctx.beginPath();
-
-
-        ctx.ellipse(
-            1100,
-            CENTER_Y,
-            650,
-            125,
-            0,
-            0,
-            Math.PI * 2
-        );
-
-
-        ctx.fill();
-
-
-        ctx.restore();
-
-    };
-
-
-
-/* =====================================================
-   ESTILO DE LAS RAMAS
-   ===================================================== */
-
-const estiloRama = (
-    progreso,
-    alpha = 1
-) => {
-
-    return {
-
-        color: SILVER,
-
-        grosor:
-            2 +
-            3.5 * progreso,
-
-        glow: ORANGE,
-
-        glowBlur:
-            5 +
-            10 * progreso,
-
-        alpha
-
-    };
-
-};
-
-
-
-/* =====================================================
-   DIBUJAR DETALLES EBA
-   ===================================================== */
-
-const dibujarDetallesEBA =
-    (progreso) => {
-
-        detallesEBA.forEach(
-            (detalle, indice) => {
-
-                const inicio =
-                    indice * 0.18;
-
-                const progresoDetalle =
-                    clamp(
-                        (
-                            progreso -
-                            inicio
-                        ) / 0.82
-                    );
-
-
-                dibujarRuta(
-                    detalle,
-                    easeOut(
-                        progresoDetalle
-                    ),
-                    {
-                        color: SILVER,
-                        grosor:
-                            2 +
-                            3.5 * progreso,
-                        glow: ORANGE,
-                        glowBlur: 11
-                    }
-                );
-
-            }
-        );
-
-    };
-
-
-
-/* =====================================================
-   DIBUJAR PULSO
-   ===================================================== */
-
-const dibujarPalabraPulso =
-    (progreso) => {
-
-        const cantidad =
-            letrasPulso.length;
-
-
-        letrasPulso.forEach(
-            (letra, indice) => {
-
-                const inicio =
-                    indice / cantidad;
-
-                const fin =
-                    (indice + 1) / cantidad;
-
-
-                const progresoLetra =
-                    clamp(
-                        (
-                            progreso -
-                            inicio
-                        ) /
-                        (
-                            fin -
-                            inicio
-                        )
-                    );
-
-
-                dibujarRuta(
-                    letra,
-                    easeOut(
-                        progresoLetra
-                    ),
-                    {
-                        color: SILVER,
-                        grosor:
-                            2 +
-                            3.5 * progreso,
-                        glow: ORANGE,
-                        glowBlur: 11
-                    }
-                );
-
-            }
-        );
-
-    };
-
-
-
-/* =====================================================
-   LIMPIAR CANVAS
-   ===================================================== */
-
-const limpiar =
-    () => {
-
-        ctx.setTransform(
-            1,
-            0,
-            0,
-            1,
-            0,
-            0
-        );
-
-
-        ctx.clearRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        ctx.setTransform(
-            dpr * escala,
-            0,
-            0,
-            dpr * escala,
-            dpr * offsetX,
-            dpr * offsetY
-        );
-
-    };
-
-
-
-/* =====================================================
-   ANIMACIÓN
-   ===================================================== */
-
-/*
- * 0 → 2600
- * ECG entra.
- *
- * 2600 → 6100
- * Se divide en 4 y construye el logo.
- *
- * 6100 → 6900
- * El logo queda visible apenas un momento.
- *
- * 6900 → 9000
- * Las cuatro líneas avanzan hacia la derecha
- * y empiezan a converger.
- *
- * 9000 → 10000
- * Se unen físicamente en una sola línea.
- *
- * 10000 → 11200
- * La línea única sale por la derecha
- * y desaparece suavemente.
- *
- * Después vuelve a empezar.
- */
-
-
-/* ---------- TIEMPOS ---------- */
-
-const T_ECG_FIN =
-    2600;
-
-const T_LOGO_FIN =
-    6100;
-
-const T_MOMENTO_FIN =
-    6900;
-
-const T_CONTINUACION_FIN =
-    9000;
-
-const T_UNION_FIN =
-    10000;
-
-const T_FIN =
-    DURACION;
-
-
-
-/* =====================================================
-   RENDER
-   ===================================================== */
-
-const inicio =
-    performance.now();
-
-
-const render =
-    (tiempo) => {
-
-        limpiar();
-
-
-        const t =
-            tiempo % DURACION;
-
-
-
-        /* =============================================
-           ETAPA 1
-           ECG
-           ============================================= */
-
-        if (
-            t < T_ECG_FIN
-        ) {
-
-            const progreso =
-                easeOut(
-                    t /
-                    T_ECG_FIN
-                );
-
-
-            dibujarRuta(
-                ECG,
-                progreso,
-                {
-                    color: ORANGE,
-
-                    grosor:
-                        1.1 +
-                        4.4 * progreso,
-
-                    glow: ORANGE,
-
-                    glowBlur:
-                        4 +
-                        13 * progreso
-                }
-            );
-
-
-            return;
-
-        }
-
-
-
-        /* =============================================
-           ECG COMPLETO
-           ============================================= */
-
-        dibujarRuta(
-            ECG,
-            1,
-            {
-                color: ORANGE,
-                grosor: 5.5,
-                glow: ORANGE,
-                glowBlur: 15
-            }
-        );
-
-
-
-        /* =============================================
-           ETAPA 2
-           DIVISIÓN + CONSTRUCCIÓN
-           ============================================= */
-
-        if (
-            t <
-            T_LOGO_FIN
-        ) {
-
-            const progreso =
-                easeInOut(
-                    (
-                        t -
-                        T_ECG_FIN
-                    ) /
-                    (
-                        T_LOGO_FIN -
-                        T_ECG_FIN
-                    )
-                );
+            };
 
 
             /*
-             * Las cuatro ramas nacen
-             * del mismo punto.
-             */
-
-            ramas.forEach(
-                (rama) => {
-
-                    dibujarRuta(
-                        rama,
-                        progreso,
-                        estiloRama(
-                            progreso
-                        )
-                    );
-
-                }
-            );
-
-
-            /*
-             * Detalles que terminan
-             * de formar el símbolo EBA.
-             */
-
-            dibujarDetallesEBA(
-                progreso
-            );
-
-
-            /*
-             * PULSO se construye
-             * progresivamente.
-             */
-
-            const progresoPulso =
-                clamp(
-                    (
-                        progreso -
-                        0.08
-                    ) /
-                    0.92
-                );
-
-
-            dibujarPalabraPulso(
-                progresoPulso
-            );
-
-
-            dibujarGlow(
-                progreso
-            );
-
-
-            return;
-
-        }
-
-
-
-        /* =============================================
-           ETAPA 3
-           LOGO COMPLETO — MOMENTO BREVE
-           ============================================= */
-
-        if (
-            t <
-            T_MOMENTO_FIN
-        ) {
-
-            ramas.forEach(
-                (rama) => {
-
-                    dibujarRuta(
-                        rama,
-                        1,
-                        {
-                            color: SILVER,
-                            grosor: 5.5,
-                            glow: ORANGE,
-                            glowBlur: 13
-                        }
-                    );
-
-                }
-            );
-
-
-            dibujarDetallesEBA(
-                1
-            );
-
-
-            dibujarPalabraPulso(
-                1
-            );
-
-
-            dibujarGlow(
-                1
-            );
-
-
-            return;
-
-        }
-
-
-
-        /* =============================================
-           ETAPA 4
-           LAS CUATRO LÍNEAS AVANZAN
-           ============================================= */
-
-        if (
-            t <
-            T_CONTINUACION_FIN
-        ) {
-
-            /*
-             * Logo completo permanece.
-             */
-
-            ramas.forEach(
-                (rama) => {
-
-                    dibujarRuta(
-                        rama,
-                        1,
-                        {
-                            color: SILVER,
-                            grosor: 5.5,
-                            glow: ORANGE,
-                            glowBlur: 12
-                        }
-                    );
-
-                }
-            );
-
-
-            dibujarDetallesEBA(
-                1
-            );
-
-
-            dibujarPalabraPulso(
-                1
-            );
-
-
-            /*
-             * Cada rama continúa hacia
-             * la derecha.
-             */
-
-            const progreso =
-                easeInOut(
-                    (
-                        t -
-                        T_MOMENTO_FIN
-                    ) /
-                    (
-                        T_CONTINUACION_FIN -
-                        T_MOMENTO_FIN
-                    )
-                );
-
-
-            continuaciones.forEach(
-                (ruta) => {
-
-                    dibujarRuta(
-                        ruta,
-                        progreso,
-                        {
-                            color: SILVER,
-                            grosor: 5.5,
-                            glow: ORANGE,
-                            glowBlur: 12
-                        }
-                    );
-
-                }
-            );
-
-
-            dibujarGlow(
-                1
-            );
-
-
-            return;
-
-        }
-
-
-
-        /* =============================================
-           ETAPA 5
-           CONVERGENCIA FÍSICA
-           ============================================= */
-
-        if (
-            t <
-            T_UNION_FIN
-        ) {
-
-            /*
-             * Logo completo.
-             */
-
-            ramas.forEach(
-                (rama) => {
-
-                    dibujarRuta(
-                        rama,
-                        1,
-                        {
-                            color: SILVER,
-                            grosor: 5.5,
-                            glow: ORANGE,
-                            glowBlur: 11
-                        }
-                    );
-
-                }
-            );
-
-
-            dibujarDetallesEBA(
-                1
-            );
-
-
-            dibujarPalabraPulso(
-                1
-            );
-
-
-            /*
-             * Toda la continuación permanece.
-             */
-
-            continuaciones.forEach(
-                (ruta) => {
-
-                    dibujarRuta(
-                        ruta,
-                        1,
-                        {
-                            color: SILVER,
-                            grosor: 5.3,
-                            glow: ORANGE,
-                            glowBlur: 11
-                        }
-                    );
-
-                }
-            );
-
-
-            /*
-             * Intensidad de unión.
-             */
-
-            const progresoUnion =
-                easeInOut(
-                    (
-                        t -
-                        T_CONTINUACION_FIN
-                    ) /
-                    (
-                        T_UNION_FIN -
-                        T_CONTINUACION_FIN
-                    )
-                );
-
-
-            /*
-             * Una pequeña iluminación
-             * marca el punto donde las cuatro
-             * señales empiezan a encontrarse.
-             */
-
-            ctx.save();
-
-
-            ctx.globalAlpha =
-                0.15 +
-                0.45 *
-                progresoUnion;
-
-
-            ctx.fillStyle =
-                ORANGE;
-
-
-            ctx.shadowColor =
-                ORANGE;
-
-
-            ctx.shadowBlur =
-                30;
-
-
-            ctx.beginPath();
-
-
-            ctx.arc(
-                MERGE_X,
-                CENTER_Y,
-                8 +
-                10 *
-                progresoUnion,
-                0,
-                Math.PI * 2
-            );
-
-
-            ctx.fill();
-
-
-            ctx.restore();
-
-
-            /*
-             * El tramo final de cada continuación
-             * ya termina en el mismo punto.
+             * Coordenadas internas.
              *
-             * A medida que nos acercamos al punto,
-             * la percepción visual pasa de cuatro
-             * líneas a una.
+             * Todo se dibuja en un espacio de 1800 × 300.
+             * Después Canvas lo adapta al tamaño real.
              */
 
-            const alphaUnion =
-                1 -
-                progresoUnion;
+            const DESIGN_WIDTH = 1800;
+            const DESIGN_HEIGHT = 300;
 
+            const CENTER_Y = 150;
 
             /*
-             * Redibujamos la zona cercana al
-             * punto de unión con una línea central.
+             * La señal comienza MUY a la izquierda.
              */
+            const START_X = -80;
 
-            const lineaCentral =
-                crearRuta(({ M, C }) => {
+            /*
+             * Punto donde una línea se convierte
+             * en cuatro recorridos.
+             */
+            const SPLIT_X = 590;
 
-                    M(
-                        1550,
-                        CENTER_Y
+            /*
+             * Punto donde las cuatro líneas
+             * vuelven a encontrarse.
+             */
+            const MERGE_X = 1510;
+
+            /*
+             * La línea continúa hasta el borde derecho.
+             */
+            const END_X = 1880;
+
+
+            /* =================================================
+               TIEMPOS DE LA ANIMACIÓN
+               ================================================= */
+
+            const TIME = {
+
+                entrada: 1900,
+
+                construccion: 2700,
+
+                recorrido: 2300,
+
+                union: 1700,
+
+                salida: 1700
+
+            };
+
+            const TOTAL_TIME =
+                TIME.entrada +
+                TIME.construccion +
+                TIME.recorrido +
+                TIME.union +
+                TIME.salida;
+
+
+            /* =================================================
+               VARIABLES CANVAS
+               ================================================= */
+
+            let dpr = 1;
+
+            let scale = 1;
+
+            let offsetX = 0;
+
+            let offsetY = 0;
+
+            let animationStart = 0;
+
+            let animationFrame = null;
+
+
+            /* =================================================
+               RESIZE
+               ================================================= */
+
+            function resizeCanvas() {
+
+                const rect =
+                    canvas.getBoundingClientRect();
+
+                dpr = Math.min(
+                    window.devicePixelRatio || 1,
+                    2
+                );
+
+                canvas.width =
+                    Math.max(
+                        1,
+                        Math.round(
+                            rect.width * dpr
+                        )
                     );
 
-                    C(
-                        1610,
-                        CENTER_Y,
-                        1660,
-                        CENTER_Y,
-                        MERGE_X,
-                        CENTER_Y
+                canvas.height =
+                    Math.max(
+                        1,
+                        Math.round(
+                            rect.height * dpr
+                        )
                     );
 
-                });
+                scale =
+                    Math.min(
+                        rect.width /
+                            DESIGN_WIDTH,
 
+                        rect.height /
+                            DESIGN_HEIGHT
+                    );
 
-            dibujarRuta(
-                lineaCentral,
-                progresoUnion,
-                {
-                    color: ORANGE,
-                    grosor:
-                        1.5 +
-                        4 *
-                        progresoUnion,
-                    glow: ORANGE,
-                    glowBlur:
-                        7 +
-                        8 *
-                        progresoUnion,
-                    alpha:
-                        progresoUnion
+                /*
+                 * Evitamos que el logo quede demasiado chico
+                 * en pantallas anchas.
+                 */
+                if (!Number.isFinite(scale)) {
+                    scale = 1;
                 }
+
+                offsetX =
+                    (
+                        rect.width -
+                        DESIGN_WIDTH * scale
+                    ) / 2;
+
+                offsetY =
+                    (
+                        rect.height -
+                        DESIGN_HEIGHT * scale
+                    ) / 2;
+
+            }
+
+
+            window.addEventListener(
+                "resize",
+                resizeCanvas
             );
 
+            resizeCanvas();
 
-            /*
-             * La zona anterior sigue presente.
-             */
 
-            if (
-                alphaUnion > 0
+            /* =================================================
+               UTILIDADES
+               ================================================= */
+
+            function clamp(
+                valor,
+                minimo = 0,
+                maximo = 1
             ) {
 
-                continuaciones.forEach(
-                    (ruta) => {
+                return Math.max(
+                    minimo,
+                    Math.min(
+                        maximo,
+                        valor
+                    )
+                );
 
-                        dibujarRuta(
-                            ruta,
+            }
+
+
+            function easeInOut(
+                valor
+            ) {
+
+                valor = clamp(valor);
+
+                return (
+                    valor < 0.5
+                        ? 2 * valor * valor
+                        : 1 -
+                          Math.pow(
+                              -2 * valor + 2,
+                              2
+                          ) / 2
+                );
+
+            }
+
+
+            function easeOut(
+                valor
+            ) {
+
+                valor = clamp(valor);
+
+                return 1 -
+                    Math.pow(
+                        1 - valor,
+                        3
+                    );
+
+            }
+
+
+            function lerp(
+                a,
+                b,
+                t
+            ) {
+
+                return a +
+                    (b - a) * t;
+
+            }
+
+
+            /* =================================================
+               PUNTO
+               ================================================= */
+
+            function point(
+                x,
+                y
+            ) {
+
+                return {
+                    x,
+                    y
+                };
+
+            }
+
+
+            /* =================================================
+               INTERPOLAR DOS PUNTOS
+               ================================================= */
+
+            function interpolatePoint(
+                a,
+                b,
+                t
+            ) {
+
+                return point(
+                    lerp(
+                        a.x,
+                        b.x,
+                        t
+                    ),
+
+                    lerp(
+                        a.y,
+                        b.y,
+                        t
+                    )
+                );
+
+            }
+
+
+            /* =================================================
+               DIBUJAR POLILÍNEA
+               ================================================= */
+
+            function drawPolyline(
+                puntos,
+                progreso,
+                opciones = {}
+            ) {
+
+                if (
+                    !puntos ||
+                    puntos.length < 2
+                ) {
+                    return;
+                }
+
+                progreso =
+                    clamp(progreso);
+
+                const color =
+                    opciones.color ||
+                    COLORS.orange;
+
+                const width =
+                    opciones.width || 3;
+
+                const glow =
+                    opciones.glow || 0;
+
+                ctx.save();
+
+                ctx.strokeStyle =
+                    color;
+
+                ctx.lineWidth =
+                    width;
+
+                ctx.lineCap =
+                    "round";
+
+                ctx.lineJoin =
+                    "round";
+
+                if (glow > 0) {
+
+                    ctx.shadowColor =
+                        color;
+
+                    ctx.shadowBlur =
+                        glow;
+
+                }
+
+                const totalSegments =
+                    puntos.length - 1;
+
+                const exact =
+                    progreso *
+                    totalSegments;
+
+                const completos =
+                    Math.floor(
+                        exact
+                    );
+
+                const parcial =
+                    exact -
+                    completos;
+
+                ctx.beginPath();
+
+                ctx.moveTo(
+                    puntos[0].x,
+                    puntos[0].y
+                );
+
+                for (
+                    let i = 1;
+                    i <= completos &&
+                    i < puntos.length;
+                    i++
+                ) {
+
+                    ctx.lineTo(
+                        puntos[i].x,
+                        puntos[i].y
+                    );
+
+                }
+
+                if (
+                    completos <
+                    totalSegments
+                ) {
+
+                    const siguiente =
+                        puntos[
+                            completos + 1
+                        ];
+
+                    const anterior =
+                        puntos[
+                            completos
+                        ];
+
+                    const p =
+                        interpolatePoint(
+                            anterior,
+                            siguiente,
+                            parcial
+                        );
+
+                    ctx.lineTo(
+                        p.x,
+                        p.y
+                    );
+
+                }
+
+                ctx.stroke();
+
+                ctx.restore();
+
+            }
+
+
+            /* =================================================
+               ECG DE ENTRADA
+               ================================================= */
+
+            function crearECGEntrada() {
+
+                return [
+
+                    point(
+                        START_X,
+                        CENTER_Y
+                    ),
+
+                    point(
+                        80,
+                        CENTER_Y
+                    ),
+
+                    point(
+                        145,
+                        CENTER_Y - 2
+                    ),
+
+                    point(
+                        195,
+                        CENTER_Y + 2
+                    ),
+
+                    point(
+                        245,
+                        CENTER_Y
+                    ),
+
+                    point(
+                        300,
+                        CENTER_Y
+                    ),
+
+                    point(
+                        340,
+                        CENTER_Y - 8
+                    ),
+
+                    point(
+                        370,
+                        CENTER_Y + 5
+                    ),
+
+                    point(
+                        402,
+                        CENTER_Y - 5
+                    ),
+
+                    point(
+                        438,
+                        CENTER_Y
+                    ),
+
+                    point(
+                        470,
+                        CENTER_Y
+                    ),
+
+                    point(
+                        495,
+                        CENTER_Y - 55
+                    ),
+
+                    point(
+                        518,
+                        CENTER_Y + 38
+                    ),
+
+                    point(
+                        545,
+                        CENTER_Y - 18
+                    ),
+
+                    point(
+                        SPLIT_X,
+                        CENTER_Y
+                    )
+
+                ];
+
+            }
+
+
+            const ecgEntrada =
+                crearECGEntrada();
+
+
+            /* =================================================
+               RECORRIDOS DEL LOGO
+
+               Las primeras tres líneas forman JUNTAS
+               el símbolo EBA.
+
+               La cuarta construye PULSO abajo.
+               ================================================= */
+
+            function crearRutaEBA1() {
+
+                return [
+
+                    point(
+                        SPLIT_X,
+                        138
+                    ),
+
+                    point(
+                        625,
+                        115
+                    ),
+
+                    point(
+                        660,
+                        92
+                    ),
+
+                    point(
+                        720,
+                        78
+                    ),
+
+                    point(
+                        785,
+                        80
+                    ),
+
+                    point(
+                        820,
+                        105
+                    ),
+
+                    point(
+                        820,
+                        128
+                    ),
+
+                    point(
+                        785,
+                        142
+                    ),
+
+                    point(
+                        725,
+                        142
+                    )
+
+                ];
+
+            }
+
+
+            function crearRutaEBA2() {
+
+                return [
+
+                    point(
+                        SPLIT_X,
+                        150
+                    ),
+
+                    point(
+                        625,
+                        150
+                    ),
+
+                    point(
+                        680,
+                        150
+                    ),
+
+                    point(
+                        735,
+                        150
+                    ),
+
+                    point(
+                        785,
+                        150
+                    ),
+
+                    point(
+                        820,
+                        166
+                    ),
+
+                    point(
+                        820,
+                        190
+                    ),
+
+                    point(
+                        785,
+                        218
+                    ),
+
+                    point(
+                        720,
+                        220
+                    ),
+
+                    point(
+                        660,
+                        205
+                    ),
+
+                    point(
+                        625,
+                        185
+                    )
+
+                ];
+
+            }
+
+
+            function crearRutaEBA3() {
+
+                return [
+
+                    point(
+                        SPLIT_X,
+                        162
+                    ),
+
+                    point(
+                        625,
+                        190
+                    ),
+
+                    point(
+                        660,
+                        220
+                    ),
+
+                    point(
+                        720,
+                        238
+                    ),
+
+                    point(
+                        785,
+                        235
+                    ),
+
+                    point(
+                        835,
+                        215
+                    ),
+
+                    point(
+                        855,
+                        180
+                    ),
+
+                    point(
+                        855,
+                        130
+                    ),
+
+                    point(
+                        835,
+                        95
+                    ),
+
+                    point(
+                        800,
+                        72
+                    ),
+
+                    point(
+                        760,
+                        65
+                    )
+
+                ];
+
+            }
+
+
+            /*
+             * PULSO va ABAJO.
+             *
+             * Esta cuarta línea recorre las letras
+             * del nombre de forma progresiva.
+             */
+            function crearRutaPULSO() {
+
+                return [
+
+                    point(
+                        SPLIT_X,
+                        175
+                    ),
+
+                    /* P */
+                    point(
+                        625,
+                        255
+                    ),
+
+                    point(
+                        625,
+                        225
+                    ),
+
+                    point(
+                        625,
+                        202
+                    ),
+
+                    point(
+                        650,
+                        202
+                    ),
+
+                    point(
+                        665,
+                        210
+                    ),
+
+                    point(
+                        665,
+                        225
+                    ),
+
+                    point(
+                        650,
+                        235
+                    ),
+
+                    point(
+                        625,
+                        235
+                    ),
+
+                    /* U */
+                    point(
+                        695,
+                        202
+                    ),
+
+                    point(
+                        695,
+                        240
+                    ),
+
+                    point(
+                        705,
+                        252
+                    ),
+
+                    point(
+                        720,
+                        252
+                    ),
+
+                    point(
+                        730,
+                        240
+                    ),
+
+                    point(
+                        730,
+                        202
+                    ),
+
+                    /* L */
+                    point(
+                        760,
+                        202
+                    ),
+
+                    point(
+                        760,
+                        252
+                    ),
+
+                    point(
+                        790,
+                        252
+                    ),
+
+                    /* S */
+                    point(
+                        835,
+                        208
+                    ),
+
+                    point(
+                        825,
+                        202
+                    ),
+
+                    point(
+                        805,
+                        202
+                    ),
+
+                    point(
+                        795,
+                        212
+                    ),
+
+                    point(
+                        805,
+                        225
+                    ),
+
+                    point(
+                        825,
+                        230
+                    ),
+
+                    point(
+                        835,
+                        240
+                    ),
+
+                    point(
+                        825,
+                        252
+                    ),
+
+                    point(
+                        805,
+                        252
+                    ),
+
+                    /* O */
+                    point(
+                        870,
+                        205
+                    ),
+
+                    point(
+                        895,
+                        202
+                    ),
+
+                    point(
+                        912,
+                        215
+                    ),
+
+                    point(
+                        912,
+                        240
+                    ),
+
+                    point(
+                        895,
+                        252
+                    ),
+
+                    point(
+                        870,
+                        248
+                    ),
+
+                    point(
+                        860,
+                        235
+                    ),
+
+                    point(
+                        860,
+                        215
+                    ),
+
+                    point(
+                        870,
+                        205
+                    ),
+
+                    /*
+                     * Salida desde PULSO
+                     */
+                    point(
+                        955,
+                        225
+                    )
+
+                ];
+
+            }
+
+
+            const ruta1 =
+                crearRutaEBA1();
+
+            const ruta2 =
+                crearRutaEBA2();
+
+            const ruta3 =
+                crearRutaEBA3();
+
+            const ruta4 =
+                crearRutaPULSO();
+
+
+            /* =================================================
+               CONTINUACIONES HACIA LA DERECHA
+
+               Las cuatro líneas NO desaparecen.
+               Siguen físicamente desde el logo.
+               ================================================= */
+
+            function continuarLinea(
+                inicioX,
+                inicioY,
+                numero
+            ) {
+
+                const variacion =
+                    Math.sin(
+                        numero * 2.3
+                    ) * 4;
+
+                return [
+
+                    point(
+                        inicioX,
+                        inicioY
+                    ),
+
+                    point(
+                        980,
+                        inicioY +
+                            variacion
+                    ),
+
+                    point(
+                        1060,
+                        inicioY -
+                            5
+                    ),
+
+                    point(
+                        1140,
+                        inicioY +
+                            4
+                    ),
+
+                    point(
+                        1220,
+                        inicioY -
+                            3
+                    ),
+
+                    point(
+                        1300,
+                        inicioY +
+                            5
+                    ),
+
+                    point(
+                        1380,
+                        inicioY -
+                            4
+                    ),
+
+                    point(
+                        MERGE_X,
+                        CENTER_Y
+                    )
+
+                ];
+
+            }
+
+
+            /*
+             * Una vez construido el logo, cada línea
+             * abandona progresivamente su forma y vuelve
+             * a la trayectoria central.
+             */
+
+            const continuacion1 =
+                continuarLinea(
+                    725,
+                    142,
+                    1
+                );
+
+            const continuacion2 =
+                continuarLinea(
+                    625,
+                    185,
+                    2
+                );
+
+            const continuacion3 =
+                continuarLinea(
+                    760,
+                    65,
+                    3
+                );
+
+            const continuacion4 =
+                continuarLinea(
+                    955,
+                    225,
+                    4
+                );
+
+
+            /* =================================================
+               LÍNEA FINAL
+               ================================================= */
+
+            function crearSalidaFinal() {
+
+                return [
+
+                    point(
+                        MERGE_X,
+                        CENTER_Y
+                    ),
+
+                    point(
+                        1570,
+                        CENTER_Y - 2
+                    ),
+
+                    point(
+                        1630,
+                        CENTER_Y + 2
+                    ),
+
+                    point(
+                        1690,
+                        CENTER_Y
+                    ),
+
+                    point(
+                        1750,
+                        CENTER_Y - 1
+                    ),
+
+                    point(
+                        1810,
+                        CENTER_Y + 1
+                    ),
+
+                    point(
+                        END_X,
+                        CENTER_Y
+                    )
+
+                ];
+
+            }
+
+
+            const salidaFinal =
+                crearSalidaFinal();
+
+
+            /* =================================================
+               PULSO VARIABLE
+               
+               Esto evita que la línea sea un zigzag idéntico
+               en cada ciclo.
+               ================================================= */
+
+            function dibujarPulsoVariable(
+                tiempo
+            ) {
+
+                const puntos = [];
+
+                const comienzo =
+                    MERGE_X;
+
+                const final =
+                    END_X;
+
+                const cantidad = 30;
+
+                for (
+                    let i = 0;
+                    i <= cantidad;
+                    i++
+                ) {
+
+                    const t =
+                        i / cantidad;
+
+                    const x =
+                        lerp(
+                            comienzo,
+                            final,
+                            t
+                        );
+
+                    const onda =
+                        Math.sin(
+                            t * 8 +
+                            tiempo * 0.0015
+                        ) * 2;
+
+                    const micro =
+                        Math.sin(
+                            t * 22 +
+                            tiempo * 0.002
+                        ) * 1.2;
+
+                    puntos.push(
+                        point(
+                            x,
+                            CENTER_Y +
+                                onda +
+                                micro
+                        )
+                    );
+
+                }
+
+                return puntos;
+
+            }
+
+
+            /* =================================================
+               DIBUJAR FONDO DE LUZ
+               ================================================= */
+
+            function dibujarGlow() {
+
+                const gradiente =
+                    ctx.createRadialGradient(
+                        DESIGN_WIDTH * 0.47,
+                        DESIGN_HEIGHT * 0.50,
+                        10,
+
+                        DESIGN_WIDTH * 0.47,
+                        DESIGN_HEIGHT * 0.50,
+                        430
+                    );
+
+                gradiente.addColorStop(
+                    0,
+                    "rgba(255,106,0,0.16)"
+                );
+
+                gradiente.addColorStop(
+                    0.45,
+                    "rgba(255,106,0,0.06)"
+                );
+
+                gradiente.addColorStop(
+                    1,
+                    "rgba(255,106,0,0)"
+                );
+
+                ctx.save();
+
+                ctx.fillStyle =
+                    gradiente;
+
+                ctx.fillRect(
+                    0,
+                    0,
+                    DESIGN_WIDTH,
+                    DESIGN_HEIGHT
+                );
+
+                ctx.restore();
+
+            }
+
+
+            /* =================================================
+               DIBUJAR LOGO
+               ================================================= */
+
+            function dibujarLogo(
+                progresoConstruccion
+            ) {
+
+                /*
+                 * Las tres rutas EBA
+                 * aparecen progresivamente.
+                 */
+
+                drawPolyline(
+                    ruta1,
+                    progresoConstruccion,
+                    {
+                        color:
+                            COLORS.silver,
+                        width: 3.4,
+                        glow: 12
+                    }
+                );
+
+                drawPolyline(
+                    ruta2,
+                    progresoConstruccion,
+                    {
+                        color:
+                            COLORS.silverLight,
+                        width: 3.4,
+                        glow: 12
+                    }
+                );
+
+                drawPolyline(
+                    ruta3,
+                    progresoConstruccion,
+                    {
+                        color:
+                            COLORS.silver,
+                        width: 3.4,
+                        glow: 12
+                    }
+                );
+
+                /*
+                 * PULSO abajo.
+                 */
+                drawPolyline(
+                    ruta4,
+                    progresoConstruccion,
+                    {
+                        color:
+                            COLORS.silverLight,
+                        width: 3.1,
+                        glow: 10
+                    }
+                );
+
+            }
+
+
+            /* =================================================
+               DIBUJAR LAS CUATRO CONTINUACIONES
+               ================================================= */
+
+            function dibujarContinuaciones(
+                progreso
+            ) {
+
+                /*
+                 * Cada continuación comienza exactamente
+                 * desde la zona donde terminó su recorrido.
+                 */
+
+                drawPolyline(
+                    continuacion1,
+                    progreso,
+                    {
+                        color:
+                            COLORS.orange,
+                        width: 3.2,
+                        glow: 14
+                    }
+                );
+
+                drawPolyline(
+                    continuacion2,
+                    progreso,
+                    {
+                        color:
+                            COLORS.orange,
+                        width: 3.2,
+                        glow: 14
+                    }
+                );
+
+                drawPolyline(
+                    continuacion3,
+                    progreso,
+                    {
+                        color:
+                            COLORS.orange,
+                        width: 3.2,
+                        glow: 14
+                    }
+                );
+
+                drawPolyline(
+                    continuacion4,
+                    progreso,
+                    {
+                        color:
+                            COLORS.orange,
+                        width: 3.2,
+                        glow: 14
+                    }
+                );
+
+            }
+
+
+            /* =================================================
+               TRANSICIÓN DE CUATRO LÍNEAS → UNA
+               ================================================= */
+
+            function dibujarUnion(
+                progreso
+            ) {
+
+                progreso =
+                    easeInOut(
+                        progreso
+                    );
+
+                const lineas = [
+
+                    continuacion1,
+
+                    continuacion2,
+
+                    continuacion3,
+
+                    continuacion4
+
+                ];
+
+                lineas.forEach(
+                    (
+                        linea,
+                        indice
+                    ) => {
+
+                        /*
+                         * Cuanto más avanza la unión,
+                         * más cerca del eje central queda.
+                         */
+
+                        const puntos =
+                            linea.map(
+                                (p) => {
+
+                                    return point(
+
+                                        p.x,
+
+                                        lerp(
+                                            p.y,
+                                            CENTER_Y,
+                                            progreso
+                                        )
+
+                                    );
+
+                                }
+                            );
+
+                        /*
+                         * Al final las cuatro terminan
+                         * exactamente en MERGE_X.
+                         */
+
+                        drawPolyline(
+                            puntos,
                             1,
                             {
-                                color: SILVER,
-                                grosor: 5.3,
-                                glow: ORANGE,
-                                glowBlur: 10,
-                                alpha:
-                                    Math.max(
-                                        0.15,
-                                        alphaUnion
-                                    )
+                                color:
+                                    COLORS.orange,
+                                width:
+                                    lerp(
+                                        3.2,
+                                        2.8,
+                                        progreso
+                                    ),
+                                glow: 14
                             }
                         );
 
@@ -2856,319 +2292,486 @@ const render =
             }
 
 
-            dibujarGlow(
-                1
-            );
+            /* =================================================
+               DIBUJAR SALIDA FINAL
+               ================================================= */
+
+            function dibujarSalida(
+                progreso
+            ) {
+
+                progreso =
+                    easeOut(
+                        progreso
+                    );
+
+                const puntos =
+                    salidaFinal.map(
+                        (p) => p
+                    );
+
+                /*
+                 * El grosor disminuye al acercarse
+                 * al extremo derecho.
+                 */
+
+                drawPolyline(
+                    puntos,
+                    progreso,
+                    {
+                        color:
+                            COLORS.orange,
+                        width:
+                            lerp(
+                                2.8,
+                                1.2,
+                                progreso
+                            ),
+                        glow:
+                            lerp(
+                                14,
+                                5,
+                                progreso
+                            )
+                    }
+                );
+
+            }
 
 
-            return;
+            /* =================================================
+               DIBUJAR TODA LA ESCENA
+               ================================================= */
 
-        }
+            function dibujarEscena(
+                tiempo
+            ) {
+
+                ctx.setTransform(
+                    1,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0
+                );
+
+                ctx.clearRect(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+                ctx.save();
+
+                /*
+                 * Escala DPR.
+                 */
+                ctx.scale(
+                    dpr,
+                    dpr
+                );
+
+                /*
+                 * Transformación al espacio de diseño.
+                 */
+                ctx.translate(
+                    offsetX,
+                    offsetY
+                );
+
+                ctx.scale(
+                    scale,
+                    scale
+                );
 
 
+                /* --------------------------------------------
+                   GLOW
+                   -------------------------------------------- */
 
-        /* =============================================
-           ETAPA 6
-           UNA SOLA LÍNEA
-           ============================================= */
+                dibujarGlow();
 
-        if (
-            t <
-            T_FIN
-        ) {
 
-            /*
-             * Logo todavía queda atrás
-             * durante el comienzo de esta fase.
-             */
+                /* --------------------------------------------
+                   FASE 1 — ECG ENTRA DESDE LA IZQUIERDA
+                   -------------------------------------------- */
 
-            ramas.forEach(
-                (rama) => {
+                const finEntrada =
+                    TIME.entrada;
 
-                    dibujarRuta(
-                        rama,
-                        1,
+                if (
+                    tiempo <= finEntrada
+                ) {
+
+                    const p =
+                        easeInOut(
+                            tiempo /
+                            TIME.entrada
+                        );
+
+                    drawPolyline(
+                        ecgEntrada,
+                        p,
                         {
-                            color: SILVER,
-                            grosor: 5.2,
-                            glow: ORANGE,
-                            glowBlur: 9,
-                            alpha: 0.18
+                            color:
+                                COLORS.orange,
+                            width: 3.2,
+                            glow: 16
                         }
                     );
 
                 }
-            );
 
 
-            dibujarDetallesEBA(
-                1
-            );
+                /* --------------------------------------------
+                   FASE 2 — EL ECG SE DIVIDE Y CONSTRUYE
+                   EBA + PULSO
+                   -------------------------------------------- */
 
+                const inicioConstruccion =
+                    TIME.entrada;
 
-            dibujarPalabraPulso(
-                1
-            );
+                const finConstruccion =
+                    inicioConstruccion +
+                    TIME.construccion;
 
+                if (
+                    tiempo >=
+                    inicioConstruccion &&
+                    tiempo <=
+                    finConstruccion
+                ) {
 
-            /*
-             * Las continuaciones desaparecen
-             * suavemente detrás del punto de unión.
-             */
-
-            continuaciones.forEach(
-                (ruta) => {
-
-                    dibujarRuta(
-                        ruta,
+                    /*
+                     * La línea principal llega al punto
+                     * de división.
+                     */
+                    drawPolyline(
+                        ecgEntrada,
                         1,
                         {
-                            color: SILVER,
-                            grosor: 5,
-                            glow: ORANGE,
-                            glowBlur: 9,
-                            alpha: 0.12
+                            color:
+                                COLORS.orange,
+                            width: 3.2,
+                            glow: 16
                         }
                     );
 
+                    const p =
+                        easeInOut(
+                            (
+                                tiempo -
+                                inicioConstruccion
+                            ) /
+                            TIME.construccion
+                        );
+
+                    /*
+                     * Las cuatro líneas nacen
+                     * desde el mismo punto.
+                     */
+                    dibujarLogo(p);
+
                 }
-            );
 
 
-            /*
-             * Ahora sí:
-             *
-             * UNA ÚNICA LÍNEA.
-             */
+                /* --------------------------------------------
+                   FASE 3 — LOGO COMPLETO + CONTINUIDAD
+                   -------------------------------------------- */
 
-            const progresoSalida =
-                clamp(
-                    (
-                        t -
-                        T_UNION_FIN
-                    ) /
-                    (
-                        T_FIN -
-                        T_UNION_FIN
-                    )
+                const inicioRecorrido =
+                    finConstruccion;
+
+                const finRecorrido =
+                    inicioRecorrido +
+                    TIME.recorrido;
+
+                if (
+                    tiempo >=
+                    inicioRecorrido &&
+                    tiempo <=
+                    finRecorrido
+                ) {
+
+                    /*
+                     * El logo queda completo.
+                     */
+                    dibujarLogo(1);
+
+                    /*
+                     * Y las cuatro líneas empiezan
+                     * a continuar físicamente.
+                     */
+                    const p =
+                        easeInOut(
+                            (
+                                tiempo -
+                                inicioRecorrido
+                            ) /
+                            TIME.recorrido
+                        );
+
+                    dibujarContinuaciones(p);
+
+                }
+
+
+                /* --------------------------------------------
+                   FASE 4 — LAS CUATRO LÍNEAS SE UNEN
+                   -------------------------------------------- */
+
+                const inicioUnion =
+                    finRecorrido;
+
+                const finUnion =
+                    inicioUnion +
+                    TIME.union;
+
+                if (
+                    tiempo >=
+                    inicioUnion &&
+                    tiempo <=
+                    finUnion
+                ) {
+
+                    /*
+                     * Mantenemos el logo como referencia
+                     * mientras comienza la salida.
+                     */
+                    dibujarLogo(1);
+
+                    dibujarContinuaciones(1);
+
+                    const p =
+                        (
+                            tiempo -
+                            inicioUnion
+                        ) /
+                        TIME.union;
+
+                    dibujarUnion(p);
+
+                }
+
+
+                /* --------------------------------------------
+                   FASE 5 — UNA SOLA LÍNEA HACIA LA DERECHA
+                   -------------------------------------------- */
+
+                const inicioSalida =
+                    finUnion;
+
+                const finSalida =
+                    inicioSalida +
+                    TIME.salida;
+
+                if (
+                    tiempo >=
+                    inicioSalida
+                ) {
+
+                    /*
+                     * El punto central donde convergieron
+                     * las cuatro líneas.
+                     */
+                    const p =
+                        clamp(
+                            (
+                                tiempo -
+                                inicioSalida
+                            ) /
+                            TIME.salida
+                        );
+
+                    /*
+                     * La línea sale desde el mismo
+                     * eje central original.
+                     */
+                    dibujarSalida(p);
+
+                    /*
+                     * Pulso variable en la parte final.
+                     */
+                    if (
+                        p > 0.55
+                    ) {
+
+                        const pulso =
+                            dibujarPulsoVariable(
+                                tiempo
+                            );
+
+                        const cantidad =
+                            clamp(
+                                (
+                                    p -
+                                    0.55
+                                ) / 0.45
+                            );
+
+                        drawPolyline(
+                            pulso,
+                            cantidad,
+                            {
+                                color:
+                                    COLORS.orange,
+                                width:
+                                    lerp(
+                                        2.4,
+                                        1.1,
+                                        p
+                                    ),
+                                glow:
+                                    lerp(
+                                        12,
+                                        4,
+                                        p
+                                    )
+                            }
+                        );
+
+                    }
+
+                }
+
+
+                ctx.restore();
+
+            }
+
+
+            /* =================================================
+               ANIMACIÓN
+               ================================================= */
+
+            function animar(
+                timestamp
+            ) {
+
+                if (!animationStart) {
+                    animationStart =
+                        timestamp;
+                }
+
+                let tiempo =
+                    timestamp -
+                    animationStart;
+
+                /*
+                 * LOOP CONTINUO.
+                 */
+                tiempo =
+                    tiempo %
+                    TOTAL_TIME;
+
+                dibujarEscena(
+                    tiempo
                 );
 
+                animationFrame =
+                    requestAnimationFrame(
+                        animar
+                    );
 
-            const salida =
-                easeInOut(
-                    progresoSalida
+            }
+
+
+            /* =================================================
+               REDUCED MOTION
+               ================================================= */
+
+            if (
+                prefersReducedMotion
+            ) {
+
+                /*
+                 * Para personas que prefieren
+                 * reducir movimiento mostramos
+                 * el estado final.
+                 */
+
+                dibujarEscena(
+                    TOTAL_TIME - 1
                 );
 
+            } else {
 
-            /*
-             * Línea desde exactamente
-             * el mismo punto de unión.
-             */
+                animationFrame =
+                    requestAnimationFrame(
+                        animar
+                    );
 
-            dibujarRuta(
-                lineaFinal,
-                1,
-                {
-                    color: ORANGE,
+            }
 
-                    grosor:
-                        5.3 -
-                        4.2 *
-                        salida,
 
-                    glow: ORANGE,
+            /* =================================================
+               REINICIAR CUANDO EL HERO VUELVE
+               ================================================= */
 
-                    glowBlur:
-                        13 -
-                        10 *
-                        salida,
+            if (
+                "IntersectionObserver"
+                in window
+            ) {
 
-                    alpha:
-                        1 -
-                        Math.pow(
-                            progresoSalida,
-                            1.55
-                        )
+                const hero =
+                    document.querySelector(
+                        "#inicio"
+                    );
+
+                if (hero) {
+
+                    const heroObserver =
+                        new IntersectionObserver(
+                            (entradas) => {
+
+                                entradas.forEach(
+                                    (entrada) => {
+
+                                        if (
+                                            entrada.isIntersecting
+                                        ) {
+
+                                            animationStart =
+                                                performance.now();
+
+                                        }
+
+                                    }
+                                );
+
+                            },
+                            {
+                                threshold: 0.15
+                            }
+                        );
+
+                    heroObserver.observe(
+                        hero
+                    );
+
                 }
-            );
 
+            }
 
-            /*
-             * Pequeño brillo que viaja
-             * con el extremo.
-             */
-
-            ctx.save();
-
-
-            const posicionBrillo =
-                MERGE_X +
-                (
-                    END_X -
-                    MERGE_X
-                ) *
-                salida;
-
-
-            ctx.globalAlpha =
-                (
-                    1 -
-                    progresoSalida
-                ) *
-                0.7;
-
-
-            ctx.fillStyle =
-                ORANGE;
-
-
-            ctx.shadowColor =
-                ORANGE;
-
-
-            ctx.shadowBlur =
-                18;
-
-
-            ctx.beginPath();
-
-
-            ctx.arc(
-                posicionBrillo,
-                CENTER_Y,
-                2.5,
-                0,
-                Math.PI * 2
-            );
-
-
-            ctx.fill();
-
-
-            ctx.restore();
-
-
-            return;
 
         }
 
-    };
+    }
 
 
+    /* ========================================================
+       LOG DE INICIO
+       ======================================================== */
 
-/* =====================================================
-   REDUCIR MOVIMIENTO
-   ===================================================== */
-
-const movimientoReducido =
-    window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-
-if (movimientoReducido) {
-
-    limpiar();
-
-
-    dibujarRuta(
-        ECG,
-        1,
-        {
-            color: ORANGE,
-            grosor: 5,
-            glow: ORANGE,
-            glowBlur: 10
-        }
+    console.log(
+        "%cPULSO",
+        "font-size:24px;font-weight:800;letter-spacing:4px;"
     );
 
-
-    ramas.forEach(
-        (rama) => {
-
-            dibujarRuta(
-                rama,
-                1,
-                {
-                    color: SILVER,
-                    grosor: 5.5,
-                    glow: ORANGE,
-                    glowBlur: 12
-                }
-            );
-
-        }
+    console.log(
+        "Sitio iniciado correctamente."
     );
-
-
-    dibujarDetallesEBA(
-        1
-    );
-
-
-    dibujarPalabraPulso(
-        1
-    );
-
-
-    continuaciones.forEach(
-        (ruta) => {
-
-            dibujarRuta(
-                ruta,
-                1,
-                {
-                    color: SILVER,
-                    grosor: 5,
-                    glow: ORANGE,
-                    glowBlur: 10
-                }
-            );
-
-        }
-    );
-
-
-    dibujarRuta(
-        lineaFinal,
-        1,
-        {
-            color: ORANGE,
-            grosor: 5,
-            glow: ORANGE,
-            glowBlur: 10
-        }
-    );
-
-
-    return;
-
-}
-
-
-
-/* =====================================================
-   LOOP DE ANIMACIÓN
-   ===================================================== */
-
-const animar =
-    (ahora) => {
-
-        render(
-            ahora -
-            inicio
-        );
-
-
-        requestAnimationFrame(
-            animar
-        );
-
-    };
-
-
-requestAnimationFrame(
-    animar
-);
 
 });

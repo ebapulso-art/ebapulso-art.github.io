@@ -3137,30 +3137,61 @@ ul {
    28. PULSO — SISTEMA DE VISTAS
    Navegación tipo SPA dentro de index.html
 ========================================================= */
+/* =========================================================
+   SISTEMA DE VISTAS — PULSO
+   Cada vista funciona como una página interna
+   ========================================================= */
 
 .view {
-    position: relative;
-    transition:
-        opacity 0.45s ease,
-        transform 0.55s cubic-bezier(.22,.61,.36,1);
+  display: none;
+  position: relative;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(18px);
 }
 
-/*
-   Cuando una vista está activa,
-   permanece completamente visible.
-*/
+
+/* =========================================================
+   VISTA ACTIVA
+   ========================================================= */
+
 .view.view-active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
-/*
-   Estado utilizado durante el cambio
-   de una vista a otra.
-*/
+
+/* =========================================================
+   ENTRADA DE VISTA
+   ========================================================= */
+
 .view.view-entering {
-    animation: pulsoViewEnter 0.55s cubic-bezier(.22,.61,.36,1) both;
+  animation:
+    pulsoViewEnter
+    0.55s
+    cubic-bezier(.22,.61,.36,1)
+    both;
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE ENTRADA
+   ========================================================= */
+
+@keyframes pulsoViewEnter {
+
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
 }
 
 @keyframes pulsoViewEnter {

@@ -1643,7 +1643,7 @@ if (canvas) {
              */
 
             const PERIODO =
-               15000;
+               12000;
 
             const progresoLoop =
                 (

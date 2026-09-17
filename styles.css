@@ -3133,3 +3133,409 @@ ul {
         scroll-behavior: auto !important;
     }
 }
+/* =========================================================
+   28. PULSO — SISTEMA DE VISTAS
+   Navegación tipo SPA dentro de index.html
+========================================================= */
+
+.view {
+    position: relative;
+    transition:
+        opacity 0.45s ease,
+        transform 0.55s cubic-bezier(.22,.61,.36,1);
+}
+
+/*
+   Cuando una vista está activa,
+   permanece completamente visible.
+*/
+.view.view-active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/*
+   Estado utilizado durante el cambio
+   de una vista a otra.
+*/
+.view.view-entering {
+    animation: pulsoViewEnter 0.55s cubic-bezier(.22,.61,.36,1) both;
+}
+
+@keyframes pulsoViewEnter {
+
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   CABECERA INTERNA DE LAS VISTAS
+========================================================= */
+
+.view .section-heading {
+    position: relative;
+}
+
+.view .section-label {
+    position: relative;
+}
+
+.view .section-title {
+    position: relative;
+}
+
+
+/* =========================================================
+   AYUDA
+========================================================= */
+
+.ayuda {
+    position: relative;
+
+    background:
+        radial-gradient(
+            circle at 85% 15%,
+            rgba(255,106,0,0.07),
+            transparent 28%
+        ),
+        var(--black-soft);
+}
+
+.help-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-top: 70px;
+}
+
+.help-card {
+    position: relative;
+
+    min-height: 280px;
+
+    padding: 36px;
+
+    border: 1px solid var(--line);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.035),
+            rgba(255,255,255,0.008)
+        );
+
+    overflow: hidden;
+
+    transition:
+        transform var(--transition-normal),
+        border-color var(--transition-normal),
+        background var(--transition-normal);
+}
+
+.help-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    right: -90px;
+    bottom: -90px;
+
+    border: 1px solid rgba(255,106,0,0.16);
+
+    transform: rotate(45deg);
+
+    transition:
+        transform var(--transition-slow);
+}
+
+.help-card:hover {
+    transform: translateY(-5px);
+
+    border-color:
+        rgba(255,106,0,0.45);
+
+    background:
+        rgba(255,255,255,0.035);
+}
+
+.help-card:hover::before {
+    transform:
+        rotate(45deg)
+        scale(1.25);
+}
+
+.help-number {
+    position: relative;
+
+    display: block;
+
+    margin-bottom: 55px;
+
+    color: var(--orange);
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.18em;
+}
+
+.help-card h3 {
+    position: relative;
+
+    margin-bottom: 14px;
+
+    font-family: var(--font-title);
+
+    font-size: 26px;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.035em;
+}
+
+.help-card p {
+    position: relative;
+
+    max-width: 500px;
+
+    color: var(--gray);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+.help-card a {
+    position: relative;
+
+    display: inline-flex;
+
+    margin-top: 25px;
+
+    color: var(--white);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    border-bottom:
+        1px solid var(--orange);
+
+    padding-bottom: 4px;
+
+    transition:
+        color var(--transition-fast);
+}
+
+.help-card a:hover {
+    color: var(--orange);
+}
+
+.help-contact-card {
+    background:
+        linear-gradient(
+            135deg,
+            #111111,
+            #0a0a0a
+        );
+}
+
+.help-contact-card p {
+    color:
+        rgba(255,255,255,0.58);
+}
+
+
+/* =========================================================
+   MENÚ — NUEVA ESTRUCTURA
+========================================================= */
+
+.nav-menu-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding-bottom: 25px;
+
+    border-bottom:
+        1px solid var(--line);
+}
+
+.nav-menu-header span {
+    color: var(--white);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.2em;
+}
+
+.nav-menu-close {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--line);
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: var(--white);
+
+    font-size: 24px;
+
+    transition:
+        background var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+.nav-menu-close:hover {
+    background: var(--orange);
+
+    border-color: var(--orange);
+
+    color: var(--black);
+}
+
+.nav-menu-links {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+    margin-top: 25px;
+}
+
+.nav-menu-links a {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 10px 0;
+
+    color: var(--gray);
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition:
+        color var(--transition-fast),
+        padding-left var(--transition-fast);
+}
+
+.nav-menu-links a span {
+    min-width: 25px;
+
+    color: var(--orange);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+}
+
+.nav-menu-links a:hover {
+    padding-left: 8px;
+
+    color: var(--white);
+}
+
+.nav-menu-footer {
+    margin-top: auto;
+
+    padding-top: 25px;
+
+    color: var(--gray-dark);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.16em;
+}
+
+.nav-pulsi-link {
+    margin-top: 10px;
+
+    padding-top: 18px !important;
+
+    border-top:
+        1px solid var(--line);
+}
+
+
+/* =========================================================
+   VISTA ACTIVA
+========================================================= */
+
+.nav-menu-links a.active-view {
+    color: var(--white);
+}
+
+.nav-menu-links a.active-view span {
+    color: var(--orange);
+}
+
+
+/* =========================================================
+   RESPONSIVE — SISTEMA DE VISTAS
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .help-grid {
+        grid-template-columns: 1fr;
+
+        margin-top: 45px;
+    }
+
+    .help-card {
+        min-height: auto;
+
+        padding: 28px;
+    }
+
+    .help-number {
+        margin-bottom: 35px;
+    }
+
+    .help-card h3 {
+        font-size: 24px;
+    }
+
+}
+
+@media (max-width: 420px) {
+
+    .help-card {
+        padding: 24px;
+    }
+
+    .help-card h3 {
+        font-size: 22px;
+    }
+
+}

@@ -115,7 +115,302 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+/* =========================================================
+   SISTEMA DE VISTAS — PULSO
+   ========================================================= */
 
+const vistas = document.querySelectorAll(
+    ".view[data-view]"
+);
+
+const vistasPorNombre = {};
+
+
+/*
+ * Guardamos todas las vistas agrupadas
+ * por su data-view.
+ *
+ * Ejemplo:
+ *
+ * data-view="inicio"
+ * → Hero
+ * → Brand statement
+ * → Brand closing
+ *
+ * data-view="nosotros"
+ * → Nosotros
+ * → Por qué PULSO
+ */
+
+vistas.forEach((vista) => {
+
+    const nombre =
+        vista.dataset.view;
+
+    if (!vistasPorNombre[nombre]) {
+        vistasPorNombre[nombre] = [];
+    }
+
+    vistasPorNombre[nombre].push(vista);
+
+});
+
+
+let vistaActual =
+    null;
+
+
+/* =========================================================
+   CAMBIAR DE VISTA
+   ========================================================= */
+
+function cambiarVista(
+    nombreVista,
+    actualizarURL = true
+) {
+
+    const grupo =
+        vistasPorNombre[nombreVista];
+
+    if (
+        !grupo ||
+        grupo.length === 0
+    ) {
+        return;
+    }
+
+
+    /*
+     * Si ya estamos en esta vista,
+     * no hacemos la animación nuevamente.
+     */
+
+    if (
+        vistaActual === nombreVista
+    ) {
+
+        window.scrollTo({
+            top: 0,
+            behavior:
+                reduceMotion
+                    ? "auto"
+                    : "smooth"
+        });
+
+        return;
+    }
+
+
+    /*
+     * Quitamos la vista activa anterior.
+     */
+
+    vistas.forEach((vista) => {
+
+        vista.classList.remove(
+            "view-active",
+            "view-entering"
+        );
+
+    });
+
+
+    /*
+     * Activamos todas las secciones
+     * que pertenecen a la nueva vista.
+     */
+
+    grupo.forEach((vista) => {
+
+        vista.classList.add(
+            "view-active"
+        );
+
+    });
+
+
+    /*
+     * Forzamos un pequeño cambio
+     * para permitir la animación CSS.
+     */
+
+    requestAnimationFrame(() => {
+
+        grupo.forEach((vista) => {
+
+            vista.classList.add(
+                "view-entering"
+            );
+
+        });
+
+    });
+
+
+    vistaActual =
+        nombreVista;
+
+
+    /*
+     * Volvemos arriba de la nueva vista.
+     */
+
+    window.scrollTo({
+        top: 0,
+        behavior:
+            reduceMotion
+                ? "auto"
+                : "smooth"
+    });
+
+
+    /*
+     * Actualizamos el hash.
+     */
+
+    if (actualizarURL) {
+
+        const nuevoHash =
+            `#${nombreVista}`;
+
+        if (
+            window.location.hash !==
+            nuevoHash
+        ) {
+
+            history.pushState(
+                {
+                    vista: nombreVista
+                },
+                "",
+                nuevoHash
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   LEER VISTA DESDE LA URL
+   ========================================================= */
+
+function obtenerVistaDesdeURL() {
+
+    const hash =
+        window.location.hash
+            .replace(
+                "#",
+                ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+    /*
+     * Si no hay hash,
+     * mostramos Inicio.
+     */
+
+    if (!hash) {
+        return "inicio";
+    }
+
+
+    /*
+     * Pulsi no es una vista.
+     * Es un asistente flotante.
+     */
+
+    if (
+        hash ===
+        "pulsi-container"
+    ) {
+
+        return "inicio";
+
+    }
+
+
+    /*
+     * Si el hash existe como vista,
+     * lo utilizamos.
+     */
+
+    if (
+        vistasPorNombre[hash]
+    ) {
+
+        return hash;
+
+    }
+
+
+    return "inicio";
+
+}
+
+
+/* =========================================================
+   INICIALIZAR VISTA
+   ========================================================= */
+
+const vistaInicial =
+    obtenerVistaDesdeURL();
+
+
+cambiarVista(
+    vistaInicial,
+    false
+);
+
+
+/* =========================================================
+   BOTÓN ATRÁS / ADELANTE DEL NAVEGADOR
+   ========================================================= */
+
+window.addEventListener(
+    "popstate",
+    () => {
+
+        const vista =
+            obtenerVistaDesdeURL();
+
+        cambiarVista(
+            vista,
+            false
+        );
+
+    }
+);
+
+
+/* =========================================================
+   CAMBIAR VISTA CUANDO CAMBIA EL HASH
+   ========================================================= */
+
+window.addEventListener(
+    "hashchange",
+    () => {
+
+        const vista =
+            obtenerVistaDesdeURL();
+
+        if (
+            vista !== vistaActual
+        ) {
+
+            cambiarVista(
+                vista,
+                false
+            );
+
+        }
+
+    }
+);
     /* =========================================================
        NAVEGACIÓN INTERNA
        ========================================================= */

@@ -339,33 +339,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-
 /* =========================================================
    PULSO — LOGO CENTRAL
    =========================================================
 
-   ANIMACIÓN ÚNICA Y CONTINUA
+   V2 — MORPH GEOMÉTRICO REAL
 
    ECG EN MOVIMIENTO
         ↓
-   pulsos variables
+   LOS MISMOS PUNTOS SE DEFORMAN
         ↓
-   deformación progresiva
+   EL TRAZO SE ABRE EN 3 RECORRIDOS
         ↓
-   EBA + PULSO
+      EBA
+     PULSO
         ↓
-   respiración
+   RESPIRACIÓN / GLOW
         ↓
-   deformación inversa
+   LOS 3 RECORRIDOS SE REÚNEN
         ↓
    ECG
         ↓
-   continúa el recorrido
+   CONTINÚA EL MOVIMIENTO
 
    IMPORTANTE:
-   No existen escenas independientes.
-   El movimiento del ECG continúa durante
-   toda la animación.
+   No se apagan escenas para encender otras.
+   Los puntos cambian físicamente de posición.
    ========================================================= */
 
 const canvas =
@@ -404,6 +403,10 @@ if (canvas) {
         let offsetX = 0;
         let offsetY = 0;
 
+
+        /* =================================================
+           AJUSTE DEL CANVAS
+           ================================================= */
 
         function ajustarCanvas() {
 
@@ -512,23 +515,34 @@ if (canvas) {
         }
 
 
-        function easeIn(t) {
+        function easeInOutCubic(t) {
 
             t = clamp(t);
 
-            return t * t * t;
+            return (
+                t < 0.5
+                    ? 4 * t * t * t
+                    : 1 -
+                      Math.pow(
+                          -2 * t + 2,
+                          3
+                      ) / 2
+            );
         }
 
 
-        function easeOut(t) {
+        function smoothstep(t) {
 
             t = clamp(t);
 
-            return 1 -
-                Math.pow(
-                    1 - t,
-                    3
-                );
+            return (
+                t *
+                t *
+                (
+                    3 -
+                    2 * t
+                )
+            );
         }
 
 
@@ -542,19 +556,19 @@ if (canvas) {
 
 
         /* =================================================
-           ECG CONTINUO
+           ECG — PATRÓN CONTINUO
            ================================================= */
 
         /*
-         * Cada pulso posee:
+         * No utilizamos Math.random()
+         * durante cada frame.
          *
-         * - separación
-         * - altura
-         * - ancho
-         * - pequeña variación
+         * El ECG se crea una sola vez y
+         * después se desplaza.
          *
-         * El resultado nunca es exactamente igual
-         * de un ciclo al siguiente.
+         * De esta forma las pulsaciones
+         * mantienen su identidad mientras
+         * recorren la pantalla.
          */
 
         const tiposPulso = [
@@ -601,7 +615,11 @@ if (canvas) {
 
             const ruta = [];
 
-            let x = -500;
+            let x = -900;
+
+            let semilla =
+                0;
+
 
             ruta.push(
                 punto(
@@ -611,44 +629,54 @@ if (canvas) {
             );
 
 
-            while (x < W + 600) {
-
-                /*
-                 * Distancia tranquila antes
-                 * de cada pulso.
-                 */
-
-                const descanso =
-                    115 +
-                    Math.random() * 55;
-
-                x += descanso;
-
+            while (
+                x <
+                W + 1200
+            ) {
 
                 const tipo =
                     tiposPulso[
-                        Math.floor(
-                            Math.random() *
-                            tiposPulso.length
-                        )
+                        semilla %
+                        tiposPulso.length
                     ];
+
+
+                semilla++;
+
+
+                const variacionAltura =
+                    0.90 +
+                    (
+                        (
+                            semilla *
+                            17
+                        ) %
+                        20
+                    ) /
+                    100;
+
+
+                const descanso =
+                    115 +
+                    (
+                        (
+                            semilla *
+                            31
+                        ) %
+                        55
+                    );
+
+
+                x += descanso;
 
 
                 const ancho =
                     tipo.ancho;
 
                 const alto =
-                    tipo.alto;
+                    tipo.alto *
+                    variacionAltura;
 
-
-                const variacion =
-                    0.90 +
-                    Math.random() * 0.20;
-
-
-                /*
-                 * Inicio del pulso.
-                 */
 
                 ruta.push(
                     punto(
@@ -659,7 +687,7 @@ if (canvas) {
 
 
                 /*
-                 * Pequeña subida.
+                 * Pequeña preparación.
                  */
 
                 ruta.push(
@@ -672,7 +700,7 @@ if (canvas) {
 
 
                 /*
-                 * Pico principal.
+                 * Pico.
                  */
 
                 ruta.push(
@@ -680,14 +708,13 @@ if (canvas) {
                         x +
                         ancho * 0.36,
                         CY -
-                        alto *
-                        variacion
+                        alto
                     )
                 );
 
 
                 /*
-                 * Bajada profunda.
+                 * Bajada.
                  */
 
                 ruta.push(
@@ -698,7 +725,11 @@ if (canvas) {
                         alto *
                         (
                             0.82 +
-                            Math.random() * 0.22
+                            (
+                                semilla %
+                                5
+                            ) *
+                            0.025
                         )
                     )
                 );
@@ -732,7 +763,7 @@ if (canvas) {
 
             ruta.push(
                 punto(
-                    W + 600,
+                    W + 1200,
                     CY
                 )
             );
@@ -742,12 +773,12 @@ if (canvas) {
         }
 
 
-        let ecg =
+        const ecg =
             crearECG();
 
 
         /* =================================================
-           RECORRIDO DEL ECG
+           OBTENER PUNTO DE UNA RUTA
            ================================================= */
 
         function obtenerPunto(
@@ -759,6 +790,7 @@ if (canvas) {
                 !ruta ||
                 ruta.length < 2
             ) {
+
                 return punto(
                     CX,
                     CY
@@ -813,13 +845,111 @@ if (canvas) {
 
 
         /* =================================================
-           TRAZOS CENTRALES DEL LOGO
+           INTERPOLACIÓN DE RUTAS
            ================================================= */
 
         /*
-         * Estos son los tres recorridos que
-         * forman la estructura visual que ya
-         * te había gustado.
+         * Todas las rutas se convierten al
+         * mismo número de puntos.
+         *
+         * Esto es lo que permite que:
+         *
+         * punto 1 ECG → punto 1 LOGO
+         * punto 2 ECG → punto 2 LOGO
+         * punto 3 ECG → punto 3 LOGO
+         *
+         * etc.
+         */
+
+        function muestrearRuta(
+            ruta,
+            cantidad
+        ) {
+
+            const resultado = [];
+
+            for (
+                let i = 0;
+                i < cantidad;
+                i++
+            ) {
+
+                const progreso =
+                    cantidad === 1
+                        ? 0
+                        : i /
+                          (
+                              cantidad - 1
+                          );
+
+
+                resultado.push(
+                    obtenerPunto(
+                        ruta,
+                        progreso
+                    )
+                );
+
+            }
+
+            return resultado;
+        }
+
+
+        function interpolarPuntos(
+            origen,
+            destino,
+            t
+        ) {
+
+            const resultado = [];
+
+            const cantidad =
+                Math.min(
+                    origen.length,
+                    destino.length
+                );
+
+
+            for (
+                let i = 0;
+                i < cantidad;
+                i++
+            ) {
+
+                resultado.push(
+                    punto(
+
+                        lerp(
+                            origen[i].x,
+                            destino[i].x,
+                            t
+                        ),
+
+                        lerp(
+                            origen[i].y,
+                            destino[i].y,
+                            t
+                        )
+
+                    )
+                );
+
+            }
+
+            return resultado;
+        }
+
+
+        /* =================================================
+           LOGO — TRES RECORRIDOS
+           ================================================= */
+
+        /*
+         * ESTA ES LA FORMA EBA / PULSO
+         * QUE YA HABÍAMOS CONSEGUIDO.
+         *
+         * Se conserva la estructura.
          */
 
         const logoSuperior = [
@@ -857,39 +987,142 @@ if (canvas) {
         ];
 
 
-        const logoTrazos = [
+        /*
+         * Los tres recorridos ahora vuelven
+         * suavemente hacia la línea central.
+         *
+         * Así el logo puede volver a convertirse
+         * en un único ECG.
+         */
 
-            logoSuperior,
-            logoMedio,
-            logoInferior
+        const logoSuperiorCompleto = [
+
+            ...logoSuperior,
+
+            punto(955, 112),
+            punto(1015, 132),
+            punto(1075, 165),
+            punto(1135, 195),
+            punto(1190, 210)
 
         ];
+
+
+        const logoMedioCompleto = [
+
+            ...logoMedio,
+
+            punto(970, 210),
+            punto(1050, 210),
+            punto(1120, 210),
+            punto(1190, 210)
+
+        ];
+
+
+        const logoInferiorCompleto = [
+
+            ...logoInferior,
+
+            punto(955, 308),
+            punto(1015, 288),
+            punto(1075, 255),
+            punto(1135, 225),
+            punto(1190, 210)
+
+        ];
+
+
+        const CANTIDAD_PUNTOS =
+            70;
+
+
+        const logoSuperiorPuntos =
+            muestrearRuta(
+                logoSuperiorCompleto,
+                CANTIDAD_PUNTOS
+            );
+
+
+        const logoMedioPuntos =
+            muestrearRuta(
+                logoMedioCompleto,
+                CANTIDAD_PUNTOS
+            );
+
+
+        const logoInferiorPuntos =
+            muestrearRuta(
+                logoInferiorCompleto,
+                CANTIDAD_PUNTOS
+            );
 
 
         /* =================================================
-           MARCO
+           FUENTES DEL MORPH
            ================================================= */
 
-        const marcoSuperior = [
+        /*
+         * Las tres fuentes nacen del MISMO
+         * tramo ECG.
+         *
+         * En morph = 0:
+         *
+         * ECG A
+         * ECG B
+         * ECG C
+         *
+         * están prácticamente superpuestos.
+         *
+         * Por eso el ojo percibe UNA SOLA LÍNEA.
+         *
+         * Al aumentar morph se separan
+         * hacia los tres recorridos del logo.
+         */
 
-            punto(690, 105),
-            punto(755, 78),
-            punto(900, 62),
-            punto(1045, 78),
-            punto(1110, 105)
-
-        ];
+        const FUENTE_INICIO =
+            0.355;
 
 
-        const marcoInferior = [
+        const FUENTE_FIN =
+            0.645;
 
-            punto(690, 315),
-            punto(755, 342),
-            punto(900, 358),
-            punto(1045, 342),
-            punto(1110, 315)
 
-        ];
+        const fuenteECG =
+            muestrearRuta(
+                ecg,
+                CANTIDAD_PUNTOS
+            );
+
+
+        const fuenteSuperior =
+            fuenteECG.map(
+                (p) =>
+                    punto(
+                        p.x,
+                        p.y - 0.8
+                    )
+            );
+
+
+        const fuenteMedio =
+            fuenteECG.map(
+                (p) =>
+                    punto(
+                        p.x,
+                        p.y
+                    )
+            );
+
+
+        const fuenteInferior =
+            fuenteECG.map(
+                (p) =>
+                    punto(
+                        p.x,
+                        p.y + 0.8
+                    )
+            );
 
 
         /* =================================================
@@ -898,7 +1131,7 @@ if (canvas) {
 
         function dibujarTexto(
             intensidad = 1,
-            escala = 1
+            escalaTexto = 1
         ) {
 
             ctx.save();
@@ -916,19 +1149,27 @@ if (canvas) {
              */
 
             ctx.font =
-                `800 ${112 * escala}px Manrope, DM Sans, sans-serif`;
+                `800 ${
+                    112 *
+                    escalaTexto
+                }px Manrope, DM Sans, sans-serif`;
+
 
             ctx.fillStyle =
                 BLANCO;
 
+
             ctx.globalAlpha =
                 intensidad;
+
 
             ctx.shadowColor =
                 NARANJA;
 
+
             ctx.shadowBlur =
-                18 * intensidad;
+                18 *
+                intensidad;
 
 
             ctx.fillText(
@@ -943,13 +1184,19 @@ if (canvas) {
              */
 
             ctx.font =
-                `600 ${31 * escala}px Manrope, DM Sans, sans-serif`;
+                `600 ${
+                    31 *
+                    escalaTexto
+                }px Manrope, DM Sans, sans-serif`;
+
 
             ctx.fillStyle =
                 NARANJA_SUAVE;
 
+
             ctx.shadowBlur =
-                10 * intensidad;
+                10 *
+                intensidad;
 
 
             ctx.fillText(
@@ -982,7 +1229,7 @@ if (canvas) {
                 ctx.createRadialGradient(
                     CX,
                     CY,
-                    15,
+                    10,
                     CX,
                     CY,
                     360
@@ -991,13 +1238,23 @@ if (canvas) {
 
             gradiente.addColorStop(
                 0,
-                `rgba(255,106,0,${0.12 * intensidad})`
+                `rgba(
+                    255,
+                    106,
+                    0,
+                    ${0.13 * intensidad}
+                )`
             );
 
 
             gradiente.addColorStop(
                 0.45,
-                `rgba(255,106,0,${0.04 * intensidad})`
+                `rgba(
+                    255,
+                    106,
+                    0,
+                    ${0.045 * intensidad}
+                )`
             );
 
 
@@ -1009,8 +1266,10 @@ if (canvas) {
 
             ctx.save();
 
+
             ctx.fillStyle =
                 gradiente;
+
 
             ctx.fillRect(
                 250,
@@ -1019,22 +1278,21 @@ if (canvas) {
                 H
             );
 
+
             ctx.restore();
         }
 
 
         /* =================================================
-           DIBUJAR SEGMENTO
+           DIBUJAR RUTA DE PUNTOS
            ================================================= */
 
-        function dibujarSegmento(
+        function dibujarRuta(
             ruta,
-            inicio,
-            fin,
             color,
             grosor,
-            glow,
-            alpha
+            alpha,
+            glow
         ) {
 
             if (
@@ -1043,38 +1301,6 @@ if (canvas) {
             ) {
                 return;
             }
-
-
-            inicio =
-                clamp(inicio);
-
-            fin =
-                clamp(fin);
-
-
-            if (
-                fin <= inicio
-            ) {
-                return;
-            }
-
-
-            const total =
-                ruta.length - 1;
-
-
-            const desde =
-                inicio * total;
-
-            const hasta =
-                fin * total;
-
-
-            const indiceInicio =
-                Math.floor(desde);
-
-            const indiceFin =
-                Math.floor(hasta);
 
 
             ctx.save();
@@ -1096,7 +1322,9 @@ if (canvas) {
                 "round";
 
 
-            if (glow > 0) {
+            if (
+                glow > 0
+            ) {
 
                 ctx.shadowColor =
                     color;
@@ -1109,52 +1337,28 @@ if (canvas) {
             ctx.beginPath();
 
 
-            const primerPunto =
-                obtenerPunto(
-                    ruta,
-                    inicio
-                );
-
-
             ctx.moveTo(
-                primerPunto.x,
-                primerPunto.y
+                ruta[0].x,
+                ruta[0].y
             );
 
 
             for (
-                let i =
-                    indiceInicio + 1;
-
-                i <= indiceFin;
-
+                let i = 1;
+                i < ruta.length;
                 i++
             ) {
 
-                const p =
-                    ruta[i];
-
                 ctx.lineTo(
-                    p.x,
-                    p.y
+                    ruta[i].x,
+                    ruta[i].y
                 );
+
             }
 
 
-            const ultimoPunto =
-                obtenerPunto(
-                    ruta,
-                    fin
-                );
-
-
-            ctx.lineTo(
-                ultimoPunto.x,
-                ultimoPunto.y
-            );
-
-
             ctx.stroke();
+
 
             ctx.restore();
         }
@@ -1165,140 +1369,190 @@ if (canvas) {
            ================================================= */
 
         /*
-         * El ECG no se dibuja como una escena
-         * que empieza y termina.
+         * El ECG se desplaza permanentemente.
          *
-         * Se desplaza constantemente.
+         * No desaparece cuando aparece el logo.
          */
 
-        let desplazamiento =
-            0;
-
-
-        let velocidad =
+        const VELOCIDAD_ECG =
             0.000055;
 
 
-        function dibujarECGContinuo(
+        function dibujarECG(
             tiempo,
             alpha = 1
-        ) {
-
-            /*
-             * Movimiento permanente.
-             */
-
-            desplazamiento =
-                (
-                    tiempo *
-                    velocidad
-                ) % 1;
-
-
-            /*
-             * Dibujamos varias copias
-             * desplazadas para que nunca
-             * aparezca un corte visual.
-             */
-
-            const desplazamientos = [
-
-                -1.0,
-                0,
-                1.0
-
-            ];
-
-
-            desplazamientos.forEach(
-                (offset) => {
-
-                    const mover =
-                        desplazamiento +
-                        offset;
-
-
-                    ctx.save();
-
-                    ctx.translate(
-                        -mover * 900,
-                        0
-                    );
-
-
-                    /*
-                     * ECG principal.
-                     */
-
-                    ctx.beginPath();
-
-                    ctx.moveTo(
-                        ecg[0].x,
-                        ecg[0].y
-                    );
-
-
-                    ecg.forEach(
-                        (p) => {
-
-                            ctx.lineTo(
-                                p.x,
-                                p.y
-                            );
-
-                        }
-                    );
-
-
-                    ctx.strokeStyle =
-                        NARANJA;
-
-                    ctx.lineWidth =
-                        2.7;
-
-                    ctx.lineCap =
-                        "round";
-
-                    ctx.lineJoin =
-                        "round";
-
-                    ctx.globalAlpha =
-                        alpha;
-
-                    ctx.shadowColor =
-                        NARANJA;
-
-                    ctx.shadowBlur =
-                        7;
-
-
-                    ctx.stroke();
-
-                    ctx.restore();
-                }
-            );
-        }
-
-
-        /* =================================================
-           PULSO MÓVIL
-           ================================================= */
-
-        function dibujarPulsoMovil(
-            tiempo,
-            intensidad = 1
         ) {
 
             const progreso =
                 (
                     tiempo *
-                    0.000055
+                    VELOCIDAD_ECG
                 ) % 1;
 
 
             /*
-             * El punto recorre el ECG.
+             * Movimiento lógico.
              */
+
+            const desplazamiento =
+                progreso *
+                900;
+
+
+            ctx.save();
+
+
+            ctx.translate(
+                -desplazamiento,
+                0
+            );
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                ecg[0].x,
+                ecg[0].y
+            );
+
+
+            for (
+                let i = 1;
+                i < ecg.length;
+                i++
+            ) {
+
+                ctx.lineTo(
+                    ecg[i].x,
+                    ecg[i].y
+                );
+
+            }
+
+
+            ctx.strokeStyle =
+                NARANJA;
+
+
+            ctx.lineWidth =
+                2.7;
+
+
+            ctx.lineCap =
+                "round";
+
+
+            ctx.lineJoin =
+                "round";
+
+
+            ctx.globalAlpha =
+                alpha;
+
+
+            ctx.shadowColor =
+                NARANJA;
+
+
+            ctx.shadowBlur =
+                7;
+
+
+            ctx.stroke();
+
+
+            ctx.restore();
+
+
+            /*
+             * Segunda copia para mantener
+             * continuidad visual.
+             */
+
+            ctx.save();
+
+
+            ctx.translate(
+                900 -
+                desplazamiento,
+                0
+            );
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                ecg[0].x,
+                ecg[0].y
+            );
+
+
+            for (
+                let i = 1;
+                i < ecg.length;
+                i++
+            ) {
+
+                ctx.lineTo(
+                    ecg[i].x,
+                    ecg[i].y
+                );
+
+            }
+
+
+            ctx.strokeStyle =
+                NARANJA;
+
+
+            ctx.lineWidth =
+                2.7;
+
+
+            ctx.lineCap =
+                "round";
+
+
+            ctx.lineJoin =
+                "round";
+
+
+            ctx.globalAlpha =
+                alpha;
+
+
+            ctx.shadowColor =
+                NARANJA;
+
+
+            ctx.shadowBlur =
+                7;
+
+
+            ctx.stroke();
+
+
+            ctx.restore();
+        }
+
+
+        /* =================================================
+           PULSO QUE RECORRE EL ECG
+           ================================================= */
+
+        function dibujarPulsoMovil(
+            tiempo,
+            intensidad
+        ) {
+
+            const progreso =
+                (
+                    tiempo *
+                    VELOCIDAD_ECG
+                ) % 1;
+
 
             const p =
                 obtenerPunto(
@@ -1307,29 +1561,63 @@ if (canvas) {
                 );
 
 
+            const desplazamiento =
+                progreso *
+                900;
+
+
+            const x =
+                p.x -
+                desplazamiento;
+
+
+            /*
+             * Variación pequeña de intensidad.
+             */
+
+            const respiracion =
+                (
+                    Math.sin(
+                        tiempo *
+                        0.007
+                    ) + 1
+                ) / 2;
+
+
             ctx.save();
-
-
-            ctx.shadowColor =
-                NARANJA_SUAVE;
-
-            ctx.shadowBlur =
-                25;
 
 
             ctx.fillStyle =
                 NARANJA_SUAVE;
 
+
+            ctx.shadowColor =
+                NARANJA_SUAVE;
+
+
+            ctx.shadowBlur =
+                18 +
+                respiracion *
+                10;
+
+
             ctx.globalAlpha =
-                intensidad;
+                intensidad *
+                (
+                    0.65 +
+                    respiracion *
+                    0.35
+                );
 
 
             ctx.beginPath();
 
+
             ctx.arc(
-                p.x,
+                x,
                 p.y,
-                4.5,
+                3.5 +
+                respiracion * 1.5,
                 0,
                 Math.PI * 2
             );
@@ -1343,278 +1631,357 @@ if (canvas) {
 
 
         /* =================================================
-           TRANSFORMACIÓN CENTRAL
+           MORPH REAL
            ================================================= */
-
-        /*
-         * ESTA ES LA PARTE NUEVA.
-         *
-         * No hacemos:
-         *
-         * ECG OFF
-         * LOGO ON
-         *
-         * En cambio:
-         *
-         * ECG
-         *   ↓
-         * los puntos centrales se deforman
-         *   ↓
-         * tres recorridos
-         *   ↓
-         * logo
-         *
-         * Todo ocurre simultáneamente.
-         */
 
         function dibujarMorph(
             tiempo
         ) {
 
             /*
-             * Ciclo largo.
-             *
-             * El morph va y vuelve,
-             * pero nunca existe una escena
-             * independiente.
+             * Duración completa del loop.
              */
 
-            const periodo =
-                11500;
+            const PERIODO =
+                12000;
 
 
-            const ciclo =
+            const progresoLoop =
                 (
                     tiempo %
-                    periodo
+                    PERIODO
                 ) /
-                periodo;
+                PERIODO;
 
 
             /*
-             * Una ventana central que
-             * comienza a transformarse.
-             */
-
-            const distancia =
-                Math.abs(
-                    ciclo - 0.5
-                );
-
-
-            /*
-             * Intensidad:
+             * Onda 0 → 1 → 0.
              *
-             * 0 = ECG
-             * 1 = logo
+             * No son escenas.
+             *
+             * Es una única variable que
+             * mueve físicamente los puntos.
              */
 
-            let morph =
-                1 -
-                distancia * 2;
+            const onda =
+                (
+                    Math.sin(
+                        progresoLoop *
+                        Math.PI *
+                        2 -
+                        Math.PI / 2
+                    ) + 1
+                ) / 2;
 
 
-            morph =
-                clamp(
-                    morph
+            /*
+             * Curva del morph.
+             */
+
+            const morph =
+                easeInOutCubic(
+                    onda
                 );
 
 
             /*
-             * Curva suave.
+             * Intensidad visual del logo.
              */
 
-            morph =
-                easeInOut(
-                    morph
-                );
-
-
-            /*
-             * El logo solamente domina
-             * cuando el ECG ya llegó
-             * físicamente al centro.
-             */
-
-            const concentracion =
+            const logoIntensidad =
                 Math.pow(
                     morph,
-                    0.82
+                    0.72
                 );
 
 
             /*
-             * ECG alrededor del centro.
+             * El ECG sigue existiendo
+             * durante todo el proceso.
              */
 
-            const anchoZona =
+            const alphaECG =
                 lerp(
-                    520,
-                    150,
-                    concentracion
+                    1,
+                    0.18,
+                    logoIntensidad
                 );
 
 
-            /*
-             * Dibujamos el ECG general.
-             */
-
-            dibujarECGContinuo(
+            dibujarECG(
                 tiempo,
-                1 -
-                concentracion * 0.72
+                alphaECG
             );
 
 
+            /* =================================================
+               DESPLAZAMIENTO DEL TRAMO CENTRAL
+               ================================================= */
+
             /*
-             * Ahora construimos los tres
-             * recorridos progresivamente.
+             * El centro del morph permanece
+             * ligado al recorrido del ECG.
+             *
+             * La posición se mueve muy
+             * suavemente antes de quedar
+             * atrapada en el centro.
              */
 
-            logoTrazos.forEach(
+            const movimientoCentro =
+                Math.sin(
+                    tiempo *
+                    0.00055
+                ) *
+                18 *
                 (
-                    ruta,
-                    indice
-                ) => {
-
-                    const alpha =
-                        concentracion *
-                        (
-                            indice === 1
-                                ? 0.96
-                                : 0.82
-                        );
-
-
-                    const grosor =
-                        lerp(
-                            2.7,
-                            4.5,
-                            concentracion
-                        );
-
-
-                    dibujarSegmento(
-                        ruta,
-                        0,
-                        concentracion,
-                        indice === 1
-                            ? BLANCO
-                            : PLATA,
-                        grosor,
-                        7 +
-                        concentracion * 7,
-                        alpha
-                    );
-
-                }
-            );
-
-
-            /*
-             * Marco naranja.
-             */
-
-            const marcoAlpha =
-                Math.pow(
-                    concentracion,
-                    1.5
+                    1 -
+                    logoIntensidad
                 );
 
 
-            dibujarSegmento(
-                marcoSuperior,
-                0,
-                marcoAlpha,
-                NARANJA,
-                2.1,
-                8,
-                marcoAlpha * 0.7
-            );
-
-
-            dibujarSegmento(
-                marcoInferior,
-                0,
-                marcoAlpha,
-                NARANJA,
-                2.1,
-                8,
-                marcoAlpha * 0.7
-            );
-
-
-            /*
-             * Texto.
-             */
-
-            const texto =
-                easeOut(
-                    Math.max(
-                        0,
-                        (
-                            concentracion -
-                            0.38
-                        ) /
-                        0.62
-                    )
-                );
-
-
-            if (
-                texto > 0
+            function moverFuente(
+                fuente
             ) {
 
-                const respiracion =
-                    (
-                        Math.sin(
-                            tiempo * 0.003
-                        ) + 1
-                    ) / 2;
-
-
-                dibujarTexto(
-                    texto *
-                    (
-                        0.92 +
-                        respiracion * 0.08
-                    ),
-                    0.92 +
-                    texto * 0.08
+                return fuente.map(
+                    (p) =>
+                        punto(
+                            p.x +
+                            movimientoCentro,
+                            p.y
+                        )
                 );
             }
 
 
+            const fuenteA =
+                moverFuente(
+                    fuenteSuperior
+                );
+
+
+            const fuenteB =
+                moverFuente(
+                    fuenteMedio
+                );
+
+
+            const fuenteC =
+                moverFuente(
+                    fuenteInferior
+                );
+
+
             /*
-             * Glow.
+             * Morph punto por punto.
              */
 
-            dibujarGlow(
-                concentracion *
-                (
-                    0.65 +
-                    Math.sin(
-                        tiempo * 0.003
-                    ) * 0.12
+            const recorridoSuperior =
+                interpolarPuntos(
+                    fuenteA,
+                    logoSuperiorPuntos,
+                    morph
+                );
+
+
+            const recorridoMedio =
+                interpolarPuntos(
+                    fuenteB,
+                    logoMedioPuntos,
+                    morph
+                );
+
+
+            const recorridoInferior =
+                interpolarPuntos(
+                    fuenteC,
+                    logoInferiorPuntos,
+                    morph
+                );
+
+
+            /* =================================================
+               TRAZO SUPERIOR
+               ================================================= */
+
+            dibujarRuta(
+                recorridoSuperior,
+                PLATA,
+                lerp(
+                    2.7,
+                    4.5,
+                    morph
+                ),
+                lerp(
+                    0.02,
+                    0.88,
+                    logoIntensidad
+                ),
+                lerp(
+                    3,
+                    10,
+                    logoIntensidad
                 )
             );
 
 
+            /* =================================================
+               TRAZO CENTRAL
+               ================================================= */
+
+            dibujarRuta(
+                recorridoMedio,
+                BLANCO,
+                lerp(
+                    2.7,
+                    4.8,
+                    morph
+                ),
+                lerp(
+                    0.03,
+                    0.98,
+                    logoIntensidad
+                ),
+                lerp(
+                    3,
+                    12,
+                    logoIntensidad
+                )
+            );
+
+
+            /* =================================================
+               TRAZO INFERIOR
+               ================================================= */
+
+            dibujarRuta(
+                recorridoInferior,
+                PLATA,
+                lerp(
+                    2.7,
+                    4.5,
+                    morph
+                ),
+                lerp(
+                    0.02,
+                    0.88,
+                    logoIntensidad
+                ),
+                lerp(
+                    3,
+                    10,
+                    logoIntensidad
+                )
+            );
+
+
+            /* =================================================
+               GLOW CENTRAL
+               ================================================= */
+
+            const glow =
+                Math.pow(
+                    logoIntensidad,
+                    1.25
+                );
+
+
+            dibujarGlow(
+                glow *
+                (
+                    0.72 +
+                    Math.sin(
+                        tiempo *
+                        0.003
+                    ) *
+                    0.10
+                )
+            );
+
+
+            /* =================================================
+               TEXTO
+               ================================================= */
+
             /*
-             * Pulso central.
+             * El texto aparece mientras los
+             * trazos ya están formando la marca.
              *
-             * Se intensifica a medida que
-             * el ECG se convierte en logo.
+             * No se coloca como una escena aparte.
              */
 
+            const textoEntrada =
+                smoothstep(
+                    (
+                        morph -
+                        0.38
+                    ) /
+                    0.34
+                );
+
+
+            const textoSalida =
+                1 -
+                smoothstep(
+                    (
+                        morph -
+                        0.92
+                    ) /
+                    0.08
+                );
+
+
+            const intensidadTexto =
+                textoEntrada *
+                Math.max(
+                    0,
+                    textoSalida
+                );
+
+
+            const respiracion =
+                (
+                    Math.sin(
+                        tiempo *
+                        0.0032
+                    ) + 1
+                ) / 2;
+
+
             if (
-                concentracion > 0.05
+                intensidadTexto >
+                0.001
+            ) {
+
+                dibujarTexto(
+                    intensidadTexto *
+                    (
+                        0.92 +
+                        respiracion *
+                        0.08
+                    ),
+                    0.92 +
+                    intensidadTexto *
+                    0.08
+                );
+
+            }
+
+
+            /* =================================================
+               PULSO CENTRAL
+               ================================================= */
+
+            if (
+                logoIntensidad >
+                0.05
             ) {
 
                 const pulso =
                     (
                         Math.sin(
-                            tiempo * 0.009
+                            tiempo *
+                            0.0085
                         ) + 1
                     ) / 2;
 
@@ -1625,72 +1992,37 @@ if (canvas) {
                 ctx.fillStyle =
                     NARANJA_SUAVE;
 
+
                 ctx.shadowColor =
                     NARANJA;
 
+
                 ctx.shadowBlur =
-                    20 +
-                    pulso * 15;
+                    18 +
+                    pulso *
+                    18;
 
 
                 ctx.globalAlpha =
-                    concentracion *
-                    0.85;
+                    logoIntensidad *
+                    0.72;
 
 
                 ctx.beginPath();
+
 
                 ctx.arc(
                     CX,
                     CY,
-                    3 +
-                    pulso * 3,
+                    2.5 +
+                    pulso * 2.5,
                     0,
                     Math.PI * 2
                 );
 
+
                 ctx.fill();
 
-                ctx.restore();
-            }
-
-
-            /*
-             * Evitamos que la variable
-             * anchoZona quede sin propósito
-             * y la usamos para suavizar
-             * visualmente el centro.
-             */
-
-            if (
-                anchoZona > 0 &&
-                concentracion > 0.01
-            ) {
-
-                ctx.save();
-
-                ctx.globalAlpha =
-                    concentracion * 0.08;
-
-                ctx.strokeStyle =
-                    NARANJA;
-
-                ctx.lineWidth =
-                    1;
-
-                ctx.beginPath();
-
-                ctx.moveTo(
-                    CX - anchoZona,
-                    CY
-                );
-
-                ctx.lineTo(
-                    CX + anchoZona,
-                    CY
-                );
-
-                ctx.stroke();
 
                 ctx.restore();
             }
@@ -1698,15 +2030,12 @@ if (canvas) {
 
 
         /* =================================================
-           ANIMACIÓN PRINCIPAL
+           REDUCIR MOVIMIENTO
            ================================================= */
 
-        if (reduceMotion) {
-
-            /*
-             * Para usuarios que prefieren
-             * reducir movimiento.
-             */
+        if (
+            reduceMotion
+        ) {
 
             ctx.setTransform(
                 1,
@@ -1749,6 +2078,9 @@ if (canvas) {
 
             /*
              * Logo estático.
+             *
+             * Usamos directamente los
+             * recorridos finales.
              */
 
             dibujarGlow(
@@ -1756,47 +2088,30 @@ if (canvas) {
             );
 
 
-            dibujarSegmento(
-                marcoSuperior,
-                0,
-                1,
-                NARANJA,
-                2.1,
-                7,
-                0.62
+            dibujarRuta(
+                logoSuperiorPuntos,
+                PLATA,
+                4.5,
+                0.90,
+                8
             );
 
 
-            dibujarSegmento(
-                marcoInferior,
-                0,
-                1,
-                NARANJA,
-                2.1,
-                7,
-                0.62
+            dibujarRuta(
+                logoMedioPuntos,
+                BLANCO,
+                4.8,
+                0.95,
+                10
             );
 
 
-            logoTrazos.forEach(
-                (
-                    ruta,
-                    indice
-                ) => {
-
-                    dibujarSegmento(
-                        ruta,
-                        0,
-                        1,
-                        indice === 1
-                            ? BLANCO
-                            : PLATA,
-                        4.5,
-                        8,
-                        0.9
-                    );
-
-                }
+            dibujarRuta(
+                logoInferiorPuntos,
+                PLATA,
+                4.5,
+                0.90,
+                8
             );
 
 
@@ -1811,6 +2126,10 @@ if (canvas) {
 
         } else {
 
+            /* =================================================
+               ANIMACIÓN
+               ================================================= */
+
             let inicio =
                 performance.now();
 
@@ -1823,7 +2142,9 @@ if (canvas) {
                 timestamp
             ) {
 
-                if (!animando) {
+                if (
+                    !animando
+                ) {
                     return;
                 }
 
@@ -1832,10 +2153,6 @@ if (canvas) {
                     timestamp -
                     inicio;
 
-
-                /*
-                 * Limpiar frame.
-                 */
 
                 ctx.setTransform(
                     1,
@@ -1877,8 +2194,7 @@ if (canvas) {
 
 
                 /*
-                 * Todo el logo nace del
-                 * mismo flujo temporal.
+                 * TODO nace del mismo flujo.
                  */
 
                 dibujarMorph(
@@ -1887,31 +2203,48 @@ if (canvas) {
 
 
                 /*
-                 * Punto de pulso en movimiento.
+                 * El pulso sigue recorriendo
+                 * el ECG.
+                 *
+                 * Incluso durante el morph,
+                 * su intensidad simplemente
+                 * se vuelve más sutil.
                  */
 
-                if (
-                    !(
-                        (
-                            tiempo %
-                            11500
-                        ) /
-                        11500
-                    )
-                ) {
+                const ciclo =
+                    (
+                        tiempo %
+                        12000
+                    ) /
+                    12000;
 
-                    dibujarPulsoMovil(
-                        tiempo,
-                        0.8
+
+                const onda =
+                    (
+                        Math.sin(
+                            ciclo *
+                            Math.PI *
+                            2 -
+                            Math.PI / 2
+                        ) + 1
+                    ) / 2;
+
+
+                const intensidadPulso =
+                    lerp(
+                        0.78,
+                        0.22,
+                        Math.pow(
+                            onda,
+                            0.75
+                        )
                     );
 
-                } else {
 
-                    dibujarPulsoMovil(
-                        tiempo,
-                        0.75
-                    );
-                }
+                dibujarPulsoMovil(
+                    tiempo,
+                    intensidadPulso
+                );
 
 
                 ctx.restore();
@@ -1992,26 +2325,24 @@ if (canvas) {
 
                     } else {
 
-                        /*
-                         * No reiniciamos el logo.
-                         * Continuamos desde el momento
-                         * actual de la animación.
-                         */
-
                         animando =
                             true;
 
+
+                        /*
+                         * Continuamos el ciclo
+                         * sin volver a mostrar
+                         * una escena inicial.
+                         */
+
                         inicio =
-                            performance.now() -
-                            (
-                                performance.now() %
-                                11500
-                            );
+                            performance.now();
 
 
                         requestAnimationFrame(
                             animar
                         );
+
                     }
 
                 }
@@ -2019,6 +2350,7 @@ if (canvas) {
         }
     }
 }
+
     /* =========================================================
        PULSI
        ========================================================= */

@@ -340,1483 +340,1249 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =========================================================
-       =========================================================
-       PULSO — LOGO CENTRAL
-       =========================================================
-       
-       CONCEPTO:
+/* =========================================================
+   =========================================================
+   PULSO — LOGO CENTRAL
+   =========================================================
 
-       ECG
-          ↓
-       pulsaciones variables
-          ↓
-       líneas se acercan al centro
-          ↓
-       aparece EBA
-          ↓
-       aparece PULSO debajo
-          ↓
-       glow
-          ↓
-       se desarma
-          ↓
-       vuelve al ECG
+   ANIMACIÓN CONTINUA:
 
-       =========================================================
-       ========================================================= */
+   ECG vivo
+      ↓
+   convergencia
+      ↓
+   transformación de trazos
+      ↓
+   EBA + PULSO
+      ↓
+   glow / respiración
+      ↓
+   transformación inversa
+      ↓
+   ECG
+      ↓
+   continúa el recorrido
 
-    const canvas =
-        document.querySelector(
-            "#pulsoLogoCanvas"
-        );
+   =========================================================
+   ========================================================= */
+
+const canvas =
+    document.querySelector("#pulsoLogoCanvas");
 
 
-    if (canvas) {
+if (canvas) {
 
-        const ctx =
-            canvas.getContext("2d");
-
-
-        if (ctx) {
+    const ctx = canvas.getContext("2d");
 
 
-            /* =================================================
-               COLORES
-               ================================================= */
+    if (ctx) {
 
-            const NARANJA =
-                "#ff6a00";
+        /* =================================================
+           COLORES
+           ================================================= */
 
-            const NARANJA_SUAVE =
-                "#ff8533";
-
-            const BLANCO =
-                "#ffffff";
-
-            const BLANCO_SUAVE =
-                "#e7eaed";
-
-            const PLATA =
-                "#bfc5ca";
+        const NARANJA = "#ff6a00";
+        const NARANJA_SUAVE = "#ff8533";
+        const BLANCO = "#ffffff";
+        const BLANCO_SUAVE = "#e7eaed";
+        const PLATA = "#bfc5ca";
 
 
-            /* =================================================
-               TAMAÑO LÓGICO
-               ================================================= */
+        /* =================================================
+           TAMAÑO LÓGICO
+           ================================================= */
 
-            const W = 1800;
-            const H = 420;
+        const W = 1800;
+        const H = 420;
 
+        const CENTRO_X = 900;
+        const CENTRO_Y = 210;
 
-            let dpr = 1;
-            let scale = 1;
-            let offsetX = 0;
-            let offsetY = 0;
-
-
-            function ajustarCanvas() {
-
-                const rect =
-                    canvas.getBoundingClientRect();
+        let dpr = 1;
+        let scale = 1;
+        let offsetX = 0;
+        let offsetY = 0;
 
 
-                dpr =
-                    Math.min(
-                        window.devicePixelRatio || 1,
-                        2
-                    );
+        function ajustarCanvas() {
 
+            const rect =
+                canvas.getBoundingClientRect();
 
-                canvas.width =
-                    Math.max(
-                        1,
-                        Math.round(
-                            rect.width * dpr
-                        )
-                    );
+            dpr =
+                Math.min(
+                    window.devicePixelRatio || 1,
+                    2
+                );
 
-
-                canvas.height =
-                    Math.max(
-                        1,
-                        Math.round(
-                            rect.height * dpr
-                        )
-                    );
-
-
-                scale =
-                    Math.min(
-                        rect.width / W,
-                        rect.height / H
-                    );
-
-
-                if (
-                    !Number.isFinite(scale) ||
-                    scale <= 0
-                ) {
-                    scale = 1;
-                }
-
-
-                offsetX =
-                    (
-                        rect.width -
-                        W * scale
-                    ) / 2;
-
-
-                offsetY =
-                    (
-                        rect.height -
-                        H * scale
-                    ) / 2;
-
-            }
-
-
-            window.addEventListener(
-                "resize",
-                ajustarCanvas,
-                {
-                    passive: true
-                }
-            );
-
-
-            ajustarCanvas();
-
-
-            /* =================================================
-               UTILIDADES
-               ================================================= */
-
-            function clamp(valor) {
-
-                return Math.max(
-                    0,
-                    Math.min(
-                        1,
-                        valor
+            canvas.width =
+                Math.max(
+                    1,
+                    Math.round(
+                        rect.width * dpr
                     )
                 );
 
-            }
-
-
-            function easeInOut(valor) {
-
-                valor =
-                    clamp(valor);
-
-                return (
-                    valor < 0.5
-                        ? 2 * valor * valor
-                        : 1 -
-                          Math.pow(
-                              -2 * valor + 2,
-                              2
-                          ) / 2
+            canvas.height =
+                Math.max(
+                    1,
+                    Math.round(
+                        rect.height * dpr
+                    )
                 );
 
-            }
+            scale =
+                Math.min(
+                    rect.width / W,
+                    rect.height / H
+                );
 
-
-            function easeOut(valor) {
-
-                valor =
-                    clamp(valor);
-
-                return 1 -
-                    Math.pow(
-                        1 - valor,
-                        3
-                    );
-
-            }
-
-
-            function easeIn(valor) {
-
-                valor =
-                    clamp(valor);
-
-                return valor * valor * valor;
-
-            }
-
-
-            function interpolar(
-                a,
-                b,
-                t
+            if (
+                !Number.isFinite(scale) ||
+                scale <= 0
             ) {
-
-                return (
-                    a +
-                    (b - a) * t
-                );
-
+                scale = 1;
             }
 
+            offsetX =
+                (
+                    rect.width -
+                    W * scale
+                ) / 2;
 
-            function punto(
+            offsetY =
+                (
+                    rect.height -
+                    H * scale
+                ) / 2;
+        }
+
+
+        window.addEventListener(
+            "resize",
+            ajustarCanvas,
+            {
+                passive: true
+            }
+        );
+
+
+        ajustarCanvas();
+
+
+        /* =================================================
+           UTILIDADES
+           ================================================= */
+
+        function clamp(valor) {
+
+            return Math.max(
+                0,
+                Math.min(
+                    1,
+                    valor
+                )
+            );
+        }
+
+
+        function easeInOut(valor) {
+
+            valor = clamp(valor);
+
+            return (
+                valor < 0.5
+                    ? 2 * valor * valor
+                    : 1 -
+                      Math.pow(
+                          -2 * valor + 2,
+                          2
+                      ) / 2
+            );
+        }
+
+
+        function easeOut(valor) {
+
+            valor = clamp(valor);
+
+            return 1 -
+                Math.pow(
+                    1 - valor,
+                    3
+                );
+        }
+
+
+        function easeIn(valor) {
+
+            valor = clamp(valor);
+
+            return valor * valor * valor;
+        }
+
+
+        function interpolar(a, b, t) {
+
+            return (
+                a +
+                (b - a) * t
+            );
+        }
+
+
+        function punto(x, y) {
+
+            return {
                 x,
                 y
-            ) {
+            };
+        }
 
-                return {
-                    x,
-                    y
-                };
 
+        /* =================================================
+           ECG
+           ================================================= */
+
+        const tiposPulso = [
+
+            {
+                ancho: 72,
+                alto: 30
+            },
+
+            {
+                ancho: 88,
+                alto: 48
+            },
+
+            {
+                ancho: 108,
+                alto: 68
+            },
+
+            {
+                ancho: 132,
+                alto: 92
+            },
+
+            {
+                ancho: 158,
+                alto: 118
+            },
+
+            {
+                ancho: 94,
+                alto: 82
+            },
+
+            {
+                ancho: 145,
+                alto: 58
             }
 
-
-            /* =================================================
-               ECG BASE
-               ================================================= */
-
-            const CENTRO_X = 900;
-            const CENTRO_Y = 210;
+        ];
 
 
-            /*
-             * El ECG no es completamente idéntico.
-             * Cada ciclo utiliza pulsaciones distintas.
-             */
+        let ultimoTipo = -1;
 
-            const tiposPulso = [
 
-                {
-                    ancho: 72,
-                    alto: 30
-                },
+        function obtenerPulso() {
 
-                {
-                    ancho: 88,
-                    alto: 48
-                },
+            let indice;
 
-                {
-                    ancho: 108,
-                    alto: 68
-                },
+            do {
 
-                {
-                    ancho: 132,
-                    alto: 92
-                },
+                indice =
+                    Math.floor(
+                        Math.random() *
+                        tiposPulso.length
+                    );
 
-                {
-                    ancho: 158,
-                    alto: 118
-                },
+            } while (
+                indice === ultimoTipo
+            );
 
-                {
-                    ancho: 94,
-                    alto: 82
-                },
+            ultimoTipo = indice;
 
-                {
-                    ancho: 145,
-                    alto: 58
-                }
+            return tiposPulso[indice];
+        }
+
+
+        /*
+         * ECG largo y continuo.
+         *
+         * La línea atraviesa todo el canvas.
+         * No se genera una "escena nueva"
+         * durante la transformación.
+         */
+
+        function crearECG() {
+
+            const ruta = [
+
+                punto(-180, CENTRO_Y),
+                punto(0, CENTRO_Y),
+                punto(150, CENTRO_Y),
+                punto(300, CENTRO_Y),
+                punto(420, CENTRO_Y)
 
             ];
 
 
-            let ultimoTipo = -1;
+            let posicion = 470;
 
 
-            function obtenerPulso() {
+            for (
+                let i = 0;
+                i < 8;
+                i++
+            ) {
 
-                let indice;
+                const pulso =
+                    obtenerPulso();
 
+                const ancho =
+                    pulso.ancho;
 
-                do {
+                const alto =
+                    pulso.alto;
 
-                    indice =
-                        Math.floor(
-                            Math.random() *
-                            tiposPulso.length
-                        );
-
-                } while (
-                    indice === ultimoTipo
-                );
-
-
-                ultimoTipo =
-                    indice;
-
-
-                return tiposPulso[indice];
-
-            }
-
-
-            /*
-             * Generamos varias pulsaciones
-             * distribuidas por todo el recorrido.
-             */
-
-            function crearECG() {
-
-                const ruta = [
-
-                    punto(
-                        -180,
-                        CENTRO_Y
-                    ),
-
-                    punto(
-                        0,
-                        CENTRO_Y
-                    ),
-
-                    punto(
-                        150,
-                        CENTRO_Y
-                    ),
-
-                    punto(
-                        300,
-                        CENTRO_Y
-                    ),
-
-                    punto(
-                        420,
-                        CENTRO_Y
-                    )
-
-                ];
-
-
-                let posicion =
-                    470;
-
-
-                for (
-                    let i = 0;
-                    i < 8;
-                    i++
-                ) {
-
-                    const pulso =
-                        obtenerPulso();
-
-
-                    const ancho =
-                        pulso.ancho;
-
-
-                    const alto =
-                        pulso.alto;
-
-
-                    /*
-                     * Pequeña variación para
-                     * que no parezcan copias.
-                     */
-
-                    const variacion =
-                        0.88 +
-                        Math.random() * 0.24;
-
-
-                    ruta.push(
-
-                        punto(
-                            posicion,
-                            CENTRO_Y
-                        ),
-
-                        punto(
-                            posicion +
-                            ancho * 0.23,
-                            CENTRO_Y
-                        ),
-
-                        punto(
-                            posicion +
-                            ancho * 0.38,
-                            CENTRO_Y -
-                            alto * variacion
-                        ),
-
-                        punto(
-                            posicion +
-                            ancho * 0.55,
-                            CENTRO_Y +
-                            alto *
-                            (0.85 +
-                            Math.random() * 0.25)
-                        ),
-
-                        punto(
-                            posicion +
-                            ancho * 0.72,
-                            CENTRO_Y
-                        ),
-
-                        punto(
-                            posicion +
-                            ancho,
-                            CENTRO_Y
-                        )
-
-                    );
-
-
-                    posicion +=
-                        ancho +
-                        105 +
-                        Math.random() * 55;
-
-                }
+                const variacion =
+                    0.88 +
+                    Math.random() * 0.24;
 
 
                 ruta.push(
 
                     punto(
-                        1980,
+                        posicion,
                         CENTRO_Y
+                    ),
+
+                    punto(
+                        posicion +
+                        ancho * 0.23,
+                        CENTRO_Y
+                    ),
+
+                    punto(
+                        posicion +
+                        ancho * 0.38,
+                        CENTRO_Y -
+                        alto * variacion
+                    ),
+
+                    punto(
+                        posicion +
+                        ancho * 0.55,
+                        CENTRO_Y +
+                        alto *
+                        (
+                            0.85 +
+                            Math.random() * 0.25
+                        )
+                    ),
+
+                    punto(
+                        posicion +
+                        ancho * 0.72,
+                        CENTRO_Y
+                    ),
+
+                    punto(
+                        posicion +
+                        ancho,
+                        CENTRO_Y
+                    )
+                );
+
+
+                posicion +=
+                    ancho +
+                    105 +
+                    Math.random() * 55;
+            }
+
+
+            ruta.push(
+                punto(1980, CENTRO_Y)
+            );
+
+
+            return ruta;
+        }
+
+
+        let ecgActual =
+            crearECG();
+
+
+        function regenerarECG() {
+
+            ultimoTipo = -1;
+
+            ecgActual =
+                crearECG();
+        }
+
+
+        /* =================================================
+           TRAZOS QUE FORMAN EBA / PULSO
+           ================================================= */
+
+        /*
+         * Estos son los mismos trazos centrales
+         * que daban la formación que te gustó.
+         *
+         * Ahora no aparecen como una escena aparte:
+         * se interpolan desde el ECG.
+         */
+
+        const lineaSuperior = [
+
+            punto(120, CENTRO_Y),
+            punto(330, CENTRO_Y),
+            punto(500, CENTRO_Y),
+            punto(650, 188),
+            punto(760, 158),
+            punto(835, 125),
+            punto(CENTRO_X, 105)
+
+        ];
+
+
+        const lineaMedia = [
+
+            punto(120, CENTRO_Y),
+            punto(350, CENTRO_Y),
+            punto(540, CENTRO_Y),
+            punto(700, CENTRO_Y),
+            punto(820, CENTRO_Y),
+            punto(CENTRO_X, CENTRO_Y)
+
+        ];
+
+
+        const lineaInferior = [
+
+            punto(120, CENTRO_Y),
+            punto(330, CENTRO_Y),
+            punto(510, CENTRO_Y),
+            punto(660, 232),
+            punto(770, 265),
+            punto(850, 295),
+            punto(CENTRO_X, 315)
+
+        ];
+
+
+        const lineasLogo = [
+
+            lineaSuperior,
+            lineaMedia,
+            lineaInferior
+
+        ];
+
+
+        /* =================================================
+           MARCO CENTRAL
+           ================================================= */
+
+        const marcoSuperior = [
+
+            punto(700, 105),
+            punto(760, 78),
+            punto(900, 62),
+            punto(1040, 78),
+            punto(1100, 105)
+
+        ];
+
+
+        const marcoInferior = [
+
+            punto(700, 315),
+            punto(760, 342),
+            punto(900, 358),
+            punto(1040, 342),
+            punto(1100, 315)
+
+        ];
+
+
+        /* =================================================
+           TEXTO EBA + PULSO
+           ================================================= */
+
+        function dibujarTextoEBA(
+            intensidad = 1,
+            escalaTexto = 1
+        ) {
+
+            ctx.save();
+
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            /*
+             * EBA
+             */
+
+            ctx.font =
+                `800 ${112 * escalaTexto}px Manrope, DM Sans, sans-serif`;
+
+            ctx.globalAlpha =
+                intensidad;
+
+            ctx.shadowColor =
+                NARANJA;
+
+            ctx.shadowBlur =
+                20 * intensidad;
+
+            ctx.fillStyle =
+                BLANCO;
+
+            ctx.fillText(
+                "EBA",
+                CENTRO_X,
+                192
+            );
+
+
+            /*
+             * PULSO
+             */
+
+            ctx.shadowBlur =
+                11 * intensidad;
+
+            ctx.font =
+                `600 ${31 * escalaTexto}px Manrope, DM Sans, sans-serif`;
+
+            ctx.fillStyle =
+                NARANJA_SUAVE;
+
+            ctx.fillText(
+                "PULSO",
+                CENTRO_X,
+                260
+            );
+
+            ctx.restore();
+        }
+
+
+        /* =================================================
+           DIBUJAR RUTA
+           ================================================= */
+
+        function dibujarRuta(
+            puntos,
+            progreso,
+            color,
+            grosor,
+            glow = 0,
+            alpha = 1
+        ) {
+
+            if (
+                !puntos ||
+                puntos.length < 2
+            ) {
+                return;
+            }
+
+
+            progreso =
+                clamp(progreso);
+
+
+            if (
+                progreso <= 0
+            ) {
+                return;
+            }
+
+
+            ctx.save();
+
+            ctx.globalAlpha =
+                alpha;
+
+            ctx.strokeStyle =
+                color;
+
+            ctx.lineWidth =
+                grosor;
+
+            ctx.lineCap =
+                "round";
+
+            ctx.lineJoin =
+                "round";
+
+
+            if (glow > 0) {
+
+                ctx.shadowColor =
+                    color;
+
+                ctx.shadowBlur =
+                    glow;
+            }
+
+
+            const segmentos =
+                puntos.length - 1;
+
+
+            const recorrido =
+                progreso *
+                segmentos;
+
+
+            const completos =
+                Math.floor(
+                    recorrido
+                );
+
+
+            const parcial =
+                recorrido -
+                completos;
+
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                puntos[0].x,
+                puntos[0].y
+            );
+
+
+            for (
+                let i = 1;
+                i <= completos &&
+                i < puntos.length;
+                i++
+            ) {
+
+                ctx.lineTo(
+                    puntos[i].x,
+                    puntos[i].y
+                );
+            }
+
+
+            if (
+                completos <
+                segmentos
+            ) {
+
+                const a =
+                    puntos[completos];
+
+                const b =
+                    puntos[
+                        completos + 1
+                    ];
+
+
+                ctx.lineTo(
+
+                    interpolar(
+                        a.x,
+                        b.x,
+                        parcial
+                    ),
+
+                    interpolar(
+                        a.y,
+                        b.y,
+                        parcial
                     )
 
                 );
-
-
-                return ruta;
-
             }
 
 
-            let ecgActual =
-                crearECG();
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+
+        /* =================================================
+           PUNTO MÓVIL
+           ================================================= */
+
+        function obtenerPuntoRuta(
+            puntos,
+            progreso
+        ) {
+
+            progreso =
+                clamp(progreso);
+
+
+            const total =
+                puntos.length - 1;
+
+
+            const posicion =
+                progreso * total;
+
+
+            const indice =
+                Math.min(
+                    Math.floor(posicion),
+                    total - 1
+                );
+
+
+            const t =
+                posicion - indice;
+
+
+            const a =
+                puntos[indice];
+
+
+            const b =
+                puntos[indice + 1];
+
+
+            return {
+
+                x:
+                    interpolar(
+                        a.x,
+                        b.x,
+                        t
+                    ),
+
+                y:
+                    interpolar(
+                        a.y,
+                        b.y,
+                        t
+                    )
+
+            };
+        }
+
+
+        function dibujarPuntoPulso(
+            x,
+            y,
+            intensidad = 1
+        ) {
+
+            ctx.save();
+
+            ctx.shadowColor =
+                NARANJA_SUAVE;
+
+            ctx.shadowBlur =
+                25 * intensidad;
+
+            ctx.fillStyle =
+                NARANJA_SUAVE;
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y,
+                4.2 * intensidad,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+
+        /* =================================================
+           GLOW CENTRAL
+           ================================================= */
+
+        function dibujarGlowCentral(
+            intensidad
+        ) {
+
+            if (
+                intensidad <= 0
+            ) {
+                return;
+            }
+
+
+            const gradient =
+                ctx.createRadialGradient(
+                    CENTRO_X,
+                    CENTRO_Y,
+                    20,
+                    CENTRO_X,
+                    CENTRO_Y,
+                    360
+                );
+
+
+            gradient.addColorStop(
+                0,
+                `rgba(255,106,0,${0.10 * intensidad})`
+            );
+
+            gradient.addColorStop(
+                0.45,
+                `rgba(255,106,0,${0.035 * intensidad})`
+            );
+
+            gradient.addColorStop(
+                1,
+                "rgba(255,106,0,0)"
+            );
+
+
+            ctx.save();
+
+            ctx.fillStyle =
+                gradient;
+
+            ctx.fillRect(
+                300,
+                20,
+                1200,
+                380
+            );
+
+            ctx.restore();
+        }
+
+
+        /* =================================================
+           TRANSFORMACIÓN ECG → LOGO
+           ================================================= */
+
+        /*
+         * En lugar de:
+         *
+         * ECG desaparece
+         * +
+         * logo aparece
+         *
+         * hacemos una mezcla progresiva.
+         */
+
+        function dibujarTransformacionEntrada(
+            progreso
+        ) {
+
+            const t =
+                easeInOut(progreso);
 
 
             /*
-             * Cada ciclo puede tener
-             * pulsaciones nuevas.
+             * ECG completo al principio.
+             * Se va concentrando visualmente
+             * hacia el centro.
              */
 
-            function regenerarECG() {
-
-                ultimoTipo = -1;
-
-                ecgActual =
-                    crearECG();
-
-            }
-
-
-            /* =================================================
-               LÍNEAS DE CONVERGENCIA
-               ================================================= */
-
-            /*
-             * Estas líneas son las que llevan
-             * el ECG hacia el centro.
-             *
-             * No forman literalmente las letras.
-             * Funcionan como una estructura visual
-             * que revela EBA.
-             */
-
-            const lineaSuperior = [
-
-                punto(
-                    120,
-                    CENTRO_Y
-                ),
-
-                punto(
-                    330,
-                    CENTRO_Y
-                ),
-
-                punto(
-                    500,
-                    CENTRO_Y
-                ),
-
-                punto(
-                    650,
-                    188
-                ),
-
-                punto(
-                    760,
-                    158
-                ),
-
-                punto(
-                    835,
-                    125
-                ),
-
-                punto(
-                    CENTRO_X,
-                    105
-                )
-
-            ];
-
-
-            const lineaMedia = [
-
-                punto(
-                    120,
-                    CENTRO_Y
-                ),
-
-                punto(
-                    350,
-                    CENTRO_Y
-                ),
-
-                punto(
-                    540,
-                    CENTRO_Y
-                ),
-
-                punto(
-                    700,
-                    CENTRO_Y
-                ),
-
-                punto(
-                    820,
-                    CENTRO_Y
-                ),
-
-                punto(
-                    CENTRO_X,
-                    CENTRO_Y
-                )
-
-            ];
-
-
-            const lineaInferior = [
-
-                punto(
-                    120,
-                    CENTRO_Y
-                ),
-
-                punto(
-                    330,
-                    CENTRO_Y
-                ),
-
-                punto(
-                    510,
-                    CENTRO_Y
-                ),
-
-                punto(
-                    660,
-                    232
-                ),
-
-                punto(
-                    770,
-                    265
-                ),
-
-                punto(
-                    850,
-                    295
-                ),
-
-                punto(
-                    CENTRO_X,
-                    315
-                )
-
-            ];
-
-
-            const lineasConvergencia = [
-
-                lineaSuperior,
-                lineaMedia,
-                lineaInferior
-
-            ];
-
-
-            /* =================================================
-               MARCO CENTRAL
-               ================================================= */
-
-            const marcoSuperior = [
-
-                punto(
-                    700,
-                    105
-                ),
-
-                punto(
-                    760,
-                    78
-                ),
-
-                punto(
-                    900,
-                    62
-                ),
-
-                punto(
-                    1040,
-                    78
-                ),
-
-                punto(
-                    1100,
-                    105
-                )
-
-            ];
-
-
-            const marcoInferior = [
-
-                punto(
-                    700,
-                    315
-                ),
-
-                punto(
-                    760,
-                    342
-                ),
-
-                punto(
-                    900,
-                    358
-                ),
-
-                punto(
-                    1040,
-                    342
-                ),
-
-                punto(
-                    1100,
-                    315
-                )
-
-            ];
-
-
-            /* =================================================
-               TEXTO CENTRAL
-               ================================================= */
-
-            function dibujarTextoEBA(
-                intensidad = 1,
-                escalaTexto = 1
-            ) {
-
-                ctx.save();
-
-
-                ctx.textAlign =
-                    "center";
-
-                ctx.textBaseline =
-                    "middle";
-
-
-                /*
-                 * EBA
-                 */
-
-                ctx.font =
-                    `800 ${112 * escalaTexto}px Manrope, DM Sans, sans-serif`;
-
-
-                ctx.globalAlpha =
-                    intensidad;
-
-
-                ctx.shadowColor =
-                    NARANJA;
-
-
-                ctx.shadowBlur =
-                    20 *
-                    intensidad;
-
-
-                ctx.fillStyle =
-                    BLANCO;
-
-
-                ctx.fillText(
-                    "EBA",
-                    CENTRO_X,
-                    192
+            const alphaECG =
+                1 -
+                easeIn(
+                    Math.min(
+                        1,
+                        progreso / 0.68
+                    )
                 );
 
 
-                /*
-                 * PULSO
-                 */
-
-                ctx.shadowBlur =
-                    11 *
-                    intensidad;
-
-
-                ctx.font =
-                    `600 ${31 * escalaTexto}px Manrope, DM Sans, sans-serif`;
-
-
-                ctx.letterSpacing = "8px";
-
-
-                ctx.fillStyle =
-                    NARANJA_SUAVE;
-
-
-                ctx.fillText(
-                    "PULSO",
-                    CENTRO_X,
-                    260
-                );
-
-
-                ctx.restore();
-
-            }
-
-
-            /* =================================================
-               RUTA
-               ================================================= */
-
-            function dibujarRuta(
-                puntos,
-                progreso,
-                color,
-                grosor,
-                glow = 0,
-                alpha = 1
-            ) {
-
-                if (
-                    !puntos ||
-                    puntos.length < 2
-                ) {
-                    return;
-                }
-
-
-                progreso =
-                    clamp(progreso);
-
-
-                if (
-                    progreso <= 0
-                ) {
-                    return;
-                }
-
-
-                ctx.save();
-
-
-                ctx.globalAlpha =
-                    alpha;
-
-
-                ctx.strokeStyle =
-                    color;
-
-
-                ctx.lineWidth =
-                    grosor;
-
-
-                ctx.lineCap =
-                    "round";
-
-
-                ctx.lineJoin =
-                    "round";
-
-
-                if (glow > 0) {
-
-                    ctx.shadowColor =
-                        color;
-
-                    ctx.shadowBlur =
-                        glow;
-
-                }
-
-
-                const segmentos =
-                    puntos.length - 1;
-
-
-                const recorrido =
-                    progreso *
-                    segmentos;
-
-
-                const completos =
-                    Math.floor(
-                        recorrido
-                    );
-
-
-                const parcial =
-                    recorrido -
-                    completos;
-
-
-                ctx.beginPath();
-
-
-                ctx.moveTo(
-                    puntos[0].x,
-                    puntos[0].y
-                );
-
-
-                for (
-                    let i = 1;
-                    i <= completos &&
-                    i < puntos.length;
-                    i++
-                ) {
-
-                    ctx.lineTo(
-                        puntos[i].x,
-                        puntos[i].y
-                    );
-
-                }
-
-
-                if (
-                    completos <
-                    segmentos
-                ) {
-
-                    const a =
-                        puntos[completos];
-
-
-                    const b =
-                        puntos[
-                            completos + 1
-                        ];
-
-
-                    ctx.lineTo(
-
-                        interpolar(
-                            a.x,
-                            b.x,
-                            parcial
-                        ),
-
-                        interpolar(
-                            a.y,
-                            b.y,
-                            parcial
-                        )
-
-                    );
-
-                }
-
-
-                ctx.stroke();
-
-                ctx.restore();
-
-            }
-
-
-            /* =================================================
-               ECG
-               ================================================= */
-
-            function dibujarECG(
-                progreso,
-                grosor = 2.6,
-                glow = 8,
-                alpha = 1
+            if (
+                alphaECG > 0.01
             ) {
 
                 dibujarRuta(
                     ecgActual,
-                    progreso,
-                    NARANJA,
-                    grosor,
-                    glow,
-                    alpha
-                );
-
-            }
-
-
-            /* =================================================
-               PUNTO DE RECORRIDO
-               ================================================= */
-
-            function obtenerPuntoRuta(
-                puntos,
-                progreso
-            ) {
-
-                progreso =
-                    clamp(progreso);
-
-
-                const total =
-                    puntos.length - 1;
-
-
-                const posicion =
-                    progreso * total;
-
-
-                const indice =
-                    Math.min(
-                        Math.floor(posicion),
-                        total - 1
-                    );
-
-
-                const t =
-                    posicion -
-                    indice;
-
-
-                const a =
-                    puntos[indice];
-
-
-                const b =
-                    puntos[indice + 1];
-
-
-                return {
-
-                    x:
-                        interpolar(
-                            a.x,
-                            b.x,
-                            t
-                        ),
-
-                    y:
-                        interpolar(
-                            a.y,
-                            b.y,
-                            t
-                        )
-
-                };
-
-            }
-
-
-            function dibujarPuntoPulso(
-                x,
-                y,
-                intensidad = 1
-            ) {
-
-                ctx.save();
-
-
-                ctx.shadowColor =
-                    NARANJA_SUAVE;
-
-
-                ctx.shadowBlur =
-                    25 *
-                    intensidad;
-
-
-                ctx.fillStyle =
-                    NARANJA_SUAVE;
-
-
-                ctx.beginPath();
-
-
-                ctx.arc(
-                    x,
-                    y,
-                    4.2 *
-                    intensidad,
-                    0,
-                    Math.PI * 2
-                );
-
-
-                ctx.fill();
-
-
-                ctx.restore();
-
-            }
-
-
-            /* =================================================
-               GLOW CENTRAL
-               ================================================= */
-
-            function dibujarGlowCentral(
-                intensidad
-            ) {
-
-                if (
-                    intensidad <= 0
-                ) {
-                    return;
-                }
-
-
-                const gradient =
-                    ctx.createRadialGradient(
-                        CENTRO_X,
-                        CENTRO_Y,
-                        20,
-                        CENTRO_X,
-                        CENTRO_Y,
-                        360
-                    );
-
-
-                gradient.addColorStop(
-                    0,
-                    `rgba(255,106,0,${0.10 * intensidad})`
-                );
-
-
-                gradient.addColorStop(
-                    0.45,
-                    `rgba(255,106,0,${0.035 * intensidad})`
-                );
-
-
-                gradient.addColorStop(
                     1,
-                    "rgba(255,106,0,0)"
+                    NARANJA,
+                    interpolar(
+                        2.6,
+                        4.2,
+                        t
+                    ),
+                    8 + t * 10,
+                    alphaECG
                 );
-
-
-                ctx.save();
-
-
-                ctx.fillStyle =
-                    gradient;
-
-
-                ctx.fillRect(
-                    300,
-                    20,
-                    1200,
-                    380
-                );
-
-
-                ctx.restore();
-
             }
 
 
-            /* =================================================
-               CONVERGENCIA
-               ================================================= */
+            /*
+             * Los tres recorridos empiezan
+             * directamente desde la línea ECG.
+             */
 
-            function dibujarConvergencia(
-                progreso
-            ) {
-
-                const t =
-                    easeInOut(
-                        progreso
-                    );
-
-
-                /*
-                 * ECG sigue presente
-                 * al principio.
-                 */
-
-                const alphaECG =
-                    1 -
-                    easeInOut(
-                        Math.min(
-                            1,
-                            progreso / 0.62
-                        )
-                    );
+            const trazos =
+                easeOut(
+                    Math.max(
+                        0,
+                        (progreso - 0.10) /
+                        0.90
+                    )
+                );
 
 
-                if (
-                    alphaECG > 0
-                ) {
+            lineasLogo.forEach(
+                (
+                    ruta,
+                    indice
+                ) => {
 
-                    dibujarECG(
-                        1,
-                        interpolar(
-                            2.6,
-                            3.8,
-                            t
-                        ),
-                        8 +
-                        t * 8,
-                        alphaECG
-                    );
-
-                }
-
-
-                /*
-                 * Las tres líneas
-                 * se construyen.
-                 */
-
-                const lineAlpha =
-                    easeOut(
-                        Math.min(
-                            1,
-                            progreso / 0.72
-                        )
-                    );
-
-
-                lineasConvergencia.forEach(
-                    (
-                        ruta,
-                        indice
-                    ) => {
-
-                        dibujarRuta(
-                            ruta,
-                            lineAlpha,
+                    const alpha =
+                        trazos *
+                        (
                             indice === 1
-                                ? BLANCO
-                                : PLATA,
-                            interpolar(
-                                2,
-                                4.5,
-                                t
-                            ),
-                            6 +
-                            t * 10,
-                            0.85
+                                ? 0.92
+                                : 0.72
                         );
 
-                    }
-                );
 
-
-                /*
-                 * Marco superior e inferior.
-                 */
-
-                const marcoProgreso =
-                    easeInOut(
-                        Math.max(
-                            0,
-                            (progreso - 0.28) /
-                            0.72
-                        )
-                    );
-
-
-                dibujarRuta(
-                    marcoSuperior,
-                    marcoProgreso,
-                    NARANJA,
-                    2.1,
-                    7,
-                    0.7
-                );
-
-
-                dibujarRuta(
-                    marcoInferior,
-                    marcoProgreso,
-                    NARANJA,
-                    2.1,
-                    7,
-                    0.7
-                );
-
-
-                /*
-                 * EBA aparece después
-                 * de que las líneas ya
-                 * estén convergiendo.
-                 */
-
-                const textoProgreso =
-                    easeOut(
-                        Math.max(
-                            0,
-                            (progreso - 0.48) /
-                            0.52
-                        )
-                    );
-
-
-                if (
-                    textoProgreso > 0
-                ) {
-
-                    dibujarTextoEBA(
-                        textoProgreso,
-                        0.92 +
-                        textoProgreso * 0.08
+                    dibujarRuta(
+                        ruta,
+                        trazos,
+                        indice === 1
+                            ? BLANCO
+                            : PLATA,
+                        interpolar(
+                            2.5,
+                            4.6,
+                            t
+                        ),
+                        7 + t * 9,
+                        alpha
                     );
 
                 }
+            );
 
-            }
+
+            /*
+             * Marco.
+             */
+
+            const marco =
+                easeOut(
+                    Math.max(
+                        0,
+                        (progreso - 0.35) /
+                        0.65
+                    )
+                );
 
 
-            /* =================================================
-               LOGO COMPLETO
-               ================================================= */
+            dibujarRuta(
+                marcoSuperior,
+                marco,
+                NARANJA,
+                2.1,
+                7,
+                marco * 0.65
+            );
 
-            function dibujarLogoCompleto(
-                tiempo
+
+            dibujarRuta(
+                marcoInferior,
+                marco,
+                NARANJA,
+                2.1,
+                7,
+                marco * 0.65
+            );
+
+
+            /*
+             * EBA + PULSO
+             *
+             * Esto mantiene la formación
+             * que te gustó.
+             */
+
+            const texto =
+                easeOut(
+                    Math.max(
+                        0,
+                        (progreso - 0.52) /
+                        0.48
+                    )
+                );
+
+
+            if (
+                texto > 0
             ) {
-
-                const respiracion =
-                    (
-                        Math.sin(
-                            tiempo * 0.003
-                        ) + 1
-                    ) / 2;
-
-
-                const intensidad =
-                    0.72 +
-                    respiracion * 0.28;
-
-
-                /*
-                 * Líneas del marco.
-                 */
-
-                dibujarRuta(
-                    marcoSuperior,
-                    1,
-                    NARANJA,
-                    2.1,
-                    7,
-                    0.62
-                );
-
-
-                dibujarRuta(
-                    marcoInferior,
-                    1,
-                    NARANJA,
-                    2.1,
-                    7,
-                    0.62
-                );
-
-
-                /*
-                 * Tres líneas principales.
-                 */
-
-                lineasConvergencia.forEach(
-                    (
-                        ruta,
-                        indice
-                    ) => {
-
-                        dibujarRuta(
-                            ruta,
-                            1,
-                            indice === 1
-                                ? BLANCO
-                                : PLATA,
-                            4.4,
-                            8,
-                            0.88
-                        );
-
-                    }
-                );
-
-
-                /*
-                 * Glow central.
-                 */
-
-                dibujarGlowCentral(
-                    intensidad
-                );
-
-
-                /*
-                 * EBA + PULSO.
-                 */
 
                 dibujarTextoEBA(
-                    0.9 +
-                    respiracion * 0.1,
-                    1 +
-                    respiracion * 0.012
+                    texto,
+                    0.92 +
+                    texto * 0.08
                 );
-
             }
 
 
-            /* =================================================
-               RETRACCIÓN
-               ================================================= */
+            /*
+             * El centro empieza a respirar
+             * mientras se completa.
+             */
 
-            function dibujarRetraccion(
-                progreso
-            ) {
-
-                const t =
-                    easeInOut(
-                        progreso
-                    );
+            dibujarGlowCentral(
+                t * 0.75
+            );
+        }
 
 
-                /*
-                 * El texto desaparece
-                 * primero.
-                 */
+        /* =================================================
+           LOGO COMPLETO
+           ================================================= */
 
-                const textoAlpha =
-                    1 -
-                    easeIn(
-                        Math.min(
-                            1,
-                            progreso / 0.42
-                        )
-                    );
+        function dibujarLogoCompleto(
+            tiempo
+        ) {
 
-
-                if (
-                    textoAlpha > 0
-                ) {
-
-                    dibujarTextoEBA(
-                        textoAlpha,
-                        1 -
-                        t * 0.05
-                    );
-
-                }
+            const respiracion =
+                (
+                    Math.sin(
+                        tiempo * 0.003
+                    ) + 1
+                ) / 2;
 
 
-                /*
-                 * Las líneas centrales
-                 * se retraen.
-                 */
-
-                const lineProgress =
-                    1 -
-                    easeInOut(
-                        Math.max(
-                            0,
-                            (progreso - 0.18) /
-                            0.82
-                        )
-                    );
+            const intensidad =
+                0.72 +
+                respiracion * 0.28;
 
 
-                lineasConvergencia.forEach(
-                    (
+            dibujarGlowCentral(
+                intensidad
+            );
+
+
+            /*
+             * Marco.
+             */
+
+            dibujarRuta(
+                marcoSuperior,
+                1,
+                NARANJA,
+                2.1,
+                7,
+                0.62
+            );
+
+
+            dibujarRuta(
+                marcoInferior,
+                1,
+                NARANJA,
+                2.1,
+                7,
+                0.62
+            );
+
+
+            /*
+             * Tres trazos.
+             */
+
+            lineasLogo.forEach(
+                (
+                    ruta,
+                    indice
+                ) => {
+
+                    dibujarRuta(
                         ruta,
-                        indice
-                    ) => {
-
-                        dibujarRuta(
-                            ruta,
-                            lineProgress,
-                            indice === 1
-                                ? BLANCO
-                                : PLATA,
-                            4.4 -
-                            t * 1.5,
-                            8,
-                            lineProgress
-                        );
-
-                    }
-                );
-
-
-                /*
-                 * El marco se apaga.
-                 */
-
-                const marcoAlpha =
-                    1 -
-                    easeInOut(
-                        Math.min(
-                            1,
-                            progreso / 0.55
-                        )
-                    );
-
-
-                if (
-                    marcoAlpha > 0
-                ) {
-
-                    dibujarRuta(
-                        marcoSuperior,
                         1,
-                        NARANJA,
-                        2,
-                        7,
-                        marcoAlpha
-                    );
-
-
-                    dibujarRuta(
-                        marcoInferior,
-                        1,
-                        NARANJA,
-                        2,
-                        7,
-                        marcoAlpha
+                        indice === 1
+                            ? BLANCO
+                            : PLATA,
+                        4.4,
+                        8,
+                        0.88
                     );
 
                 }
+            );
 
+
+            /*
+             * EBA + PULSO.
+             */
+
+            dibujarTextoEBA(
+                0.9 +
+                respiracion * 0.1,
+                1 +
+                respiracion * 0.012
+            );
+        }
+
+
+        /* =================================================
+           TRANSFORMACIÓN LOGO → ECG
+           ================================================= */
+
+        function dibujarTransformacionSalida(
+            progreso
+        ) {
+
+            const t =
+                easeInOut(progreso);
+
+
+            /*
+             * El texto se mantiene un instante
+             * y luego se integra.
+             */
+
+            const textoAlpha =
+                1 -
+                easeIn(
+                    Math.min(
+                        1,
+                        progreso / 0.30
+                    )
+                );
+
+
+            if (
+                textoAlpha > 0
+            ) {
+
+                dibujarTextoEBA(
+                    textoAlpha,
+                    1 -
+                    t * 0.04
+                );
             }
 
 
-            /* =================================================
-               ECG DE REGRESO
-               ================================================= */
+            /*
+             * Los tres trazos se adelgazan.
+             */
 
-            function dibujarECGRegreso(
-                progreso
+            const trazos =
+                1 -
+                easeInOut(
+                    Math.max(
+                        0,
+                        (progreso - 0.10) /
+                        0.55
+                    )
+                );
+
+
+            lineasLogo.forEach(
+                (
+                    ruta,
+                    indice
+                ) => {
+
+                    if (
+                        trazos <= 0.01
+                    ) {
+                        return;
+                    }
+
+
+                    dibujarRuta(
+                        ruta,
+                        trazos,
+                        indice === 1
+                            ? BLANCO
+                            : PLATA,
+                        interpolar(
+                            4.4,
+                            2.5,
+                            t
+                        ),
+                        8 - t * 4,
+                        0.88 * trazos
+                    );
+
+                }
+            );
+
+
+            /*
+             * Marco se desvanece lentamente.
+             */
+
+            const marcoAlpha =
+                1 -
+                easeInOut(
+                    Math.min(
+                        1,
+                        progreso / 0.42
+                    )
+                );
+
+
+            if (
+                marcoAlpha > 0.01
             ) {
 
-                const ruta = [
+                dibujarRuta(
+                    marcoSuperior,
+                    1,
+                    NARANJA,
+                    2.1,
+                    7,
+                    marcoAlpha * 0.62
+                );
+
+
+                dibujarRuta(
+                    marcoInferior,
+                    1,
+                    NARANJA,
+                    2.1,
+                    7,
+                    marcoAlpha * 0.62
+                );
+            }
+
+
+            /*
+             * ECG nace desde el mismo centro.
+             */
+
+            const regreso =
+                easeOut(
+                    Math.max(
+                        0,
+                        (progreso - 0.28) /
+                        0.72
+                    )
+                );
+
+
+            if (
+                regreso > 0
+            ) {
+
+                /*
+                 * El ECG de salida comienza
+                 * exactamente en el centro.
+                 */
+
+                const rutaSalida = [
 
                     punto(
                         CENTRO_X,
@@ -1892,18 +1658,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 dibujarRuta(
-                    ruta,
-                    easeOut(progreso),
+                    rutaSalida,
+                    regreso,
                     NARANJA,
                     2.6,
-                    10
+                    9,
+                    1
                 );
 
 
                 const puntoActual =
                     obtenerPuntoRuta(
-                        ruta,
-                        easeOut(progreso)
+                        rutaSalida,
+                        regreso
                     );
 
 
@@ -1914,524 +1681,444 @@ document.addEventListener("DOMContentLoaded", () => {
                     dibujarPuntoPulso(
                         puntoActual.x,
                         puntoActual.y,
-                        0.8
+                        0.78
                     );
-
                 }
-
             }
 
 
-            /* =================================================
-               ESCENA COMPLETA
-               ================================================= */
+            /*
+             * Glow disminuye.
+             */
 
-            const FASE_ECG =
-                4300;
-
-
-            const FASE_CONVERGENCIA =
-                2600;
-
-
-            const FASE_HOLD =
-                1700;
+            dibujarGlowCentral(
+                0.82 -
+                t * 0.72
+            );
+        }
 
 
-            const FASE_RETRACCION =
-                2200;
+        /* =================================================
+           ESCENA CONTINUA
+           ================================================= */
+
+        /*
+         * Mucho más lenta y elegante.
+         */
+
+        const FASE_ECG =
+            5200;
 
 
-            const FASE_SALIDA =
-                1900;
+        const FASE_ENTRADA =
+            2600;
 
 
-            const DURACION_TOTAL =
-                FASE_ECG +
-                FASE_CONVERGENCIA +
-                FASE_HOLD +
-                FASE_RETRACCION +
-                FASE_SALIDA;
+        const FASE_HOLD =
+            1800;
 
 
-            function dibujarEscena(
-                tiempo
+        const FASE_SALIDA =
+            2600;
+
+
+        const DURACION_TOTAL =
+            FASE_ECG +
+            FASE_ENTRADA +
+            FASE_HOLD +
+            FASE_SALIDA;
+
+
+        function dibujarEscena(
+            tiempo
+        ) {
+
+            ctx.setTransform(
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+            );
+
+
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            ctx.save();
+
+
+            ctx.scale(
+                dpr,
+                dpr
+            );
+
+
+            ctx.translate(
+                offsetX,
+                offsetY
+            );
+
+
+            ctx.scale(
+                scale,
+                scale
+            );
+
+
+            /*
+             * Glow ambiental.
+             */
+
+            dibujarGlowCentral(
+                0.18
+            );
+
+
+            /* =============================================
+               FASE 1 — ECG
+               ============================================= */
+
+            if (
+                tiempo <
+                FASE_ECG
             ) {
 
-                ctx.setTransform(
-                    1,
-                    0,
-                    0,
-                    1,
-                    0,
-                    0
+                const progreso =
+                    easeInOut(
+                        tiempo /
+                        FASE_ECG
+                    );
+
+
+                dibujarRuta(
+                    ecgActual,
+                    progreso,
+                    NARANJA,
+                    2.6,
+                    8,
+                    1
                 );
 
 
-                ctx.clearRect(
-                    0,
-                    0,
-                    canvas.width,
-                    canvas.height
+                const puntoActual =
+                    obtenerPuntoRuta(
+                        ecgActual,
+                        progreso
+                    );
+
+
+                if (
+                    puntoActual
+                ) {
+
+                    dibujarPuntoPulso(
+                        puntoActual.x,
+                        puntoActual.y,
+                        0.72
+                    );
+                }
+            }
+
+
+            /* =============================================
+               FASE 2 — TRANSFORMACIÓN
+               ============================================= */
+
+            const inicioEntrada =
+                FASE_ECG;
+
+
+            const finEntrada =
+                inicioEntrada +
+                FASE_ENTRADA;
+
+
+            if (
+                tiempo >= inicioEntrada &&
+                tiempo < finEntrada
+            ) {
+
+                const progreso =
+                    (
+                        tiempo -
+                        inicioEntrada
+                    ) /
+                    FASE_ENTRADA;
+
+
+                dibujarTransformacionEntrada(
+                    progreso
                 );
+            }
 
 
-                ctx.save();
+            /* =============================================
+               FASE 3 — LOGO
+               ============================================= */
+
+            const inicioHold =
+                finEntrada;
 
 
-                ctx.scale(
-                    dpr,
-                    dpr
+            const finHold =
+                inicioHold +
+                FASE_HOLD;
+
+
+            if (
+                tiempo >= inicioHold &&
+                tiempo < finHold
+            ) {
+
+                dibujarLogoCompleto(
+                    tiempo
                 );
+            }
 
 
-                ctx.translate(
-                    offsetX,
-                    offsetY
+            /* =============================================
+               FASE 4 — SALIDA
+               ============================================= */
+
+            const inicioSalida =
+                finHold;
+
+
+            if (
+                tiempo >= inicioSalida
+            ) {
+
+                const progreso =
+                    clamp(
+                        (
+                            tiempo -
+                            inicioSalida
+                        ) /
+                        FASE_SALIDA
+                    );
+
+
+                dibujarTransformacionSalida(
+                    progreso
                 );
+            }
 
 
-                ctx.scale(
-                    scale,
-                    scale
-                );
+            ctx.restore();
+        }
+
+
+        /* =================================================
+           REDUCIR MOVIMIENTO
+           ================================================= */
+
+        if (reduceMotion) {
+
+            ctx.setTransform(
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+            );
+
+
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            ctx.save();
+
+
+            ctx.scale(
+                dpr,
+                dpr
+            );
+
+
+            ctx.translate(
+                offsetX,
+                offsetY
+            );
+
+
+            ctx.scale(
+                scale,
+                scale
+            );
+
+
+            dibujarLogoCompleto(
+                0
+            );
+
+
+            ctx.restore();
+
+        } else {
+
+            let inicio =
+                performance.now();
+
+
+            let animando =
+                true;
+
+
+            function animar(timestamp) {
+
+                if (!animando) {
+                    return;
+                }
+
+
+                const tiempo =
+                    (
+                        timestamp -
+                        inicio
+                    ) %
+                    DURACION_TOTAL;
 
 
                 /*
-                 * Glow general muy suave.
+                 * Nuevo ECG únicamente
+                 * cuando empieza un ciclo real.
                  */
 
-                dibujarGlowCentral(
-                    0.32
-                );
-
-
-                /* =============================================
-                   FASE 1 — ECG
-                   ============================================= */
-
                 if (
-                    tiempo <
-                    FASE_ECG
+                    tiempo < 30 &&
+                    timestamp > 100
                 ) {
 
-                    const progreso =
-                        easeInOut(
-                            tiempo /
-                            FASE_ECG
-                        );
-
-
-                    dibujarECG(
-                        progreso,
-                        2.6,
-                        8
-                    );
-
-
-                    /*
-                     * Punto que viaja sobre el ECG.
-                     */
-
-                    const puntoActual =
-                        obtenerPuntoRuta(
-                            ecgActual,
-                            progreso
-                        );
-
-
-                    if (
-                        puntoActual
-                    ) {
-
-                        dibujarPuntoPulso(
-                            puntoActual.x,
-                            puntoActual.y,
-                            0.75
-                        );
-
-                    }
-
+                    regenerarECG();
                 }
 
 
-                /* =============================================
-                   FASE 2 — CONVERGENCIA
-                   ============================================= */
-
-                const inicioConvergencia =
-                    FASE_ECG;
-
-
-                const finConvergencia =
-                    inicioConvergencia +
-                    FASE_CONVERGENCIA;
-
-
-                if (
-                    tiempo >=
-                    inicioConvergencia &&
-                    tiempo <
-                    finConvergencia
-                ) {
-
-                    const progreso =
-                        (
-                            tiempo -
-                            inicioConvergencia
-                        ) /
-                        FASE_CONVERGENCIA;
-
-
-                    dibujarConvergencia(
-                        progreso
-                    );
-
-
-                    /*
-                     * El glow crece
-                     * hacia el centro.
-                     */
-
-                    dibujarGlowCentral(
-                        0.35 +
-                        easeInOut(
-                            progreso
-                        ) *
-                        0.65
-                    );
-
-                }
-
-
-                /* =============================================
-                   FASE 3 — LOGO COMPLETO
-                   ============================================= */
-
-                const inicioHold =
-                    finConvergencia;
-
-
-                const finHold =
-                    inicioHold +
-                    FASE_HOLD;
-
-
-                if (
-                    tiempo >=
-                    inicioHold &&
-                    tiempo <
-                    finHold
-                ) {
-
-                    dibujarLogoCompleto(
-                        tiempo
-                    );
-
-                }
-
-
-                /* =============================================
-                   FASE 4 — RETRACCIÓN
-                   ============================================= */
-
-                const inicioRetraccion =
-                    finHold;
-
-
-                const finRetraccion =
-                    inicioRetraccion +
-                    FASE_RETRACCION;
-
-
-                if (
-                    tiempo >=
-                    inicioRetraccion &&
-                    tiempo <
-                    finRetraccion
-                ) {
-
-                    const progreso =
-                        (
-                            tiempo -
-                            inicioRetraccion
-                        ) /
-                        FASE_RETRACCION;
-
-
-                    dibujarRetraccion(
-                        progreso
-                    );
-
-
-                    dibujarGlowCentral(
-                        0.85 -
-                        easeInOut(
-                            progreso
-                        ) *
-                        0.65
-                    );
-
-                }
-
-
-                /* =============================================
-                   FASE 5 — ECG DE REGRESO
-                   ============================================= */
-
-                const inicioSalida =
-                    finRetraccion;
-
-
-                if (
-                    tiempo >=
-                    inicioSalida
-                ) {
-
-                    const progreso =
-                        clamp(
-                            (
-                                tiempo -
-                                inicioSalida
-                            ) /
-                            FASE_SALIDA
-                        );
-
-
-                    dibujarECGRegreso(
-                        progreso
-                    );
-
-                }
-
-
-                ctx.restore();
-
-            }
-
-
-            /* =================================================
-               REDUCIR MOVIMIENTO
-               ================================================= */
-
-            if (reduceMotion) {
-
-                ctx.setTransform(
-                    1,
-                    0,
-                    0,
-                    1,
-                    0,
-                    0
+                dibujarEscena(
+                    tiempo
                 );
-
-
-                ctx.clearRect(
-                    0,
-                    0,
-                    canvas.width,
-                    canvas.height
-                );
-
-
-                ctx.save();
-
-
-                ctx.scale(
-                    dpr,
-                    dpr
-                );
-
-
-                ctx.translate(
-                    offsetX,
-                    offsetY
-                );
-
-
-                ctx.scale(
-                    scale,
-                    scale
-                );
-
-
-                dibujarLogoCompleto(
-                    0
-                );
-
-
-                ctx.restore();
-
-            } else {
-
-
-                let inicio =
-                    performance.now();
-
-
-                let animando =
-                    true;
-
-
-                function animar(
-                    timestamp
-                ) {
-
-                    if (!animando) {
-                        return;
-                    }
-
-
-                    const tiempo =
-                        (
-                            timestamp -
-                            inicio
-                        ) %
-                        DURACION_TOTAL;
-
-
-                    /*
-                     * Cuando comienza un nuevo
-                     * ciclo generamos pulsaciones
-                     * diferentes.
-                     */
-
-                    if (
-                        tiempo < 30 &&
-                        timestamp > 100
-                    ) {
-
-                        regenerarECG();
-
-                    }
-
-
-                    dibujarEscena(
-                        tiempo
-                    );
-
-
-                    requestAnimationFrame(
-                        animar
-                    );
-
-                }
 
 
                 requestAnimationFrame(
                     animar
                 );
+            }
 
 
-                /* =============================================
-                   HERO VISIBILITY
-                   ============================================= */
-
-                const hero =
-                    document.querySelector(
-                        "#inicio"
-                    );
+            requestAnimationFrame(
+                animar
+            );
 
 
-                if (
-                    hero &&
-                    "IntersectionObserver" in window
-                ) {
+            /* =============================================
+               HERO VISIBILITY
+               ============================================= */
 
-                    let heroVisible =
-                        false;
+            const hero =
+                document.querySelector(
+                    "#inicio"
+                );
 
 
-                    const heroObserver =
-                        new IntersectionObserver(
-                            (entries) => {
+            if (
+                hero &&
+                "IntersectionObserver" in window
+            ) {
 
-                                entries.forEach(
-                                    (entry) => {
+                let heroVisible = false;
+
+
+                const heroObserver =
+                    new IntersectionObserver(
+                        (entries) => {
+
+                            entries.forEach(
+                                (entry) => {
+
+                                    if (
+                                        entry.isIntersecting
+                                    ) {
 
                                         if (
-                                            entry.isIntersecting
+                                            !heroVisible
                                         ) {
 
-                                            if (
-                                                !heroVisible
-                                            ) {
-
-                                                inicio =
-                                                    performance.now();
-
-                                            }
-
-                                            heroVisible =
-                                                true;
-
-
-                                            animando =
-                                                true;
-
-                                        } else {
-
-                                            heroVisible =
-                                                false;
+                                            inicio =
+                                                performance.now();
 
                                         }
 
+                                        heroVisible =
+                                            true;
+
+                                        animando =
+                                            true;
+
+                                    } else {
+
+                                        heroVisible =
+                                            false;
                                     }
-                                );
-
-                            },
-                            {
-                                threshold: 0.15
-                            }
-                        );
-
-
-                    heroObserver.observe(
-                        hero
-                    );
-
-                }
-
-
-                /* =============================================
-                   VISIBILITY CHANGE
-                   ============================================= */
-
-                document.addEventListener(
-                    "visibilitychange",
-                    () => {
-
-                        if (
-                            document.hidden
-                        ) {
-
-                            animando =
-                                false;
-
-                        } else {
-
-                            inicio =
-                                performance.now();
-
-                            animando =
-                                true;
-
-                            requestAnimationFrame(
-                                animar
+                                }
                             );
 
+                        },
+                        {
+                            threshold: 0.15
                         }
+                    );
 
-                    }
+
+                heroObserver.observe(
+                    hero
                 );
-
             }
 
+
+            /* =============================================
+               VISIBILITY CHANGE
+               ============================================= */
+
+            document.addEventListener(
+                "visibilitychange",
+                () => {
+
+                    if (
+                        document.hidden
+                    ) {
+
+                        animando =
+                            false;
+
+                    } else {
+
+                        inicio =
+                            performance.now();
+
+                        animando =
+                            true;
+
+                        requestAnimationFrame(
+                            animar
+                        );
+                    }
+                }
+            );
         }
-
     }
-
-
+}
     /* =========================================================
        PULSI
        ========================================================= */

@@ -411,126 +411,148 @@ window.addEventListener(
 
     }
 );
-    /* =========================================================
-       NAVEGACIÓN INTERNA
-       ========================================================= */
+  /* =========================================================
+   NAVEGACIÓN INTERNA — SISTEMA DE VISTAS
+   ========================================================= */
 
-    document.querySelectorAll(
-        'a[href^="#"]'
-    ).forEach((link) => {
+document.querySelectorAll(
+    'a[href^="#"]'
+).forEach((link) => {
 
-        link.addEventListener(
-            "click",
-            (event) => {
+    link.addEventListener(
+        "click",
+        (event) => {
 
-                const id =
-                    link.getAttribute("href");
+            const id =
+                link.getAttribute("href");
 
-                if (
-                    !id ||
-                    id === "#"
-                ) {
-                    return;
-                }
-
-                /*
-                 * Pulsi tiene un comportamiento especial.
-                 */
-
-                if (
-                    id === "#pulsi-container"
-                ) {
-
-                    event.preventDefault();
-
-                    cerrarMenu();
-
-                    if (
-                        typeof abrirPulsi === "function"
-                    ) {
-                        abrirPulsi();
-                    }
-
-                    return;
-                }
+            if (
+                !id ||
+                id === "#"
+            ) {
+                return;
+            }
 
 
-                const destino =
-                    document.querySelector(id);
+            /* =================================================
+               PULSI
+               ================================================= */
 
-                if (!destino) {
-                    return;
-                }
+            if (
+                id === "#pulsi-container"
+            ) {
 
                 event.preventDefault();
 
                 cerrarMenu();
 
+                abrirPulsi();
 
-                const alturaNavbar =
-                    navbar
-                        ? navbar.offsetHeight
-                        : 0;
-
-
-                const posicion =
-                    destino.getBoundingClientRect().top +
-                    window.scrollY -
-                    alturaNavbar;
-
-
-                window.scrollTo({
-
-                    top: Math.max(
-                        0,
-                        posicion
-                    ),
-
-                    behavior:
-                        reduceMotion
-                            ? "auto"
-                            : "smooth"
-
-                });
-
+                return;
             }
-        );
-
-    });
 
 
-    document.addEventListener(
-        "click",
-        (event) => {
+            /*
+             * Quitamos el #
+             *
+             * #inicio
+             * → inicio
+             *
+             * #nosotros
+             * → nosotros
+             */
+
+            const nombreVista =
+                id
+                    .replace("#", "")
+                    .trim()
+                    .toLowerCase();
+
+
+            /*
+             * Comprobamos si realmente
+             * existe una vista con ese nombre.
+             */
 
             if (
-                navMenu &&
-                navMenu.classList.contains("active") &&
-                !navMenu.contains(event.target) &&
-                menuToggle &&
-                !menuToggle.contains(event.target)
+                !vistasPorNombre[nombreVista]
             ) {
-
-                cerrarMenu();
-
+                return;
             }
+
+
+            /*
+             * Evitamos que el navegador
+             * haga el scroll tradicional.
+             */
+
+            event.preventDefault();
+
+
+            /*
+             * Cerramos el menú.
+             */
+
+            cerrarMenu();
+
+
+            /*
+             * Cambiamos de vista.
+             */
+
+            cambiarVista(
+                nombreVista,
+                true
+            );
 
         }
     );
 
+});
 
-    document.addEventListener(
-        "keydown",
-        (event) => {
 
-            if (event.key === "Escape") {
-                cerrarMenu();
-            }
+/* =========================================================
+   CERRAR MENÚ AL HACER CLICK AFUERA
+   ========================================================= */
+
+document.addEventListener(
+    "click",
+    (event) => {
+
+        if (
+            navMenu &&
+            navMenu.classList.contains("active") &&
+            !navMenu.contains(event.target) &&
+            menuToggle &&
+            !menuToggle.contains(event.target)
+        ) {
+
+            cerrarMenu();
 
         }
-    );
+
+    }
+);
 
 
+/* =========================================================
+   ESCAPE — CERRAR MENÚ
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            cerrarMenu();
+
+        }
+
+    }
+);
     /* =========================================================
        NAVBAR AL HACER SCROLL
        ========================================================= */

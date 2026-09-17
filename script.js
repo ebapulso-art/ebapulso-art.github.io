@@ -1643,8 +1643,7 @@ if (canvas) {
              */
 
             const PERIODO =
-                12000;
-
+               15000;
 
             const progresoLoop =
                 (
@@ -1678,10 +1677,15 @@ if (canvas) {
              * Curva del morph.
              */
 
-            const morph =
+            const morphBase =
                 easeInOutCubic(
                     onda
                 );
+
+            const morph =
+                morphBase > 0.82
+                    ? 0.98
+                    : morphBase;
 
 
             /*
@@ -2212,12 +2216,7 @@ if (canvas) {
                  */
 
                 const ciclo =
-                    (
-                        tiempo %
-                        12000
-                    ) /
-                    12000;
-
+                    (tiempo % 16000) / 16000;
 
                 const onda =
                     (

@@ -39,81 +39,82 @@ document.addEventListener("DOMContentLoaded", () => {
     const navbar = document.querySelector(".navbar");
 
 
-    function cerrarMenu() {
+   function cerrarMenu() {
 
-        if (navMenu) {
-            navMenu.classList.remove("active");
-            navMenu.classList.remove("activo");
-        }
-
-        if (menuToggle) {
-            menuToggle.classList.remove("active");
-
-            menuToggle.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-        }
-
-        document.body.classList.remove(
-            "menu-abierto"
-        );
-
+    if (navMenu) {
+        navMenu.classList.remove("is-open");
+        navMenu.classList.remove("active");
+        navMenu.classList.remove("activo");
     }
-
-
-    function abrirMenu() {
-
-        if (navMenu) {
-            navMenu.classList.add("active");
-        }
-
-        if (menuToggle) {
-            menuToggle.classList.add("active");
-
-            menuToggle.setAttribute(
-                "aria-expanded",
-                "true"
-            );
-        }
-
-        document.body.classList.add(
-            "menu-abierto"
-        );
-
-    }
-
 
     if (menuToggle) {
+        menuToggle.classList.remove("active");
 
         menuToggle.setAttribute(
             "aria-expanded",
             "false"
         );
+    }
 
-        menuToggle.addEventListener(
-            "click",
-            (event) => {
+    document.body.classList.remove(
+        "menu-abierto"
+    );
 
-                event.stopPropagation();
+}
 
-                if (
-                    navMenu &&
-                    navMenu.classList.contains("active")
-                ) {
 
-                    cerrarMenu();
+function abrirMenu() {
 
-                } else {
+    if (navMenu) {
+        navMenu.classList.add("is-open");
+    }
 
-                    abrirMenu();
+    if (menuToggle) {
+        menuToggle.classList.add("active");
 
-                }
+        menuToggle.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+    }
+
+    document.body.classList.add(
+        "menu-abierto"
+    );
+
+}
+
+
+if (menuToggle) {
+
+    menuToggle.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+    menuToggle.addEventListener(
+        "click",
+        (event) => {
+
+            event.stopPropagation();
+
+            if (
+                navMenu &&
+                navMenu.classList.contains("is-open") &&
+            ) {
+
+                cerrarMenu();
+
+            } else {
+
+                abrirMenu();
 
             }
-        );
 
-    }
+        }
+    );
+
+}
 
 /* =========================================================
    SISTEMA DE VISTAS — PULSO

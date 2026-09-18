@@ -99,20 +99,15 @@ if (menuToggle) {
             event.stopPropagation();
 
             if (
-                navMenu &&
-                navMenu.classList.contains("is-open") &&
-            ) {
+    navMenu &&
+    navMenu.classList.contains("is-open")
+) {
 
-                cerrarMenu();
+    cerrarMenu();
 
-            } else {
+} else {
 
-                abrirMenu();
-
-            }
-
-        }
-    );
+    abrirMenu();
 
 }
 
@@ -521,19 +516,16 @@ document.addEventListener(
     (event) => {
 
         if (
-            navMenu &&
-            navMenu.classList.contains("active") &&
-            !navMenu.contains(event.target) &&
-            menuToggle &&
-            !menuToggle.contains(event.target)
-        ) {
+    navMenu &&
+    navMenu.classList.contains("is-open") &&
+    !navMenu.contains(event.target) &&
+    menuToggle &&
+    !menuToggle.contains(event.target)
+) {
 
-            cerrarMenu();
+    cerrarMenu();
 
-        }
-
-    }
-);
+}
 
 
 /* =========================================================

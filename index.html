@@ -2,1981 +2,405 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="description"
-        content="PULSO — Diseño, identidad y soluciones digitales que dejan huella."
-    >
-
-    <meta
-        name="author"
-        content="PULSO"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PULSO — Diseño, identidad y soluciones digitales que dejan huella.">
+    <meta name="author" content="PULSO">
     <title>PULSO — Ideas que toman forma</title>
-
     <link rel="stylesheet" href="styles.css">
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- =====================================================
-    NAVBAR
-====================================================== -->
-
+<!-- NAVBAR -->
 <header class="navbar">
-
     <div class="nav-container">
-
         <a href="#inicio" class="logo" aria-label="PULSO"></a>
-
-        <nav
-    class="nav-menu"
-    id="nav-menu"
-    aria-label="Navegación principal"
->
-
-    <div class="nav-menu-header">
-        <span>PULSO</span>
-
-        <button
-            type="button"
-            class="nav-menu-close"
-            id="nav-menu-close"
-            aria-label="Cerrar menú"
-        >
-            ×
-        </button>
-    </div>
-
-    <div class="nav-menu-links">
-
-        <a href="#inicio">
-            <span>01</span>
-            Inicio
-        </a>
-
-        <a href="#nosotros">
-            <span>02</span>
-            Nosotros
-        </a>
-
-        <a href="#servicios">
-            <span>03</span>
-            Servicios
-        </a>
-
-        <a href="#proyectos">
-            <span>04</span>
-            Proyectos
-        </a>
-
-        <a href="#proceso">
-            <span>05</span>
-            Proceso
-        </a>
-
-        <a href="#formulario">
-            <span>06</span>
-    Tu proyecto
-        </a>
-
-        <a href="#ayuda">
-            <span>07</span>
-            Ayuda
-        </a>
-
-        <a href="#contacto">
-            <span>08</span>
-            Contacto
-        </a>
-
-        <a href="#pulsi-container" class="nav-pulsi-link">
-            <span>✦</span>
-            Pulsi
-        </a>
-
-    </div>
-
-    <div class="nav-menu-footer">
-        <span>DISEÑO · IDENTIDAD · DIGITAL</span>
-    </div>
-
-</nav>
-
-        <a
-            href="#formulario"
-            class="nav-cta"
-        >
-           Tu proyecto →
-        </a>
-
-        <button
-            class="menu-toggle"
-            id="menu-toggle"
-            type="button"
-            aria-label="Abrir menú"
-            aria-expanded="false"
-            aria-controls="nav-menu"
-        >
+        <nav class="nav-menu" id="nav-menu" aria-label="Navegación principal">
+            <div class="nav-menu-header">
+                <span>PULSO</span>
+                <button type="button" class="nav-menu-close" id="nav-menu-close" aria-label="Cerrar menú">×</button>
+            </div>
+            <div class="nav-menu-links">
+                <a href="#inicio"><span>01</span> Inicio</a>
+                <a href="#nosotros"><span>02</span> Nosotros</a>
+                <a href="#servicios"><span>03</span> Servicios</a>
+                <a href="#proyectos"><span>04</span> Proyectos</a>
+                <a href="#proceso"><span>05</span> Proceso</a>
+                <a href="#formulario"><span>06</span> Tu proyecto</a>
+                <a href="#ayuda"><span>07</span> Ayuda</a>
+                <a href="#contacto"><span>08</span> Contacto</a>
+                <a href="#pulsi-container" class="nav-pulsi-link"><span>✦</span> Pulsi</a>
+            </div>
+            <div class="nav-menu-footer">
+                <span>DISEÑO · IDENTIDAD · DIGITAL</span>
+            </div>
+        </nav>
+        <a href="#formulario" class="nav-cta">Tu proyecto →</a>
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu">
             <span class="menu-icon">
                 <span></span>
                 <span></span>
                 <span></span>
             </span>
-
             <span class="menu-text">Menú</span>
         </button>
-
     </div>
-
 </header>
 
-
-<!-- =====================================================
-    HERO
-====================================================== -->
-
+<!-- MAIN APP -->
 <main id="app">
 
+    <!-- HERO -->
     <section class="hero view view-active" id="inicio" data-view="inicio">
-        
-    >
-
-        <!-- =========================================================
-            PULSO — LOGO ANIMADO ECG
-        ========================================================= -->
-
         <div class="hero-brand hero-pulso-canvas">
-
-            <canvas
-                id="pulsoLogoCanvas"
-                aria-label="PULSO"
-                role="img">
-            </canvas>
-
+            <canvas id="pulsoLogoCanvas" aria-label="PULSO" role="img"></canvas>
         </div>
-
         <div class="hero-container">
-
             <div class="hero-content">
-
-                <p class="hero-eyebrow">
-                    DISEÑO · IDENTIDAD · DIGITAL
-                </p>
-
-                <h1>
-                    Ideas que
-                    <span>toman forma.</span>
-                </h1>
-
-                <p class="hero-subtitle">
-                    Diseño que genera impacto.
-                </p>
-
-                <p class="hero-description">
-                    Creamos identidades, piezas visuales y
-                    experiencias digitales pensadas para que
-                    cada proyecto tenga una presencia propia.
-                </p>
-
-                <div class="hero-buttons">
-
-                    <a
-                        href="#proyectos"
-                        class="btn btn-primary"
-                    >
-                        Ver proyectos →
-                    </a>
-
-                    <a
-                        href="#formulario"
-                        class="btn btn-secondary"
-                    >
-                        Contanos tu idea
-                    </a>
-
-                </div>
-
+                <p class="hero-eyebrow">DISEÑO · IDENTIDAD · DIGITAL</p>
+                <h1>Ideas que <span>toman forma.</span></h1>
+                <p class="hero-subtitle">Diseño que genera impacto.</p>
+                <p class="hero-description">Creamos identidades, piezas visuales y experiencias digitales pensadas para que cada proyecto tenga una presencia propia.</p>
             </div>
-
-
             <div class="hero-visual">
-
                 <div class="pulse-visual">
-
                     <div class="pulse-visual-top">
                         <span>PULSO / 01</span>
                         <span>IDENTIDAD</span>
                     </div>
-
                     <div class="pulse-symbol">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span></span><span></span><span></span>
                     </div>
-
                     <div class="pulse-visual-bottom">
                         <span>DISEÑO</span>
                         <span>IDEAS → FORMA</span>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
-
         <div class="hero-index">
-            <span>01</span>
-            <span>/</span>
-            <span>08</span>
+            <span>01</span><span>/</span><span>08</span>
         </div>
-
-
-        <a
-            href="#nosotros"
-            class="scroll-indicator"
-            aria-label="Ir a Nosotros"
-        >
-            <span>Scroll</span>
-
-            <span class="scroll-arrow">
-                ↓
-            </span>
-        </a>
-
     </section>
 
-
-    <!-- =====================================================
-         BRAND STATEMENT
-    ====================================================== -->
-
+    <!-- QUÉ ES PULSO -->
     <section class="brand-statement view" data-view="inicio">
-
         <div class="brand-statement-line"></div>
-
         <div class="brand-statement-content">
-
-            <span class="brand-statement-number">
-                00
-            </span>
-
-            <p>
-                Una idea puede ser buena.
-                <strong>
-                    Una idea bien diseñada puede
-                    convertirse en una marca.
-                </strong>
-            </p>
-
+            <span class="brand-statement-number">00</span>
+            <p>PULSO es un espacio creativo donde las ideas toman forma a través del diseño, la identidad y lo digital.</p>
         </div>
-
         <div class="brand-statement-line"></div>
-
     </section>
 
-
-    <!-- =====================================================
-         NOSOTROS
-    ====================================================== -->
-
+    <!-- NOSOTROS -->
     <section class="section nosotros view" id="nosotros" data-view="nosotros">
-    >
-
         <div class="container">
-
             <div class="section-heading">
-
-                <p class="section-label">
-                    01 — Nosotros
-                </p>
-
-                <h2 class="section-title">
-                    No diseñamos
-                    <span>por diseñar.</span>
-                </h2>
-
-                <p class="section-description">
-                    En PULSO buscamos entender la idea detrás
-                    de cada proyecto para transformarla en algo
-                    visual, claro y memorable.
-                </p>
-
+                <p class="section-label">01 — Nosotros</p>
+                <h2 class="section-title">No diseñamos <span>por diseñar.</span></h2>
+                <p class="section-description">En PULSO buscamos entender la idea detrás de cada proyecto para transformarla en algo visual, claro y memorable.</p>
             </div>
-
-
             <div class="nosotros-content">
-
                 <div class="nosotros-text">
-
-                    <p class="large-text">
-                        Cada proyecto tiene
-                        <span>algo que decir.</span>
-                    </p>
-
+                    <p class="large-text">Cada proyecto tiene <span>algo que decir.</span></p>
                 </div>
-
-
                 <div class="concepts-grid">
-
                     <article class="concept-card">
-
-                        <span class="concept-number">
-                            01
-                        </span>
-
+                        <span class="concept-number">01</span>
                         <h3>Creatividad</h3>
-
-                        <p>
-                            Buscamos ideas diferentes que
-                            tengan sentido para cada proyecto.
-                        </p>
-
+                        <p>Buscamos ideas diferentes que tengan sentido para cada proyecto.</p>
                     </article>
-
-
                     <article class="concept-card">
-
-                        <span class="concept-number">
-                            02
-                        </span>
-
+                        <span class="concept-number">02</span>
                         <h3>Identidad</h3>
-
-                        <p>
-                            Construimos una imagen que permita
-                            reconocer y recordar una marca.
-                        </p>
-
+                        <p>Construimos una imagen que permita reconocer y recordar una marca.</p>
                     </article>
-
-
                     <article class="concept-card">
-
-                        <span class="concept-number">
-                            03
-                        </span>
-
+                        <span class="concept-number">03</span>
                         <h3>Diseño</h3>
-
-                        <p>
-                            Convertimos conceptos en piezas
-                            visuales claras y atractivas.
-                        </p>
-
+                        <p>Convertimos conceptos en piezas visuales claras y atractivas.</p>
                     </article>
-
-
                     <article class="concept-card">
-
-                        <span class="concept-number">
-                            04
-                        </span>
-
+                        <span class="concept-number">04</span>
                         <h3>Digital</h3>
-
-                        <p>
-                            Llevamos las ideas a experiencias
-                            digitales funcionales y modernas.
-                        </p>
-
+                        <p>Llevamos las ideas a experiencias digitales funcionales y modernas.</p>
                     </article>
-
                 </div>
-
             </div>
-
         </div>
-
     </section>
 
-
-    <!-- =====================================================
-         SERVICIOS
-    ====================================================== -->
-
+    <!-- SERVICIOS -->
     <section class="section servicios view" id="servicios" data-view="servicios">
-    >
-
         <div class="container">
-
             <div class="section-heading">
-
-                <p class="section-label">
-                    02 — Servicios
-                </p>
-
-                <h2 class="section-title">
-                    Lo que podemos
-                    <span>crear juntos.</span>
-                </h2>
-
+                <p class="section-label">02 — Servicios</p>
+                <h2 class="section-title">Lo que podemos <span>crear juntos.</span></h2>
             </div>
-
-
             <div class="services-grid">
-
                 <article class="service-card">
-
-                    <span class="service-number">
-                        01 — IDENTIDAD
-                    </span>
-
-                    <h3>
-                        Identidad visual
-                    </h3>
-
-                    <p>
-                        Creamos la personalidad visual
-                        de tu marca desde cero.
-                    </p>
-
+                    <span class="service-number">01 — IDENTIDAD</span>
+                    <h3>Construimos sistemas visuales que hacen reconocible una idea.</h3>
+                    <p>Creamos la personalidad visual de tu marca desde cero.</p>
                     <ul>
                         <li>Logo</li>
                         <li>Colores</li>
                         <li>Tipografía</li>
                         <li>Manual de marca</li>
                     </ul>
-
                 </article>
-
-
                 <article class="service-card">
-
-                    <span class="service-number">
-                        02 — GRÁFICO
-                    </span>
-
-                    <h3>
-                        Diseño gráfico
-                    </h3>
-
-                    <p>
-                        Piezas visuales pensadas para
-                        comunicar y destacar.
-                    </p>
-
+                    <span class="service-number">02 — DISEÑO</span>
+                    <h3>Creamos piezas visuales pensadas para comunicar.</h3>
+                    <p>Piezas visuales pensadas para comunicar y destacar.</p>
                     <ul>
                         <li>Flyers</li>
                         <li>Carteles</li>
                         <li>Tarjetas</li>
                         <li>Redes sociales</li>
                     </ul>
-
                 </article>
-
-
                 <article class="service-card">
-
-                    <span class="service-number">
-                        03 — DIGITAL
-                    </span>
-
-                    <h3>
-                        Diseño web
-                    </h3>
-
-                    <p>
-                        Diseñamos páginas modernas,
-                        claras y adaptadas a distintos dispositivos.
-                    </p>
-
+                    <span class="service-number">03 — DIGITAL</span>
+                    <h3>Diseñamos experiencias digitales que conectan con las personas.</h3>
+                    <p>Diseñamos páginas modernas, claras y adaptadas a distintos dispositivos.</p>
                     <ul>
                         <li>Landing pages</li>
                         <li>Web institucional</li>
                         <li>Catálogos</li>
                         <li>Experiencias digitales</li>
                     </ul>
-
                 </article>
-
-
-                <article class="service-card">
-
-                    <span class="service-number">
-                        04 — CONTENIDO
-                    </span>
-
-                    <h3>
-                        Contenido digital
-                    </h3>
-
-                    <p>
-                        Creamos recursos visuales para
-                        mantener una comunicación coherente.
-                    </p>
-
-                    <ul>
-                        <li>Contenido</li>
-                        <li>Presentaciones</li>
-                        <li>Material promocional</li>
-                        <li>Redes</li>
-                    </ul>
-
-                </article>
-
             </div>
-
         </div>
-
     </section>
 
-
-    <!-- =====================================================
-         PROYECTOS
-    ====================================================== -->
-
+    <!-- PROYECTOS -->
     <section class="section proyectos view" id="proyectos" data-view="proyectos">
-        
-    >
-
         <div class="container">
-
             <div class="section-heading">
-
-                <p class="section-label">
-                    03 — Proyectos
-                </p>
-
-                <h2 class="section-title">
-                    Ideas que ya
-                    <span>tomaron forma.</span>
-                </h2>
-
-                <p class="section-description">
-                    Algunos proyectos y conceptos desarrollados
-                    por PULSO.
-                </p>
-
+                <p class="section-label">03 — Proyectos</p>
+                <h2 class="section-title">Ideas que ya <span>tomaron forma.</span></h2>
+                <p class="section-description">Algunos proyectos y conceptos desarrollados por PULSO.</p>
             </div>
-
-
             <div class="projects-wrapper">
-
-                <div
-                    class="projects-track"
-                    id="projects-track"
-                >
-
+                <div class="projects-track" id="projects-track">
                     <article class="project-card">
-
-                        <div class="project-browser">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-
+                        <div class="project-browser"><span></span><span></span><span></span></div>
                         <div class="project-content">
-
-                            <span class="project-number">
-                                PROYECTO / 01
-                            </span>
-
-                            <h3>
-                                Rincón & Café
-                            </h3>
-
-                            <p>
-                                Identidad, experiencia digital
-                                y presencia visual.
-                            </p>
-
-                            <a href="#">
-                                Ver proyecto →
-                            </a>
-
+                            <span class="project-number">PROYECTO / 01</span>
+                            <h3>Rincón & Café</h3>
+                            <p>Identidad · Digital</p>
+                            <a href="#">Ver proyecto →</a>
                         </div>
-
                     </article>
-
-
                     <article class="project-card">
-
-                        <div class="project-browser">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-
+                        <div class="project-browser"><span></span><span></span><span></span></div>
                         <div class="project-content">
-
-                            <span class="project-number">
-                                PROYECTO / 02
-                            </span>
-
-                            <h3>
-                                PULSO
-                            </h3>
-
-                            <p>
-                                Identidad visual y experiencia
-                                digital del estudio.
-                            </p>
-
-                            <a href="#">
-                                Ver proyecto →
-                            </a>
-
+                            <span class="project-number">PROYECTO / 02</span>
+                            <h3>PULSO</h3>
+                            <p>Identidad · Branding</p>
+                            <a href="#">Ver proyecto →</a>
                         </div>
-
                     </article>
-
-
                     <article class="project-card">
-
-                        <div class="project-browser">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-
+                        <div class="project-browser"><span></span><span></span><span></span></div>
                         <div class="project-content">
-
-                            <span class="project-number">
-                                PROYECTO / 03
-                            </span>
-
-                            <h3>
-                                Próximo proyecto
-                            </h3>
-
-                            <p>
-                                Una nueva idea esperando
-                                convertirse en realidad.
-                            </p>
-
-                            <a href="#formulario">
-                                Crear proyecto →
-                            </a>
-
+                            <span class="project-number">PROYECTO / 03</span>
+                            <h3>Próximo proyecto</h3>
+                            <p>Una nueva idea esperando convertirse en realidad.</p>
+                            <a href="#formulario">Crear proyecto →</a>
                         </div>
-
                     </article>
-
                 </div>
-
             </div>
-
         </div>
-
     </section>
 
-
-    <!-- =====================================================
-         INTENCIÓN / ECG
-    ====================================================== -->
-
+    <!-- MANIFIESTO -->
     <section class="section intencion view" data-view="servicios">
-
         <div class="container">
-
             <div class="intencion-content">
-
                 <div>
-
-                    <p class="section-label">
-                        Una idea. Una dirección. Un propósito.
-                    </p>
-
-                    <h2>
-                        Una marca no solo
-                        <span>se ve.</span>
-                        <br>
-                        Se siente.
-                    </h2>
-
-                    <p>
-                        Diseñamos buscando que cada elemento
-                        tenga una razón de existir y que el
-                        resultado transmita lo que la marca
-                        realmente quiere decir.
-                    </p>
-
+                    <p class="section-label">UNA IDEA. UN CONCEPTO. UNA IDENTIDAD.</p>
+                    <h2>Una marca no solo <span>se ve.</span><br>Se siente.</h2>
+                    <p>Diseñamos buscando que cada elemento tenga una razón de existir y que el resultado transmita lo que la marca realmente quiere decir.</p>
                 </div>
-
-
                 <div class="intencion-visual"></div>
-
             </div>
-
         </div>
-
     </section>
 
-
-    <!-- =====================================================
-         PROCESO
-    ====================================================== -->
-
+    <!-- PROCESO -->
     <section class="section proceso view" id="proceso" data-view="proceso">
-        
-    >
-
         <div class="container">
-
             <div class="section-heading">
-
-                <p class="section-label">
-                    04 — Proceso
-                </p>
-
-                <h2 class="section-title">
-                    Del primer
-                    <span>pulso</span>
-                    al resultado.
-                </h2>
-
+                <p class="section-label">04 — Proceso</p>
+                <h2 class="section-title">Del primer <span>pulso</span> al resultado.</h2>
             </div>
-
-
             <div class="process-grid">
-
                 <article class="process-step">
-
-                    <span class="process-number">
-                        01
-                    </span>
-
-                    <h3>
-                        Escuchamos
-                    </h3>
-
-                    <p>
-                        Conocemos tu idea, tus necesidades
-                        y lo que querés transmitir.
-                    </p>
-
+                    <span class="process-number">01</span>
+                    <h3>Escuchamos</h3>
+                    <p>Conocemos tu idea, tus necesidades y lo que querés transmitir.</p>
                 </article>
-
-
                 <article class="process-step">
-
-                    <span class="process-number">
-                        02
-                    </span>
-
-                    <h3>
-                        Investigamos
-                    </h3>
-
-                    <p>
-                        Analizamos el contexto, el público
-                        y las referencias del proyecto.
-                    </p>
-
+                    <span class="process-number">02</span>
+                    <h3>Investigamos</h3>
+                    <p>Analizamos el contexto, el público y las referencias del proyecto.</p>
                 </article>
-
-
                 <article class="process-step">
-
-                    <span class="process-number">
-                        03
-                    </span>
-
-                    <h3>
-                        Diseñamos
-                    </h3>
-
-                    <p>
-                        Convertimos la idea en una propuesta
-                        visual concreta.
-                    </p>
-
+                    <span class="process-number">03</span>
+                    <h3>Diseñamos</h3>
+                    <p>Convertimos la idea en una propuesta visual concreta.</p>
                 </article>
-
-
                 <article class="process-step">
-
-                    <span class="process-number">
-                        04
-                    </span>
-
-                    <h3>
-                        Ajustamos
-                    </h3>
-
-                    <p>
-                        Revisamos detalles y perfeccionamos
-                        el resultado junto con vos.
-                    </p>
-
+                    <span class="process-number">04</span>
+                    <h3>Ajustamos</h3>
+                    <p>Revisamos detalles y perfeccionamos el resultado junto con vos.</p>
                 </article>
-
-
                 <article class="process-step">
-
-                    <span class="process-number">
-                        05
-                    </span>
-
-                    <h3>
-                        Entregamos
-                    </h3>
-
-                    <p>
-                        Dejamos todo preparado para que
-                        puedas usar tu proyecto.
-                    </p>
-
+                    <span class="process-number">05</span>
+                    <h3>Entregamos</h3>
+                    <p>Dejamos todo preparado para que puedas usar tu proyecto.</p>
                 </article>
-
             </div>
-
         </div>
-
     </section>
 
-
-    <!-- =====================================================
-         POR QUÉ PULSO
-    ====================================================== -->
-
+    <!-- POR QUÉ PULSO -->
     <section class="section porque view" id="porque" data-view="nosotros">
-    >
-
         <div class="container">
-
             <div class="section-heading">
-
-                <p class="section-label">
-                    05 — Por qué PULSO
-                </p>
-
-                <h2 class="section-title">
-                    Diseño pensado
-                    <span>para vos.</span>
-                </h2>
-
+                <p class="section-label">05 — Por qué PULSO</p>
+                <h2 class="section-title">Diseño pensado <span>para vos.</span></h2>
             </div>
-
-
             <div class="why-grid">
-
                 <article class="why-card">
-
-                    <span class="why-card-number">
-                        01
-                    </span>
-
-                    <h3>
-                        Diseño personalizado
-                    </h3>
-
-                    <p>
-                        Cada proyecto parte de una necesidad
-                        diferente.
-                    </p>
-
+                    <span class="why-card-number">01</span>
+                    <h3>Diseño personalizado</h3>
+                    <p>Cada proyecto parte de una necesidad diferente.</p>
                 </article>
-
-
                 <article class="why-card">
-
-                    <span class="why-card-number">
-                        02
-                    </span>
-
-                    <h3>
-                        Atención cercana
-                    </h3>
-
-                    <p>
-                        Trabajamos de forma directa y
-                        entendiendo tus ideas.
-                    </p>
-
+                    <span class="why-card-number">02</span>
+                    <h3>Atención cercana</h3>
+                    <p>Trabajamos de forma directa y entendiendo tus ideas.</p>
                 </article>
-
-
                 <article class="why-card">
-
-                    <span class="why-card-number">
-                        03
-                    </span>
-
-                    <h3>
-                        Soluciones para cada proyecto
-                    </h3>
-
-                    <p>
-                        Buscamos una solución que se adapte
-                        a lo que realmente necesitás.
-                    </p>
-
+                    <span class="why-card-number">03</span>
+                    <h3>Soluciones para cada proyecto</h3>
+                    <p>Buscamos una solución que se adapte a lo que realmente necesitás.</p>
                 </article>
-
-
                 <article class="why-card">
-
-                    <span class="why-card-number">
-                        04
-                    </span>
-
-                    <h3>
-                        Identidad coherente
-                    </h3>
-
-                    <p>
-                        Todos los elementos mantienen una
-                        misma dirección visual.
-                    </p>
-
+                    <span class="why-card-number">04</span>
+                    <h3>Identidad coherente</h3>
+                    <p>Todos los elementos mantienen una misma dirección visual.</p>
                 </article>
-
-
                 <article class="why-card">
-
-                    <span class="why-card-number">
-                        05
-                    </span>
-
-                    <h3>
-                        Diseño pensado para comunicar
-                    </h3>
-
-                    <p>
-                        No buscamos solamente que se vea bien,
-                        sino que también diga algo.
-                    </p>
-
+                    <span class="why-card-number">05</span>
+                    <h3>Diseño pensado para comunicar</h3>
+                    <p>No buscamos solamente que se vea bien, sino que también diga algo.</p>
                 </article>
-
-
                 <article class="why-card">
-
-                    <span class="why-card-number">
-                        06
-                    </span>
-
-                    <h3>
-                        Adaptación a diferentes formatos
-                    </h3>
-
-                    <p>
-                        Diseñamos pensando en dónde y cómo
-                        vas a utilizar cada pieza.
-                    </p>
-
+                    <span class="why-card-number">06</span>
+                    <h3>Adaptación a diferentes formatos</h3>
+                    <p>Diseñamos pensando en dónde y cómo vas a utilizar cada pieza.</p>
                 </article>
-
             </div>
-
         </div>
-
     </section>
 
-
-    <!-- =====================================================
-         CTA
-    ====================================================== -->
-
+    <!-- CTA -->
     <section class="cta view" data-view="formulario">
-
         <div class="container">
-
-            <h2>
-                ¿Tenés una
-                <span>idea?</span>
-            </h2>
-
-            <p>
-                Hagamos que tome forma.
-            </p>
-
-            <a
-                href="#formulario"
-                class="btn btn-primary"
-            >
-                Empezar un proyecto →
-            </a>
-
+            <h2>¿Tenés una idea en mente?</h2>
+            <p>Contanos qué estás pensando y empecemos a darle forma.</p>
+            <a href="#formulario" class="btn btn-primary">Contarnos sobre tu proyecto →</a>
         </div>
-
     </section>
 
-
-    <!-- =====================================================
-         FORMULARIO
-    ====================================================== -->
-
+    <!-- FORMULARIO -->
     <section class="section formulario view" id="formulario" data-view="formulario">
-        
-    >
-
         <div class="container">
-
             <div class="section-heading">
-
-                <p class="section-label">
-                    06 — Tu proyecto
-                </p>
-
-                <h2 class="section-title">
-                    Contanos
-                    <span>tu idea.</span>
-                </h2>
-
-                <p class="section-description">
-                    Cuanto más conozcamos tu proyecto,
-                    mejor podremos entender qué necesitás.
-                </p>
-
+                <p class="section-label">06 — Tu proyecto</p>
+                <h2 class="section-title">Contanos <span>tu idea.</span></h2>
+                <p class="section-description">Cuanto más conozcamos tu proyecto, mejor podremos entender qué necesitás.</p>
             </div>
-
-
-            <form
-                class="project-form"
-                id="project-form"
-            >
-
+            <form class="project-form" id="project-form">
                 <div class="form-grid">
-
                     <div class="form-group">
-
-                        <label for="nombre">
-                            Nombre
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nombre"
-                            name="nombre"
-                            placeholder="Tu nombre"
-                            required
-                        >
-
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
                     </div>
-
-
                     <div class="form-group">
-
-                        <label for="email">
-                            Email
-                        </label>
-
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="tu@email.com"
-                            required
-                        >
-
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="tu@email.com" required>
                     </div>
-
-
-                    <div class="form-group">
-
-                        <label for="whatsapp">
-                            WhatsApp
-                        </label>
-
-                        <input
-                            type="tel"
-                            id="whatsapp"
-                            name="whatsapp"
-                            placeholder="Tu número"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="nombre-proyecto">
-                            Nombre del proyecto
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nombre-proyecto"
-                            name="nombre-proyecto"
-                            placeholder="¿Cómo se llama?"
-                        >
-
-                    </div>
-
                 </div>
-
-
                 <div class="form-group">
-
-                    <label>
-                        ¿Qué necesitás?
-                    </label>
-
-                    <div class="form-options">
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="tipo"
-                                value="identidad"
-                            >
-                            Identidad visual
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="tipo"
-                                value="grafico"
-                            >
-                            Diseño gráfico
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="tipo"
-                                value="web"
-                            >
-                            Diseño web
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="tipo"
-                                value="contenido"
-                            >
-                            Contenido digital
-                        </label>
-
-                    </div>
-
+                    <label for="mensaje">Mensaje o idea</label>
+                    <textarea id="mensaje" name="mensaje" placeholder="Contanos brevemente sobre tu proyecto..." rows="5" required></textarea>
                 </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        ¿Qué estilo buscás?
-                    </label>
-
-                    <div class="form-options">
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="estilo"
-                                value="minimalista"
-                            >
-                            Minimalista
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="estilo"
-                                value="moderno"
-                            >
-                            Moderno
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="estilo"
-                                value="elegante"
-                            >
-                            Elegante
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="estilo"
-                                value="atrevido"
-                            >
-                            Atrevido
-                        </label>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Colores
-                    </label>
-
-                    <div class="form-options">
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="color"
-                                value="claros"
-                            >
-                            Claros
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="color"
-                                value="oscuros"
-                            >
-                            Oscuros
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="color"
-                                value="vivos"
-                            >
-                            Vivos
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="color"
-                                value="neutros"
-                            >
-                            Neutros
-                        </label>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="color-no">
-                        ¿Hay algún color que quieras evitar?
-                    </label>
-
-                    <input
-                        type="text"
-                        id="color-no"
-                        name="color-no"
-                        placeholder="Opcional"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="actividad">
-                        ¿A qué se dedica tu proyecto?
-                    </label>
-
-                    <input
-                        type="text"
-                        id="actividad"
-                        name="actividad"
-                        placeholder="Contanos brevemente"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="objetivo">
-                        ¿Cuál es el objetivo?
-                    </label>
-
-                    <textarea
-                        id="objetivo"
-                        name="objetivo"
-                        placeholder="¿Qué querés lograr?"
-                    ></textarea>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="publico">
-                        ¿A quién querés llegar?
-                    </label>
-
-                    <textarea
-                        id="publico"
-                        name="publico"
-                        placeholder="Contanos sobre tu público"
-                    ></textarea>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="sensacion">
-                        ¿Qué sensación querés transmitir?
-                    </label>
-
-                    <input
-                        type="text"
-                        id="sensacion"
-                        name="sensacion"
-                        placeholder="Ej.: confianza, energía, cercanía..."
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="referencia-url">
-                        ¿Tenés alguna referencia?
-                    </label>
-
-                    <input
-                        type="url"
-                        id="referencia-url"
-                        name="referencia-url"
-                        placeholder="https://..."
-                    >
-
-                    <small>
-                        Podés compartir una página o referencia visual.
-                    </small>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Elementos que necesitás
-                    </label>
-
-                    <div class="form-options">
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="elementos"
-                                value="logo"
-                            >
-                            Logo
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="elementos"
-                                value="redes"
-                            >
-                            Redes sociales
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="elementos"
-                                value="web"
-                            >
-                            Página web
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="elementos"
-                                value="impresos"
-                            >
-                            Material impreso
-                        </label>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="idea">
-                        Contanos tu idea
-                    </label>
-
-                    <textarea
-                        id="idea"
-                        name="idea"
-                        placeholder="Escribí todo lo que quieras contarnos..."
-                        required
-                    ></textarea>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="imagenes-referencia">
-                        Imágenes de referencia
-                    </label>
-
-                    <input
-                        type="file"
-                        id="imagenes-referencia"
-                        name="imagenes-referencia"
-                        accept="image/*"
-                        multiple
-                    >
-
-                    <small>
-                        Podés seleccionar varias imágenes.
-                    </small>
-
-                    <div
-                        id="image-preview-grid"
-                        aria-live="polite"
-                    ></div>
-
-                </div>
-
-
-                <div class="form-submit">
-
-                    <button
-                        type="submit"
-                        class="btn btn-primary"
-                    >
-                        Enviar proyecto →
-                    </button>
-
-                </div>
-
-
-                <p
-                    class="form-status"
-                    id="form-status"
-                    aria-live="polite"
-                ></p>
-
+                <button type="submit" class="btn btn-primary">Enviar mensaje →</button>
             </form>
-
         </div>
-
     </section>
-<!-- =====================================================
-     AYUDA
-====================================================== -->
 
-<section class="section ayuda view" id="ayuda" data-view="ayuda">
-    
->
-
-    <div class="container">
-
-        <div class="section-heading">
-
-            <p class="section-label">
-                07 — Ayuda
-            </p>
-
-            <h2 class="section-title">
-                ¿Necesitás
-                <span>una mano?</span>
-            </h2>
-
-            <p class="section-description">
-                Encontrá información útil sobre PULSO,
-                nuestros servicios y cómo comenzar un proyecto.
-            </p>
-
-        </div>
-
-
-        <div class="help-grid">
-
-            <article class="help-card">
-
-                <span class="help-number">01</span>
-
-                <h3>
-                    No sé qué necesito
-                </h3>
-
-                <p>
-                    No hace falta que tengas definido exactamente
-                    qué servicio necesitás. Contanos tu idea y
-                    podemos ayudarte a encontrar el punto de partida.
-                </p>
-
-                <a href="#formulario">
-                    Contar mi idea →
-                </a>
-
-            </article>
-
-
-            <article class="help-card">
-
-                <span class="help-number">02</span>
-
-                <h3>
-                    Quiero conocer los servicios
-                </h3>
-
-                <p>
-                    Podés conocer en detalle las soluciones que
-                    PULSO puede desarrollar para tu proyecto.
-                </p>
-
-                <a href="#servicios">
-                    Ver servicios →
-                </a>
-
-            </article>
-
-
-            <article class="help-card">
-
-                <span class="help-number">03</span>
-
-                <h3>
-                    Tengo una duda
-                </h3>
-
-                <p>
-                    Pulsi puede orientarte sobre PULSO, nuestros
-                    servicios y el proceso de trabajo.
-                </p>
-
-                <a href="#pulsi-container">
-                    Hablar con Pulsi →
-                </a>
-
-            </article>
-
-
-            <article class="help-card help-contact-card">
-
-                <span class="help-number">04</span>
-
-                <h3>
-                    ¿Preferís escribirnos?
-                </h3>
-
-                <p>
-                    También podés contactarnos directamente
-                    por correo electrónico.
-                </p>
-
-                <a
-                    href="mailto:ebapulso@gmail.com"
-                >
-                    ebapulso@gmail.com →
-                </a>
-
-            </article>
-
-        </div>
-
-    </div>
-
-</section>
-
-    <!-- =====================================================
-         CONTACTO
-    ====================================================== -->
-
+    <!-- CONTACTO -->
     <section class="section contacto view" id="contacto" data-view="contacto">
-    >
-
         <div class="container">
-
             <div class="section-heading">
-
-                <p class="section-label">
-                    08 — Contacto
-                </p>
-
-                <h2 class="section-title">
-                    Hablemos de
-                    <span>tu proyecto.</span>
-                </h2>
-
-                <p class="section-description">
-                    Si tenés una idea, una marca que necesita
-                    crecer o simplemente querés saber qué podemos
-                    hacer, estamos para escucharla.
-                </p>
-
+                <p class="section-label">07 — Contacto</p>
+                <h2 class="section-title">HABLEMOS</h2>
             </div>
-
-
-            <div class="contact-grid">
-
-                <div class="contact-info">
-
-                    <a
-                        href="#formulario"
-                        class="contact-item"
-                    >
-
-                        <span>
-                            01 — PROYECTO
-                        </span>
-
-                        <strong>
-                            Contanos tu idea →
-                        </strong>
-
-                        <p>
-                            Completá el formulario y
-                            contanos qué necesitás.
-                        </p>
-
-                    </a>
-
-
-                    <a
-                        href="#pulsi-container"
-                        class="contact-item"
-                    >
-
-                        <span>
-                            02 — PULSI
-                        </span>
-
-                        <strong>
-                            Hablá con Pulsi →
-                        </strong>
-
-                        <p>
-                            Nuestro asistente puede orientarte
-                            sobre PULSO y nuestros servicios.
-                        </p>
-
-                    </a>
-
-                </div>
-
-
-                <div class="contact-info">
-
-                    <div class="contact-item">
-
-                        <span>
-                            PULSO
-                        </span>
-
-                        <strong>
-                            Diseño que deja huella.
-                        </strong>
-
-                        <p>
-                            Identidad · Diseño · Digital
-                        </p>
-
-                    </div>
-
-                </div>
-
+            <div class="contacto-content" style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #a0a0a0;">
+                    ¿Tenés un proyecto?<br>¿Una idea?<br>¿Algo que todavía no sabés cómo llevar adelante?<br><br>Estamos para escucharlo.
+                </p>
+                <a href="#formulario" class="btn btn-primary">Contacto →</a>
             </div>
-
         </div>
-
     </section>
 
-
-    <!-- =====================================================
-         CIERRE DE MARCA
-    ====================================================== -->
-
-    <section class="brand-closing view" data-view="inicio" aria-label="Cierre de PULSO">
-        
-    >
-
-        <div class="brand-closing-content">
-
-            <span class="brand-closing-line"></span>
-
-            <span class="brand-closing-line"></span>
-
-            <p>
-                DISEÑO QUE DEJA HUELLA.
-            </p>
-
+    <!-- AYUDA -->
+    <section class="section ayuda view" id="ayuda" data-view="ayuda">
+        <div class="container">
+            <div class="section-heading">
+                <p class="section-label">08 — Ayuda</p>
+                <h2 class="section-title">Preguntas frecuentes</h2>
+            </div>
+            <div class="ayuda-content">
+                <p>Encontrá respuestas rápidas sobre cómo trabajamos, tiempos de entrega y modalidades de pago.</p>
+            </div>
         </div>
-
     </section>
+
+    <!-- PULSI CONTAINER -->
+    <div id="pulsi-container" class="view" data-view="pulsi" style="display:none;"></div>
 
 </main>
 
-
-<!-- =====================================================
-    FOOTER
-====================================================== -->
-
+<!-- FOOTER -->
 <footer class="footer">
-
-    <div class="footer-container">
-
-        <div class="footer-top">
-
-            <div class="footer-brand">
-
-                <a
-                    href="#inicio"
-                    class="logo"
-                    aria-label="PULSO"
-                ></a>
-
-                <p>
-                    Diseño que deja huella.
-                </p>
-
-            </div>
-
-
-            <nav
-                class="footer-links"
-                aria-label="Enlaces del sitio"
-            >
-
-                <h4>
-                    Navegación
-                </h4>
-
-                <a href="#inicio">
-                    Inicio
-                </a>
-
-                <a href="#nosotros">
-                    Nosotros
-                </a>
-
-                <a href="#ayuda">
-                    Ayuda
-                 </a>
-
-                <a href="#servicios">
-                    Servicios
-                </a>
-
-                <a href="#proyectos">
-                    Proyectos
-                </a>
-
-                <a href="#contacto">
-                    Contacto
-                </a>
-
-            </nav>
-
-
-            <nav
-                class="footer-links"
-                aria-label="Información"
-            >
-
-                <h4>
-                    PULSO
-                </h4>
-
-                <a href="#proceso">
-                    Proceso
-                </a>
-
-                <a href="#formulario">
-                    Tu proyecto
-                </a>
-
-                <a href="#contacto">
-                    Hablemos
-                </a>
-                <a href="#pulsi-container">
-                    Pulsi
-                </a>
-            </nav>
-
+    <div class="container footer-container">
+        <div class="footer-brand">
+            <a href="#inicio" class="footer-logo">PULSO</a>
+            <p>Diseño, identidad y soluciones digitales que dejan huella.</p>
         </div>
-
-
-        <div class="footer-bottom">
-
-            <p>
-                ©
-                <span data-year></span>
-                PULSO. Todos los derechos reservados.
-            </p>
-
-            <div class="footer-legal">
-
-                <a href="privacidad.html">
-                    Privacidad
-                </a>
-
-                <a href="terminos.html">
-                    Términos
-                </a>
-
-            </div>
-
+        <div class="footer-nav">
+            <a href="#inicio">Inicio</a>
+            <a href="#nosotros">Nosotros</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#proyectos">Proyectos</a>
+            <a href="#ayuda">Ayuda</a>
+            <a href="#contacto">Contacto</a>
         </div>
-
     </div>
-
 </footer>
-
-
-<!-- =====================================================
-    PULSI — ASISTENTE
-====================================================== -->
-
-<div
-    class="pulsi-container"
-    id="pulsi-container"
->
-
-    <button
-        class="pulsi-button"
-        id="pulsi-button"
-        type="button"
-        aria-label="Abrir Pulsi"
-        aria-expanded="false"
-        aria-controls="pulsi-chat"
-    >
-
-        <span class="pulsi-pulse"></span>
-
-        <span class="pulsi-label">
-            Pulsi
-        </span>
-
-    </button>
-
-
-    <div
-        class="pulsi-chat"
-        id="pulsi-chat"
-        aria-hidden="true"
-    >
-
-        <div class="pulsi-header">
-
-            <div>
-
-                <strong>
-                    Pulsi
-                </strong>
-
-                <span>
-                    Asistente de PULSO
-                </span>
-
-            </div>
-
-
-            <button
-                type="button"
-                id="pulsi-close"
-                aria-label="Cerrar Pulsi"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <div
-            class="pulsi-messages"
-            id="pulsi-messages"
-        >
-
-            <div class="pulsi-message pulsi-message-ai">
-
-                <p>
-                    ¡Hola! Soy Pulsi 👋
-                </p>
-
-                <p>
-                    Puedo ayudarte a conocer PULSO,
-                    nuestros servicios y orientarte
-                    sobre tu proyecto.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="pulsi-quick">
-
-            <button type="button">
-                ¿Qué hacen?
-            </button>
-
-            <button type="button">
-                ¿Qué servicios tienen?
-            </button>
-
-            <button type="button">
-                Quiero hacer una página
-            </button>
-
-        </div>
-
-
-        <form
-            class="pulsi-form"
-            id="pulsi-form"
-        >
-
-            <input
-                type="text"
-                id="pulsi-input"
-                placeholder="Escribile a Pulsi..."
-                autocomplete="off"
-            >
-
-            <button
-                type="submit"
-                aria-label="Enviar mensaje"
-            >
-                →
-            </button>
-
-        </form>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-    JAVASCRIPT
-====================================================== -->
-
-<script
-    type="module"
-    src="script.js"
-></script>
 
 </body>
 </html>

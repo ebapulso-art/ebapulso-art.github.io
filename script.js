@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.querySelector("#menu-toggle");
     const navMenu = document.querySelector("#nav-menu");
     const navbar = document.querySelector(".navbar");
-
+    const navMenuClose = document.querySelector("#nav-menu-close");
 
    function cerrarMenu() {
 
@@ -83,7 +83,17 @@ function abrirMenu() {
     );
 
 }
+const navMenuClose =
+    document.querySelector("#nav-menu-close");
 
+if (navMenuClose) {
+
+    navMenuClose.addEventListener(
+        "click",
+        cerrarMenu
+    );
+
+}
 
 if (menuToggle) {
 

@@ -2,355 +2,1047 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PULSO — Diseño, identidad y soluciones digitales que dejan huella.">
-    <meta name="author" content="PULSO">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="PULSO — Diseño, identidad y soluciones digitales que dejan huella."
+    >
+
+    <meta
+        name="author"
+        content="PULSO"
+    >
+
     <title>PULSO — Ideas que toman forma</title>
+
     <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
 </head>
 <body>
 
-<!-- NAVBAR -->
+<!-- =====================================================
+    NAVBAR
+====================================================== -->
+
 <header class="navbar">
+
     <div class="nav-container">
+
         <a href="#inicio" class="logo" aria-label="PULSO"></a>
-        <nav class="nav-menu" id="nav-menu" aria-label="Navegación principal">
-            <div class="nav-menu-header">
-                <span>PULSO</span>
-                <button type="button" class="nav-menu-close" id="nav-menu-close" aria-label="Cerrar menú">×</button>
-            </div>
-            <div class="nav-menu-links">
-                <a href="#inicio"><span>01</span> Inicio</a>
-                <a href="#nosotros"><span>02</span> Nosotros</a>
-                <a href="#servicios"><span>03</span> Servicios</a>
-                <a href="#proyectos"><span>04</span> Proyectos</a>
-                <a href="#proceso"><span>05</span> Proceso</a>
-                <a href="#formulario"><span>06</span> Tu proyecto</a>
-                <a href="#ayuda"><span>07</span> Ayuda</a>
-                <a href="#contacto"><span>08</span> Contacto</a>
-                <a href="#pulsi-container" class="nav-pulsi-link"><span>✦</span> Pulsi</a>
-            </div>
-            <div class="nav-menu-footer">
-                <span>DISEÑO · IDENTIDAD · DIGITAL</span>
-            </div>
-        </nav>
-        <a href="#formulario" class="nav-cta">Tu proyecto →</a>
-        <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu">
+
+        <nav
+    class="nav-menu"
+    id="nav-menu"
+    aria-label="Navegación principal"
+>
+
+    <div class="nav-menu-header">
+        <span>PULSO</span>
+
+        <button
+            type="button"
+            class="nav-menu-close"
+            id="nav-menu-close"
+            aria-label="Cerrar menú"
+        >
+            ×
+        </button>
+    </div>
+
+    <div class="nav-menu-links">
+
+        <a href="#inicio">
+            <span>01</span>
+            Inicio
+        </a>
+
+        <a href="#nosotros">
+            <span>02</span>
+            Nosotros
+        </a>
+
+        <a href="#servicios">
+            <span>03</span>
+            Servicios
+        </a>
+
+        <a href="#proyectos">
+            <span>04</span>
+            Proyectos
+        </a>
+
+        <a href="#proceso">
+            <span>05</span>
+            Proceso
+        </a>
+
+        <a href="#formulario">
+            <span>06</span>
+            Tu proyecto
+        </a>
+
+        <a href="#ayuda">
+            <span>07</span>
+            Ayuda
+        </a>
+
+        <a href="#contacto">
+            <span>08</span>
+            Contacto
+        </a>
+
+        <a href="#pulsi-container" class="nav-pulsi-link">
+            <span>✦</span>
+            Pulsi
+        </a>
+
+    </div>
+
+    <div class="nav-menu-footer">
+        <span>DISEÑO · IDENTIDAD · DIGITAL</span>
+    </div>
+
+</nav>
+
+        <a
+            href="#formulario"
+            class="nav-cta"
+        >
+           Tu proyecto →
+        </a>
+
+        <button
+            class="menu-toggle"
+            id="menu-toggle"
+            type="button"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            aria-controls="nav-menu"
+        >
             <span class="menu-icon">
                 <span></span>
                 <span></span>
                 <span></span>
             </span>
+
             <span class="menu-text">Menú</span>
         </button>
+
     </div>
+
 </header>
 
-<!-- MAIN APP -->
+
+<!-- =====================================================
+    HERO
+====================================================== -->
+
 <main id="app">
 
-    <!-- HERO -->
     <section class="hero view view-active" id="inicio" data-view="inicio">
+        
+
+        <!-- =========================================================
+            PULSO — LOGO ANIMADO ECG
+        ========================================================= -->
+
         <div class="hero-brand hero-pulso-canvas">
-            <canvas id="pulsoLogoCanvas" aria-label="PULSO" role="img"></canvas>
+
+            <canvas
+                id="pulsoLogoCanvas"
+                aria-label="PULSO"
+                role="img">
+            </canvas>
+
         </div>
+
         <div class="hero-container">
+
             <div class="hero-content">
-                <p class="hero-eyebrow">DISEÑO · IDENTIDAD · DIGITAL</p>
-                <h1>Ideas que <span>toman forma.</span></h1>
-                <p class="hero-subtitle">Diseño que genera impacto.</p>
-                <p class="hero-description">Creamos identidades, piezas visuales y experiencias digitales pensadas para que cada proyecto tenga una presencia propia.</p>
+
+                <p class="hero-eyebrow">
+                    DISEÑO · IDENTIDAD · DIGITAL
+                </p>
+
+                <h1>
+                    Ideas que
+                    <span>toman forma.</span>
+                </h1>
+
+                <p class="hero-subtitle">
+                    Diseño que genera impacto.
+                </p>
+
+                <p class="hero-description">
+                    Creamos identidades, piezas visuales y
+                    experiencias digitales pensadas para que
+                    cada proyecto tenga una presencia propia.
+                </p>
+
             </div>
+
+
             <div class="hero-visual">
+
                 <div class="pulse-visual">
+
                     <div class="pulse-visual-top">
                         <span>PULSO / 01</span>
                         <span>IDENTIDAD</span>
                     </div>
+
                     <div class="pulse-symbol">
-                        <span></span><span></span><span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </div>
+
                     <div class="pulse-visual-bottom">
                         <span>DISEÑO</span>
                         <span>IDEAS → FORMA</span>
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
+
         <div class="hero-index">
-            <span>01</span><span>/</span><span>08</span>
+            <span>01</span>
+            <span>/</span>
+            <span>08</span>
         </div>
+
     </section>
 
-    <!-- QUÉ ES PULSO -->
+
+    <!-- =====================================================
+         QUÉ ES PULSO (NUEVA SECCIÓN BREVE)
+    ====================================================== -->
+
     <section class="brand-statement view" data-view="inicio">
+
         <div class="brand-statement-line"></div>
+
         <div class="brand-statement-content">
-            <span class="brand-statement-number">00</span>
-            <p>PULSO es un espacio creativo donde las ideas toman forma a través del diseño, la identidad y lo digital.</p>
+
+            <span class="brand-statement-number">
+                00
+            </span>
+
+            <p>
+                PULSO es un espacio creativo donde las ideas toman forma a través del diseño, la identidad y lo digital.
+            </p>
+
         </div>
+
         <div class="brand-statement-line"></div>
+
     </section>
 
-    <!-- NOSOTROS -->
+
+    <!-- =====================================================
+         NOSOTROS
+    ====================================================== -->
+
     <section class="section nosotros view" id="nosotros" data-view="nosotros">
+    
+
         <div class="container">
+
             <div class="section-heading">
-                <p class="section-label">01 — Nosotros</p>
-                <h2 class="section-title">No diseñamos <span>por diseñar.</span></h2>
-                <p class="section-description">En PULSO buscamos entender la idea detrás de cada proyecto para transformarla en algo visual, claro y memorable.</p>
+
+                <p class="section-label">
+                    01 — Nosotros
+                </p>
+
+                <h2 class="section-title">
+                    No diseñamos
+                    <span>por diseñar.</span>
+                </h2>
+
+                <p class="section-description">
+                    En PULSO buscamos entender la idea detrás
+                    de cada proyecto para transformarla en algo
+                    visual, claro y memorable.
+                </p>
+
             </div>
+
+
             <div class="nosotros-content">
+
                 <div class="nosotros-text">
-                    <p class="large-text">Cada proyecto tiene <span>algo que decir.</span></p>
+
+                    <p class="large-text">
+                        Cada proyecto tiene
+                        <span>algo que decir.</span>
+                    </p>
+
                 </div>
+
+
                 <div class="concepts-grid">
+
                     <article class="concept-card">
-                        <span class="concept-number">01</span>
+
+                        <span class="concept-number">
+                            01
+                        </span>
+
                         <h3>Creatividad</h3>
-                        <p>Buscamos ideas diferentes que tengan sentido para cada proyecto.</p>
+
+                        <p>
+                            Buscamos ideas diferentes que
+                            tengan sentido para cada proyecto.
+                        </p>
+
                     </article>
+
+
                     <article class="concept-card">
-                        <span class="concept-number">02</span>
+
+                        <span class="concept-number">
+                            02
+                        </span>
+
                         <h3>Identidad</h3>
-                        <p>Construimos una imagen que permita reconocer y recordar una marca.</p>
+
+                        <p>
+                            Construimos una imagen que permita
+                            reconocer y recordar una marca.
+                        </p>
+
                     </article>
+
+
                     <article class="concept-card">
-                        <span class="concept-number">03</span>
+
+                        <span class="concept-number">
+                            03
+                        </span>
+
                         <h3>Diseño</h3>
-                        <p>Convertimos conceptos en piezas visuales claras y atractivas.</p>
+
+                        <p>
+                            Convertimos conceptos en piezas
+                            visuales claras y atractivas.
+                        </p>
+
                     </article>
+
+
                     <article class="concept-card">
-                        <span class="concept-number">04</span>
+
+                        <span class="concept-number">
+                            04
+                        </span>
+
                         <h3>Digital</h3>
-                        <p>Llevamos las ideas a experiencias digitales funcionales y modernas.</p>
+
+                        <p>
+                            Llevamos las ideas a experiencias
+                            digitales funcionales y modernas.
+                        </p>
+
                     </article>
+
                 </div>
+
             </div>
+
         </div>
+
     </section>
 
-    <!-- SERVICIOS -->
+
+    <!-- =====================================================
+         SERVICIOS (LO QUE HACEMOS)
+    ====================================================== -->
+
     <section class="section servicios view" id="servicios" data-view="servicios">
+    
+
         <div class="container">
+
             <div class="section-heading">
-                <p class="section-label">02 — Servicios</p>
-                <h2 class="section-title">Lo que podemos <span>crear juntos.</span></h2>
+
+                <p class="section-label">
+                    02 — Servicios
+                </p>
+
+                <h2 class="section-title">
+                    Lo que podemos
+                    <span>crear juntos.</span>
+                </h2>
+
             </div>
+
+
             <div class="services-grid">
+
                 <article class="service-card">
-                    <span class="service-number">01 — IDENTIDAD</span>
-                    <h3>Construimos sistemas visuales que hacen reconocible una idea.</h3>
-                    <p>Creamos la personalidad visual de tu marca desde cero.</p>
+
+                    <span class="service-number">
+                        01 — IDENTIDAD
+                    </span>
+
+                    <h3>
+                        Construimos sistemas visuales que hacen reconocible una idea.
+                    </h3>
+
+                    <p>
+                        Creamos la personalidad visual
+                        de tu marca desde cero.
+                    </p>
+
                     <ul>
                         <li>Logo</li>
                         <li>Colores</li>
                         <li>Tipografía</li>
                         <li>Manual de marca</li>
                     </ul>
+
                 </article>
+
+
                 <article class="service-card">
-                    <span class="service-number">02 — DISEÑO</span>
-                    <h3>Creamos piezas visuales pensadas para comunicar.</h3>
-                    <p>Piezas visuales pensadas para comunicar y destacar.</p>
+
+                    <span class="service-number">
+                        02 — DISEÑO
+                    </span>
+
+                    <h3>
+                        Creamos piezas visuales pensadas para comunicar.
+                    </h3>
+
+                    <p>
+                        Piezas visuales pensadas para
+                        comunicar y destacar.
+                    </p>
+
                     <ul>
                         <li>Flyers</li>
                         <li>Carteles</li>
                         <li>Tarjetas</li>
                         <li>Redes sociales</li>
                     </ul>
+
                 </article>
+
+
                 <article class="service-card">
-                    <span class="service-number">03 — DIGITAL</span>
-                    <h3>Diseñamos experiencias digitales que conectan con las personas.</h3>
-                    <p>Diseñamos páginas modernas, claras y adaptadas a distintos dispositivos.</p>
+
+                    <span class="service-number">
+                        03 — DIGITAL
+                    </span>
+
+                    <h3>
+                        Diseñamos experiencias digitales que conectan con las personas.
+                    </h3>
+
+                    <p>
+                        Diseñamos páginas modernas,
+                        claras y adaptadas a distintos dispositivos.
+                    </p>
+
                     <ul>
                         <li>Landing pages</li>
                         <li>Web institucional</li>
                         <li>Catálogos</li>
                         <li>Experiencias digitales</li>
                     </ul>
+
                 </article>
+
             </div>
+
         </div>
+
     </section>
 
-    <!-- PROYECTOS -->
+
+    <!-- =====================================================
+         PROYECTOS
+    ====================================================== -->
+
     <section class="section proyectos view" id="proyectos" data-view="proyectos">
+        
+    
+
         <div class="container">
+
             <div class="section-heading">
-                <p class="section-label">03 — Proyectos</p>
-                <h2 class="section-title">Ideas que ya <span>tomaron forma.</span></h2>
-                <p class="section-description">Algunos proyectos y conceptos desarrollados por PULSO.</p>
+
+                <p class="section-label">
+                    03 — Proyectos
+                </p>
+
+                <h2 class="section-title">
+                    Ideas que ya
+                    <span>tomaron forma.</span>
+                </h2>
+
+                <p class="section-description">
+                    Algunos proyectos y conceptos desarrollados
+                    por PULSO.
+                </p>
+
             </div>
+
+
             <div class="projects-wrapper">
-                <div class="projects-track" id="projects-track">
+
+                <div
+                    class="projects-track"
+                    id="projects-track"
+                >
+
                     <article class="project-card">
-                        <div class="project-browser"><span></span><span></span><span></span></div>
-                        <div class="project-content">
-                            <span class="project-number">PROYECTO / 01</span>
-                            <h3>Rincón & Café</h3>
-                            <p>Identidad · Digital</p>
-                            <a href="#">Ver proyecto →</a>
+
+                        <div class="project-browser">
+                            <span></span>
+                            <span></span>
+                            <span></span>
                         </div>
+
+                        <div class="project-content">
+
+                            <span class="project-number">
+                                PROYECTO / 01
+                            </span>
+
+                            <h3>
+                                Rincón & Café
+                            </h3>
+
+                            <p>
+                                Identidad · Digital
+                            </p>
+
+                            <a href="#">
+                                Ver proyecto →
+                            </a>
+
+                        </div>
+
                     </article>
+
+
                     <article class="project-card">
-                        <div class="project-browser"><span></span><span></span><span></span></div>
-                        <div class="project-content">
-                            <span class="project-number">PROYECTO / 02</span>
-                            <h3>PULSO</h3>
-                            <p>Identidad · Branding</p>
-                            <a href="#">Ver proyecto →</a>
+
+                        <div class="project-browser">
+                            <span></span>
+                            <span></span>
+                            <span></span>
                         </div>
+
+                        <div class="project-content">
+
+                            <span class="project-number">
+                                PROYECTO / 02
+                            </span>
+
+                            <h3>
+                                PULSO
+                            </h3>
+
+                            <p>
+                                Identidad · Branding
+                            </p>
+
+                            <a href="#">
+                                Ver proyecto →
+                            </a>
+
+                        </div>
+
                     </article>
+
+
                     <article class="project-card">
-                        <div class="project-browser"><span></span><span></span><span></span></div>
-                        <div class="project-content">
-                            <span class="project-number">PROYECTO / 03</span>
-                            <h3>Próximo proyecto</h3>
-                            <p>Una nueva idea esperando convertirse en realidad.</p>
-                            <a href="#formulario">Crear proyecto →</a>
+
+                        <div class="project-browser">
+                            <span></span>
+                            <span></span>
+                            <span></span>
                         </div>
+
+                        <div class="project-content">
+
+                            <span class="project-number">
+                                PROYECTO / 03
+                            </span>
+
+                            <h3>
+                                Próximo proyecto
+                            </h3>
+
+                            <p>
+                                Una nueva idea esperando
+                                convertirse en realidad.
+                            </p>
+
+                            <a href="#formulario">
+                                Crear proyecto →
+                            </a>
+
+                        </div>
+
                     </article>
+
                 </div>
+
             </div>
+
         </div>
+
     </section>
 
-    <!-- MANIFIESTO -->
+
+    <!-- =====================================================
+         MANIFIESTO (INTENCIÓN / ECG)
+    ====================================================== -->
+
     <section class="section intencion view" data-view="servicios">
+
         <div class="container">
+
             <div class="intencion-content">
+
                 <div>
-                    <p class="section-label">UNA IDEA. UN CONCEPTO. UNA IDENTIDAD.</p>
-                    <h2>Una marca no solo <span>se ve.</span><br>Se siente.</h2>
-                    <p>Diseñamos buscando que cada elemento tenga una razón de existir y que el resultado transmita lo que la marca realmente quiere decir.</p>
+
+                    <p class="section-label">
+                        UNA IDEA. UN CONCEPTO. UNA IDENTIDAD.
+                    </p>
+
+                    <h2>
+                        Una marca no solo
+                        <span>se ve.</span>
+                        <br>
+                        Se siente.
+                    </h2>
+
+                    <p>
+                        Diseñamos buscando que cada elemento
+                        tenga una razón de existir y que el
+                        resultado transmita lo que la marca
+                        realmente quiere decir.
+                    </p>
+
                 </div>
+
+
                 <div class="intencion-visual"></div>
+
             </div>
+
         </div>
+
     </section>
 
-    <!-- PROCESO -->
+
+    <!-- =====================================================
+         PROCESO
+    ====================================================== -->
+
     <section class="section proceso view" id="proceso" data-view="proceso">
+        
+    
+
         <div class="container">
+
             <div class="section-heading">
-                <p class="section-label">04 — Proceso</p>
-                <h2 class="section-title">Del primer <span>pulso</span> al resultado.</h2>
+
+                <p class="section-label">
+                    04 — Proceso
+                </p>
+
+                <h2 class="section-title">
+                    Del primer
+                    <span>pulso</span>
+                    al resultado.
+                </h2>
+
             </div>
+
+
             <div class="process-grid">
+
                 <article class="process-step">
-                    <span class="process-number">01</span>
-                    <h3>Escuchamos</h3>
-                    <p>Conocemos tu idea, tus necesidades y lo que querés transmitir.</p>
+
+                    <span class="process-number">
+                        01
+                    </span>
+
+                    <h3>
+                        Escuchamos
+                    </h3>
+
+                    <p>
+                        Conocemos tu idea, tus necesidades
+                        y lo que querés transmitir.
+                    </p>
+
                 </article>
+
+
                 <article class="process-step">
-                    <span class="process-number">02</span>
-                    <h3>Investigamos</h3>
-                    <p>Analizamos el contexto, el público y las referencias del proyecto.</p>
+
+                    <span class="process-number">
+                        02
+                    </span>
+
+                    <h3>
+                        Investigamos
+                    </h3>
+
+                    <p>
+                        Analizamos el contexto, el público
+                        y las referencias del proyecto.
+                    </p>
+
                 </article>
+
+
                 <article class="process-step">
-                    <span class="process-number">03</span>
-                    <h3>Diseñamos</h3>
-                    <p>Convertimos la idea en una propuesta visual concreta.</p>
+
+                    <span class="process-number">
+                        03
+                    </span>
+
+                    <h3>
+                        Diseñamos
+                    </h3>
+
+                    <p>
+                        Convertimos la idea en una propuesta
+                        visual concreta.
+                    </p>
+
                 </article>
+
+
                 <article class="process-step">
-                    <span class="process-number">04</span>
-                    <h3>Ajustamos</h3>
-                    <p>Revisamos detalles y perfeccionamos el resultado junto con vos.</p>
+
+                    <span class="process-number">
+                        04
+                    </span>
+
+                    <h3>
+                        Ajustamos
+                    </h3>
+
+                    <p>
+                        Revisamos detalles y perfeccionamos
+                        el resultado junto con vos.
+                    </p>
+
                 </article>
+
+
                 <article class="process-step">
-                    <span class="process-number">05</span>
-                    <h3>Entregamos</h3>
-                    <p>Dejamos todo preparado para que puedas usar tu proyecto.</p>
+
+                    <span class="process-number">
+                        05
+                    </span>
+
+                    <h3>
+                        Entregamos
+                    </h3>
+
+                    <p>
+                        Dejamos todo preparado para que
+                        puedas usar tu proyecto.
+                    </p>
+
                 </article>
+
             </div>
+
         </div>
+
     </section>
 
-    <!-- POR QUÉ PULSO -->
+
+    <!-- =====================================================
+         POR QUÉ PULSO
+    ====================================================== -->
+
     <section class="section porque view" id="porque" data-view="nosotros">
+    
+
         <div class="container">
+
             <div class="section-heading">
-                <p class="section-label">05 — Por qué PULSO</p>
-                <h2 class="section-title">Diseño pensado <span>para vos.</span></h2>
+
+                <p class="section-label">
+                    05 — Por qué PULSO
+                </p>
+
+                <h2 class="section-title">
+                    Diseño pensado
+                    <span>para vos.</span>
+                </h2>
+
             </div>
+
+
             <div class="why-grid">
+
                 <article class="why-card">
-                    <span class="why-card-number">01</span>
-                    <h3>Diseño personalizado</h3>
-                    <p>Cada proyecto parte de una necesidad diferente.</p>
+
+                    <span class="why-card-number">
+                        01
+                    </span>
+
+                    <h3>
+                        Diseño personalizado
+                    </h3>
+
+                    <p>
+                        Cada proyecto parte de una necesidad
+                        diferente.
+                    </p>
+
                 </article>
+
+
                 <article class="why-card">
-                    <span class="why-card-number">02</span>
-                    <h3>Atención cercana</h3>
-                    <p>Trabajamos de forma directa y entendiendo tus ideas.</p>
+
+                    <span class="why-card-number">
+                        02
+                    </span>
+
+                    <h3>
+                        Atención cercana
+                    </h3>
+
+                    <p>
+                        Trabajamos de forma directa y
+                        entendiendo tus ideas.
+                    </p>
+
                 </article>
+
+
                 <article class="why-card">
-                    <span class="why-card-number">03</span>
-                    <h3>Soluciones para cada proyecto</h3>
-                    <p>Buscamos una solución que se adapte a lo que realmente necesitás.</p>
+
+                    <span class="why-card-number">
+                        03
+                    </span>
+
+                    <h3>
+                        Soluciones para cada proyecto
+                    </h3>
+
+                    <p>
+                        Buscamos una solución que se adapte
+                        a lo que realmente necesitás.
+                    </p>
+
                 </article>
+
+
                 <article class="why-card">
-                    <span class="why-card-number">04</span>
-                    <h3>Identidad coherente</h3>
-                    <p>Todos los elementos mantienen una misma dirección visual.</p>
+
+                    <span class="why-card-number">
+                        04
+                    </span>
+
+                    <h3>
+                        Identidad coherente
+                    </h3>
+
+                    <p>
+                        Todos los elementos mantienen una
+                        misma dirección visual.
+                    </p>
+
                 </article>
+
+
                 <article class="why-card">
-                    <span class="why-card-number">05</span>
-                    <h3>Diseño pensado para comunicar</h3>
-                    <p>No buscamos solamente que se vea bien, sino que también diga algo.</p>
+
+                    <span class="why-card-number">
+                        05
+                    </span>
+
+                    <h3>
+                        Diseño pensado para comunicar
+                    </h3>
+
+                    <p>
+                        No buscamos solamente que se vea bien,
+                        sino que también diga algo.
+                    </p>
+
                 </article>
+
+
                 <article class="why-card">
-                    <span class="why-card-number">06</span>
-                    <h3>Adaptación a diferentes formatos</h3>
-                    <p>Diseñamos pensando en dónde y cómo vas a utilizar cada pieza.</p>
+
+                    <span class="why-card-number">
+                        06
+                    </span>
+
+                    <h3>
+                        Adaptación a diferentes formatos
+                    </h3>
+
+                    <p>
+                        Diseñamos pensando en dónde y cómo
+                        vas a utilizar cada pieza.
+                    </p>
+
                 </article>
+
             </div>
+
         </div>
+
     </section>
 
-    <!-- CTA -->
+
+    <!-- =====================================================
+         CTA
+    ====================================================== -->
+
     <section class="cta view" data-view="formulario">
+
         <div class="container">
-            <h2>¿Tenés una idea en mente?</h2>
-            <p>Contanos qué estás pensando y empecemos a darle forma.</p>
-            <a href="#formulario" class="btn btn-primary">Contarnos sobre tu proyecto →</a>
+
+            <h2>
+                ¿Tenés una idea en mente?
+            </h2>
+
+            <p>
+                Contanos qué estás pensando y empecemos a darle forma.
+            </p>
+
+            <a
+                href="#formulario"
+                class="btn btn-primary"
+            >
+                Contarnos sobre tu proyecto →
+            </a>
+
         </div>
+
     </section>
 
-    <!-- FORMULARIO -->
+
+    <!-- =====================================================
+         FORMULARIO
+    ====================================================== -->
+
     <section class="section formulario view" id="formulario" data-view="formulario">
+        
+    
+
         <div class="container">
+
             <div class="section-heading">
-                <p class="section-label">06 — Tu proyecto</p>
-                <h2 class="section-title">Contanos <span>tu idea.</span></h2>
-                <p class="section-description">Cuanto más conozcamos tu proyecto, mejor podremos entender qué necesitás.</p>
+
+                <p class="section-label">
+                    06 — Tu proyecto
+                </p>
+
+                <h2 class="section-title">
+                    Contanos
+                    <span>tu idea.</span>
+                </h2>
+
+                <p class="section-description">
+                    Cuanto más conozcamos tu proyecto,
+                    mejor podremos entender qué necesitás.
+                </p>
+
             </div>
-            <form class="project-form" id="project-form">
+
+
+            <form
+                class="project-form"
+                id="project-form"
+            >
+
                 <div class="form-grid">
+
                     <div class="form-group">
-                        <label for="nombre">Nombre</label>
-                        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+
+                        <label for="nombre">
+                            Nombre
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nombre"
+                            name="nombre"
+                            placeholder="Tu nombre"
+                            required
+                        >
+
                     </div>
+
+
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="tu@email.com"
+                            required
+                        >
+
                     </div>
+
                 </div>
+
                 <div class="form-group">
                     <label for="mensaje">Mensaje o idea</label>
                     <textarea id="mensaje" name="mensaje" placeholder="Contanos brevemente sobre tu proyecto..." rows="5" required></textarea>
                 </div>
+
                 <button type="submit" class="btn btn-primary">Enviar mensaje →</button>
+
             </form>
+
         </div>
+
     </section>
 
-    <!-- CONTACTO -->
+
+    <!-- =====================================================
+         CONTACTO
+    ====================================================== -->
+
     <section class="section contacto view" id="contacto" data-view="contacto">
         <div class="container">
             <div class="section-heading">
@@ -359,14 +1051,21 @@
             </div>
             <div class="contacto-content" style="text-align: center; max-width: 600px; margin: 0 auto;">
                 <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #a0a0a0;">
-                    ¿Tenés un proyecto?<br>¿Una idea?<br>¿Algo que todavía no sabés cómo llevar adelante?<br><br>Estamos para escucharlo.
+                    ¿Tenés un proyecto?<br>
+                    ¿Una idea?<br>
+                    ¿Algo que todavía no sabés cómo llevar adelante?<br><br>
+                    Estamos para escucharlo.
                 </p>
                 <a href="#formulario" class="btn btn-primary">Contacto →</a>
             </div>
         </div>
     </section>
 
-    <!-- AYUDA -->
+
+    <!-- =====================================================
+         AYUDA
+    ====================================================== -->
+
     <section class="section ayuda view" id="ayuda" data-view="ayuda">
         <div class="container">
             <div class="section-heading">
@@ -379,12 +1078,23 @@
         </div>
     </section>
 
-    <!-- PULSI CONTAINER -->
-    <div id="pulsi-container" class="view" data-view="pulsi" style="display:none;"></div>
+
+    <!-- =====================================================
+         PULSI CONTAINER
+    ====================================================== -->
+
+    <div id="pulsi-container" class="view" data-view="pulsi" style="display:none;">
+        <!-- Espacio reservado para Pulsi segun la estructura original -->
+    </div>
+
 
 </main>
 
-<!-- FOOTER -->
+
+<!-- =====================================================
+    FOOTER
+====================================================== -->
+
 <footer class="footer">
     <div class="container footer-container">
         <div class="footer-brand">

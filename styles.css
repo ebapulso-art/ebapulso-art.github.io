@@ -250,9 +250,10 @@ ul {
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
-}
+    justify-content: flex-start;
 
+    gap: 70px;
+}
 .logo {
     display: inline-flex;
     align-items: center;
@@ -266,8 +267,9 @@ ul {
 .nav-menu {
     display: flex;
     align-items: center;
-
     gap: 30px;
+
+    height: 100%;
 }
 
 .nav-menu a {

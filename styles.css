@@ -1,4 +1,3 @@
-```css
 /* =========================================================
    PULSO — SISTEMA VISUAL
    Diseño que deja huella.
@@ -10,26 +9,104 @@
    ========================================================= */
 
 :root {
+
+    /* =========================
+       BASE
+       ========================= */
+
     --black: #050505;
     --black-soft: #0a0a0a;
     --black-card: #101010;
     --black-light: #151515;
+    --black-warm: #17120f;
 
-    /* CONTRASTE PRINCIPAL */
     --white: #ffffff;
     --white-soft: #eeeeee;
+
     --gray: #c2c2c2;
     --gray-dark: #8f8f8f;
+    --gray-muted: #686868;
 
     --line: rgba(255, 255, 255, 0.14);
+    --line-soft: rgba(255, 255, 255, 0.08);
 
-    /* ACENTO PULSO */
+
+    /* =========================
+       PULSO — SISTEMA NARANJA
+       ========================= */
+
     --orange: #ff6a00;
+    --orange-bright: #ff7a00;
     --orange-light: #ff8533;
+    --orange-soft: #ff9a38;
+    --orange-pale: #ffb066;
+
     --orange-dark: #d95500;
+    --orange-deep: #a83f00;
+
+
+    /* =========================
+       GRADIENTES
+       ========================= */
+
+    --orange-gradient:
+        linear-gradient(
+            135deg,
+            var(--orange-dark) 0%,
+            var(--orange) 50%,
+            var(--orange-soft) 100%
+        );
+
+    --orange-gradient-soft:
+        linear-gradient(
+            135deg,
+            var(--orange) 0%,
+            var(--orange-light) 55%,
+            var(--orange-pale) 100%
+        );
+
+    --orange-gradient-dark:
+        linear-gradient(
+            135deg,
+            var(--orange-deep) 0%,
+            var(--orange-dark) 50%,
+            var(--orange) 100%
+        );
+
+    --orange-gradient-horizontal:
+        linear-gradient(
+            90deg,
+            var(--orange-dark),
+            var(--orange),
+            var(--orange-soft)
+        );
+
+
+    /* =========================
+       GLOW
+       ========================= */
+
+    --orange-glow:
+        0 0 30px rgba(255, 106, 0, 0.25);
+
+    --orange-glow-soft:
+        0 0 55px rgba(255, 154, 56, 0.16);
+
+    --orange-glow-strong:
+        0 0 45px rgba(255, 106, 0, 0.40);
+
+
+    /* =========================
+       TIPOGRAFÍA
+       ========================= */
 
     --font-main: "DM Sans", sans-serif;
     --font-title: "Manrope", sans-serif;
+
+
+    /* =========================
+       ESTRUCTURA
+       ========================= */
 
     --container: 1240px;
 
@@ -37,11 +114,22 @@
     --radius-medium: 16px;
     --radius-large: 28px;
 
+
+    /* =========================
+       TRANSICIONES
+       ========================= */
+
     --transition-fast: 0.2s ease;
     --transition-normal: 0.4s ease;
     --transition-slow: 0.7s ease;
 
-    --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+
+    /* =========================
+       SOMBRAS
+       ========================= */
+
+    --shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45);
 }
 
 
@@ -65,8 +153,13 @@ body {
     background:
         radial-gradient(
             circle at 85% 10%,
-            rgba(255, 106, 0, 0.07),
+            rgba(255, 106, 0, 0.075),
             transparent 28%
+        ),
+        radial-gradient(
+            circle at 10% 85%,
+            rgba(255, 133, 51, 0.025),
+            transparent 25%
         ),
         var(--black);
 
@@ -191,7 +284,7 @@ small {
 
     margin-bottom: 22px;
 
-    color: var(--orange);
+    color: var(--orange-soft);
 
     font-size: 11px;
     font-weight: 700;
@@ -206,7 +299,12 @@ small {
     width: 32px;
     height: 1px;
 
-    background: var(--orange);
+    background:
+        linear-gradient(
+            90deg,
+            var(--orange-dark),
+            var(--orange-soft)
+        );
 }
 
 .section-title {
@@ -225,7 +323,7 @@ small {
 }
 
 .section-title span {
-    color: var(--orange);
+    color: var(--orange-soft);
 }
 
 .section-description {
@@ -274,7 +372,9 @@ small {
 
 .navbar.scrolled {
     background: rgba(5, 5, 5, 0.92);
-    border-color: var(--line);
+
+    border-color:
+        rgba(255, 106, 0, 0.16);
 }
 
 .nav-container {
@@ -301,6 +401,19 @@ small {
 .logo-image {
     width: 120px;
     height: auto;
+
+    transition:
+        filter var(--transition-normal),
+        transform var(--transition-normal);
+}
+
+.logo:hover .logo-image {
+    filter:
+        drop-shadow(
+            0 0 12px rgba(255, 106, 0, 0.28)
+        );
+
+    transform: translateY(-1px);
 }
 
 .nav-menu {
@@ -368,7 +481,12 @@ small {
     width: 0;
     height: 1px;
 
-    background: var(--orange);
+    background:
+        linear-gradient(
+            90deg,
+            var(--orange-dark),
+            var(--orange-soft)
+        );
 
     transition:
         width var(--transition-normal);
@@ -393,6 +511,9 @@ small {
     color: var(--black) !important;
 
     transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(255, 106, 0, 0.25);
 }
 
 .nav-cta::after {
@@ -430,7 +551,8 @@ small {
     transition:
         border-color var(--transition-fast),
         background var(--transition-fast),
-        transform var(--transition-fast);
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
 }
 
 .menu-icon {
@@ -454,15 +576,24 @@ small {
 
     transition:
         transform 0.3s ease,
-        opacity 0.3s ease;
+        opacity 0.3s ease,
+        background 0.3s ease;
 }
 
 .menu-toggle:hover {
     border-color: var(--orange);
 
-    background: rgba(255, 106, 0, 0.08);
+    background:
+        rgba(255, 106, 0, 0.08);
 
     transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 20px rgba(255, 106, 0, 0.10);
+}
+
+.menu-toggle:hover .menu-icon span {
+    background: var(--orange-soft);
 }
 
 
@@ -484,8 +615,13 @@ small {
     background:
         radial-gradient(
             circle at 80% 45%,
-            rgba(255, 106, 0, 0.12),
+            rgba(255, 106, 0, 0.15),
             transparent 25%
+        ),
+        radial-gradient(
+            circle at 65% 85%,
+            rgba(255, 154, 56, 0.045),
+            transparent 28%
         ),
         linear-gradient(
             135deg,
@@ -510,7 +646,11 @@ small {
     right: -300px;
     top: -300px;
 
-    border: 1px solid rgba(255, 106, 0, 0.14);
+    border:
+        1px solid rgba(255, 106, 0, 0.18);
+
+    box-shadow:
+        0 0 100px rgba(255, 106, 0, 0.025);
 
     transform: rotate(45deg);
 }
@@ -526,7 +666,8 @@ small {
     width: 600px;
     height: 600px;
 
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border:
+        1px solid rgba(255, 133, 51, 0.09);
 
     transform: rotate(45deg);
 }
@@ -557,7 +698,7 @@ small {
         linear-gradient(
             90deg,
             transparent,
-            rgba(255, 255, 255, 0.25)
+            rgba(255, 133, 51, 0.35)
         );
 }
 
@@ -565,7 +706,7 @@ small {
     background:
         linear-gradient(
             90deg,
-            rgba(255, 255, 255, 0.25),
+            rgba(255, 133, 51, 0.35),
             transparent
         );
 }
@@ -622,7 +763,8 @@ small {
     background:
         radial-gradient(
             ellipse,
-            rgba(255, 106, 0, 0.10),
+            rgba(255, 106, 0, 0.14),
+            rgba(255, 133, 51, 0.05) 40%,
             transparent 68%
         );
 
@@ -663,7 +805,7 @@ small {
 .hero-eyebrow {
     margin-bottom: 20px;
 
-    color: var(--orange);
+    color: var(--orange-soft);
 
     font-size: 11px;
     font-weight: 700;
@@ -686,15 +828,6 @@ small {
 
     color: var(--white);
 }
-
-/*
-   Antes:
-   color: transparent;
-   -webkit-text-stroke: 1px var(--white);
-
-   Eso hacía que parte del título pareciera desaparecer
-   sobre algunos fondos.
-*/
 
 .hero h1 span {
     display: block;
@@ -765,7 +898,8 @@ small {
         transform var(--transition-fast),
         background var(--transition-fast),
         color var(--transition-fast),
-        border-color var(--transition-fast);
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
 }
 
 .btn:hover {
@@ -773,31 +907,48 @@ small {
 }
 
 .btn-primary {
-    background: var(--orange);
+    background:
+        var(--orange-gradient);
 
     color: var(--black);
 
-    border: 1px solid var(--orange);
+    border:
+        1px solid var(--orange);
+
+    box-shadow:
+        0 8px 25px rgba(255, 106, 0, 0.12);
 }
 
 .btn-primary:hover {
-    background: var(--orange-light);
+    background:
+        var(--orange-gradient-soft);
 
     border-color: var(--orange-light);
+
+    box-shadow:
+        0 12px 35px rgba(255, 106, 0, 0.25);
 }
 
 .btn-secondary {
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border:
+        1px solid rgba(255, 255, 255, 0.2);
 
-    background: rgba(255, 255, 255, 0.02);
+    background:
+        rgba(255, 255, 255, 0.02);
 
     color: var(--white);
 }
 
 .btn-secondary:hover {
-    border-color: var(--orange);
+    border-color: var(--orange-soft);
 
-    color: var(--orange);
+    background:
+        rgba(255, 106, 0, 0.05);
+
+    color: var(--orange-soft);
+
+    box-shadow:
+        inset 0 0 25px rgba(255, 106, 0, 0.035);
 }
 
 
@@ -823,20 +974,26 @@ small {
 
     aspect-ratio: 1 / 1;
 
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border:
+        1px solid rgba(255, 255, 255, 0.12);
 
     background:
         radial-gradient(
             circle at center,
-            rgba(255, 106, 0, 0.10),
+            rgba(255, 106, 0, 0.12),
             transparent 48%
+        ),
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 154, 56, 0.045),
+            transparent 35%
         ),
         rgba(255, 255, 255, 0.015);
 
     transform: rotate(-3deg);
 
     box-shadow:
-        0 0 80px rgba(255, 106, 0, 0.06);
+        0 0 80px rgba(255, 106, 0, 0.07);
 
     overflow: hidden;
 
@@ -854,7 +1011,8 @@ small {
 
     inset: 28px;
 
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border:
+        1px solid rgba(255, 154, 56, 0.10);
 
     pointer-events: none;
 
@@ -880,9 +1038,9 @@ small {
         linear-gradient(
             90deg,
             transparent,
-            rgba(255, 106, 0, 0.12),
-            rgba(255, 106, 0, 0.30),
-            rgba(255, 106, 0, 0.12),
+            rgba(217, 85, 0, 0.16),
+            rgba(255, 106, 0, 0.40),
+            rgba(255, 154, 56, 0.22),
             transparent
         );
 
@@ -937,7 +1095,8 @@ small {
         translate(-50%, -50%)
         rotate(45deg);
 
-    border: 1px solid rgba(255, 106, 0, 0.45);
+    border:
+        1px solid rgba(255, 106, 0, 0.55);
 
     display: flex;
 
@@ -955,7 +1114,7 @@ small {
         infinite;
 
     box-shadow:
-        0 0 0 rgba(255, 106, 0, 0);
+        0 0 20px rgba(255, 106, 0, 0.04);
 }
 
 .pulse-symbol::before {
@@ -965,7 +1124,8 @@ small {
 
     inset: 15px;
 
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border:
+        1px solid rgba(255, 154, 56, 0.15);
 }
 
 .pulse-symbol span {
@@ -974,7 +1134,13 @@ small {
     width: 4px;
     height: 45px;
 
-    background: var(--orange);
+    background:
+        linear-gradient(
+            180deg,
+            var(--orange-soft),
+            var(--orange),
+            var(--orange-dark)
+        );
 
     box-shadow:
         0 0 15px rgba(255, 106, 0, 0.6);
@@ -1016,7 +1182,8 @@ small {
 .pulse-line path {
     fill: none;
 
-    stroke: var(--orange);
+    stroke:
+        url(#pulsoOrangeGradient);
 
     stroke-width: 2;
 
@@ -1044,6 +1211,7 @@ small {
    ========================================================= */
 
 @keyframes pulseDraw {
+
     0% {
         stroke-dashoffset: 1200;
         opacity: 0.15;
@@ -1070,6 +1238,7 @@ small {
 }
 
 @keyframes pulseVisualFloat {
+
     0%,
     100% {
         transform:
@@ -1086,11 +1255,12 @@ small {
             translateY(-7px);
 
         box-shadow:
-            0 0 100px rgba(255, 106, 0, 0.10);
+            0 0 110px rgba(255, 106, 0, 0.11);
     }
 }
 
 @keyframes pulseInnerFrame {
+
     0%,
     100% {
         opacity: 0.55;
@@ -1104,6 +1274,7 @@ small {
 }
 
 @keyframes pulseCenterLine {
+
     0%,
     100% {
         opacity: 0.45;
@@ -1123,6 +1294,7 @@ small {
 }
 
 @keyframes pulseSymbolFloat {
+
     0%,
     100% {
         transform:
@@ -1141,11 +1313,12 @@ small {
             scale(1.035);
 
         box-shadow:
-            0 0 35px rgba(255, 106, 0, 0.10);
+            0 0 35px rgba(255, 106, 0, 0.12);
     }
 }
 
 @keyframes pulseBars {
+
     0%,
     100% {
         opacity: 0.65;
@@ -1164,7 +1337,7 @@ small {
             scaleY(1.08);
 
         box-shadow:
-            0 0 18px rgba(255, 106, 0, 0.65);
+            0 0 18px rgba(255, 133, 51, 0.65);
     }
 
     55% {
@@ -1179,6 +1352,7 @@ small {
 }
 
 @keyframes logoPulso {
+
     0%,
     100% {
         transform: scale(1);
@@ -1238,7 +1412,7 @@ small {
 }
 
 .hero-index span:first-child {
-    color: var(--orange);
+    color: var(--orange-soft);
 }
 
 .scroll-indicator {
@@ -1266,7 +1440,7 @@ small {
 }
 
 .scroll-arrow {
-    color: var(--orange);
+    color: var(--orange-light);
 
     font-size: 18px;
 
@@ -1278,6 +1452,7 @@ small {
 }
 
 @keyframes scrollArrow {
+
     0%,
     100% {
         transform: translateY(0);
@@ -1313,7 +1488,15 @@ small {
 
     margin: 0 auto;
 
-    background: var(--line);
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--line),
+            rgba(255, 106, 0, 0.22),
+            var(--line),
+            transparent
+        );
 }
 
 .brand-statement-content {
@@ -1332,7 +1515,7 @@ small {
 }
 
 .brand-statement-number {
-    color: var(--orange);
+    color: var(--orange-soft);
 
     font-size: 12px;
     font-weight: 700;
@@ -1398,7 +1581,7 @@ small {
 }
 
 .nosotros-text .large-text span {
-    color: var(--orange);
+    color: var(--orange-light);
 }
 
 .concepts-grid {
@@ -1408,9 +1591,11 @@ small {
 
     gap: 1px;
 
-    background: var(--line);
+    background:
+        rgba(255, 106, 0, 0.12);
 
-    border: 1px solid var(--line);
+    border:
+        1px solid rgba(255, 106, 0, 0.12);
 }
 
 .concept-card {
@@ -1424,7 +1609,8 @@ small {
 
     transition:
         background var(--transition-normal),
-        transform var(--transition-normal);
+        transform var(--transition-normal),
+        box-shadow var(--transition-normal);
 }
 
 .concept-card::before {
@@ -1438,14 +1624,27 @@ small {
     width: 3px;
     height: 0;
 
-    background: var(--orange);
+    background:
+        linear-gradient(
+            180deg,
+            var(--orange-soft),
+            var(--orange-dark)
+        );
 
     transition:
         height var(--transition-normal);
 }
 
 .concept-card:hover {
-    background: var(--black-light);
+    background:
+        linear-gradient(
+            135deg,
+            var(--black-light),
+            #11100f
+        );
+
+    box-shadow:
+        inset 0 0 30px rgba(255, 106, 0, 0.025);
 }
 
 .concept-card:hover::before {
@@ -1475,7 +1674,7 @@ small {
 
     margin-bottom: 32px;
 
-    color: var(--orange);
+    color: var(--orange-soft);
 
     font-size: 10px;
     font-weight: 700;
@@ -1511,7 +1710,8 @@ small {
 
     padding: 30px;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
 
     background:
         linear-gradient(
@@ -1524,7 +1724,8 @@ small {
 
     transition:
         transform var(--transition-normal),
-        border-color var(--transition-normal);
+        border-color var(--transition-normal),
+        box-shadow var(--transition-normal);
 }
 
 .service-card::before {
@@ -1538,25 +1739,56 @@ small {
     right: -80px;
     bottom: -80px;
 
-    border: 1px solid rgba(255, 106, 0, 0.18);
+    border:
+        1px solid rgba(255, 106, 0, 0.22);
 
     transform: rotate(45deg);
 
     transition:
-        transform var(--transition-slow);
+        transform var(--transition-slow),
+        border-color var(--transition-normal);
+}
+
+.service-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    right: -40px;
+    bottom: -40px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 106, 0, 0.10),
+            transparent 70%
+        );
+
+    filter: blur(12px);
+
+    pointer-events: none;
 }
 
 .service-card:hover {
     transform: translateY(-5px);
 
     border-color:
-        rgba(255, 106, 0, 0.45);
+        rgba(255, 106, 0, 0.48);
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.25);
 }
 
 .service-card:hover::before {
     transform:
         rotate(45deg)
         scale(1.25);
+
+    border-color:
+        rgba(255, 154, 56, 0.30);
 }
 
 .service-number {
@@ -1564,7 +1796,7 @@ small {
 
     margin-bottom: 38px;
 
-    color: var(--orange);
+    color: var(--orange-soft);
 
     font-size: 11px;
     font-weight: 700;
@@ -1602,13 +1834,32 @@ small {
 .service-card li {
     padding: 6px 10px;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid rgba(255, 154, 56, 0.16);
+
+    background:
+        rgba(255, 106, 0, 0.025);
 
     color: var(--gray);
 
     font-size: 10px;
 
     letter-spacing: 0.05em;
+
+    transition:
+        border-color var(--transition-fast),
+        color var(--transition-fast),
+        background var(--transition-fast);
+}
+
+.service-card li:hover {
+    border-color:
+        rgba(255, 133, 51, 0.45);
+
+    background:
+        rgba(255, 106, 0, 0.06);
+
+    color: var(--orange-pale);
 }
 
 
@@ -1643,7 +1894,8 @@ small {
 
     min-height: 370px;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
 
     background: var(--black-card);
 
@@ -1651,14 +1903,18 @@ small {
 
     transition:
         transform var(--transition-normal),
-        border-color var(--transition-normal);
+        border-color var(--transition-normal),
+        box-shadow var(--transition-normal);
 }
 
 .project-card:hover {
     transform: translateY(-8px);
 
     border-color:
-        rgba(255, 106, 0, 0.4);
+        rgba(255, 106, 0, 0.48);
+
+    box-shadow:
+        0 20px 55px rgba(0, 0, 0, 0.30);
 }
 
 .project-browser {
@@ -1672,7 +1928,8 @@ small {
 
     gap: 6px;
 
-    border-bottom: 1px solid var(--line);
+    border-bottom:
+        1px solid var(--line);
 
     background: #181818;
 }
@@ -1684,6 +1941,22 @@ small {
     border-radius: 50%;
 
     background: #555555;
+
+    transition:
+        background var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+.project-card:hover .project-browser span:nth-child(1) {
+    background: var(--orange-dark);
+}
+
+.project-card:hover .project-browser span:nth-child(2) {
+    background: var(--orange);
+}
+
+.project-card:hover .project-browser span:nth-child(3) {
+    background: var(--orange-soft);
 }
 
 .project-content {
@@ -1698,9 +1971,14 @@ small {
     justify-content: flex-end;
 
     background:
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(255, 154, 56, 0.06),
+            transparent 28%
+        ),
         linear-gradient(
             135deg,
-            rgba(255, 106, 0, 0.09),
+            rgba(255, 106, 0, 0.10),
             transparent 45%
         );
 }
@@ -1708,7 +1986,7 @@ small {
 .project-number {
     margin-bottom: auto;
 
-    color: var(--orange);
+    color: var(--orange-soft);
 
     font-size: 10px;
     font-weight: 700;
@@ -1748,13 +2026,21 @@ small {
     font-size: 12px;
     font-weight: 700;
 
-    border-bottom: 1px solid var(--orange);
+    border-bottom:
+        1px solid var(--orange);
 
     padding-bottom: 4px;
+
+    transition:
+        color var(--transition-fast),
+        border-color var(--transition-fast);
 }
 
 .project-content a:hover {
-    color: var(--orange);
+    color: var(--orange-soft);
+
+    border-color:
+        var(--orange-soft);
 }
 
 
@@ -1769,6 +2055,11 @@ small {
     padding-bottom: 90px;
 
     background:
+        radial-gradient(
+            circle at 75% 50%,
+            rgba(255, 106, 0, 0.06),
+            transparent 32%
+        ),
         linear-gradient(
             135deg,
             #0a0a0a,
@@ -1803,7 +2094,7 @@ small {
 }
 
 .intencion h2 span {
-    color: var(--orange);
+    color: var(--orange-light);
 }
 
 .intencion p {
@@ -1826,6 +2117,29 @@ small {
     display: flex;
 
     align-items: center;
+}
+
+.intencion-visual::before {
+    content: "";
+
+    position: absolute;
+
+    width: 70%;
+    height: 70%;
+
+    left: 15%;
+    top: 15%;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(255, 106, 0, 0.08),
+            transparent 70%
+        );
+
+    filter: blur(20px);
+
+    pointer-events: none;
 }
 
 .intencion-visual svg {
@@ -1860,6 +2174,7 @@ small {
 }
 
 @keyframes intentionPulse {
+
     0% {
         stroke-dashoffset: 1100;
     }
@@ -1891,9 +2206,11 @@ small {
 
     margin-top: 48px;
 
-    border-top: 1px solid var(--line);
+    border-top:
+        1px solid var(--line);
 
-    border-bottom: 1px solid var(--line);
+    border-bottom:
+        1px solid var(--line);
 }
 
 .process-step {
@@ -1903,7 +2220,20 @@ small {
 
     padding: 25px;
 
-    border-right: 1px solid var(--line);
+    border-right:
+        1px solid var(--line);
+
+    transition:
+        background var(--transition-normal);
+}
+
+.process-step:hover {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 106, 0, 0.035),
+            transparent
+        );
 }
 
 .process-step:last-child {
@@ -1911,7 +2241,7 @@ small {
 }
 
 .process-number {
-    color: var(--orange);
+    color: var(--orange-soft);
 
     font-size: 10px;
     font-weight: 700;
@@ -1957,9 +2287,11 @@ small {
 
     margin-top: 48px;
 
-    background: var(--line);
+    background:
+        rgba(255, 106, 0, 0.10);
 
-    border: 1px solid var(--line);
+    border:
+        1px solid rgba(255, 106, 0, 0.10);
 }
 
 .why-card {
@@ -1970,15 +2302,24 @@ small {
     background: var(--black-card);
 
     transition:
-        background var(--transition-normal);
+        background var(--transition-normal),
+        box-shadow var(--transition-normal);
 }
 
 .why-card:hover {
-    background: var(--black-light);
+    background:
+        linear-gradient(
+            135deg,
+            var(--black-light),
+            #11100f
+        );
+
+    box-shadow:
+        inset 0 0 35px rgba(255, 106, 0, 0.025);
 }
 
 .why-card-number {
-    color: var(--orange);
+    color: var(--orange-soft);
 
     font-size: 10px;
     font-weight: 700;
@@ -2019,8 +2360,13 @@ small {
     background:
         radial-gradient(
             circle at 50% 50%,
-            rgba(255, 106, 0, 0.12),
+            rgba(255, 106, 0, 0.15),
             transparent 35%
+        ),
+        radial-gradient(
+            circle at 25% 80%,
+            rgba(255, 154, 56, 0.045),
+            transparent 30%
         ),
         var(--black-soft);
 
@@ -2040,7 +2386,8 @@ small {
     width: 450px;
     height: 450px;
 
-    border: 1px solid rgba(255, 106, 0, 0.10);
+    border:
+        1px solid rgba(255, 106, 0, 0.13);
 
     transform: rotate(45deg);
 }
@@ -2053,6 +2400,9 @@ small {
 .cta::after {
     right: -300px;
     bottom: -200px;
+
+    border-color:
+        rgba(255, 154, 56, 0.08);
 }
 
 .cta h2 {
@@ -2074,7 +2424,13 @@ small {
 .cta h2 span {
     display: block;
 
-    color: var(--orange);
+    background:
+        var(--orange-gradient-soft);
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
 }
 
 .cta p {
@@ -2144,7 +2500,8 @@ small {
 
     padding: 16px 18px;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
 
     border-radius: var(--radius-small);
 
@@ -2156,13 +2513,22 @@ small {
 
     transition:
         border-color var(--transition-fast),
-        background var(--transition-fast);
+        background var(--transition-fast),
+        box-shadow var(--transition-fast);
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
     color: #8a8a8a;
+
     opacity: 1;
+}
+
+.form-group input:hover,
+.form-group textarea:hover,
+.form-group select:hover {
+    border-color:
+        rgba(255, 133, 51, 0.28);
 }
 
 .form-group input:focus,
@@ -2173,6 +2539,9 @@ small {
     background: #111111;
 
     color: var(--white);
+
+    box-shadow:
+        0 0 0 3px rgba(255, 106, 0, 0.06);
 }
 
 .form-group textarea {
@@ -2206,9 +2575,11 @@ small {
 
     padding: 13px;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
 
-    background: rgba(255, 255, 255, 0.015);
+    background:
+        rgba(255, 255, 255, 0.015);
 
     color: var(--gray);
 
@@ -2217,18 +2588,38 @@ small {
     transition:
         border-color var(--transition-fast),
         background var(--transition-fast),
-        color var(--transition-fast);
+        color var(--transition-fast),
+        box-shadow var(--transition-fast);
 }
 
 .form-options label:hover {
     border-color:
         rgba(255, 106, 0, 0.5);
 
+    background:
+        rgba(255, 106, 0, 0.035);
+
     color: var(--white);
+}
+
+.form-options label:has(input:checked) {
+    border-color:
+        var(--orange);
+
+    background:
+        rgba(255, 106, 0, 0.08);
+
+    color:
+        var(--orange-pale);
+
+    box-shadow:
+        inset 0 0 20px rgba(255, 106, 0, 0.035);
 }
 
 .form-options input {
     width: auto;
+
+    accent-color: var(--orange);
 }
 
 .form-submit {
@@ -2242,7 +2633,7 @@ small {
 .form-status {
     margin-top: 20px;
 
-    color: var(--orange);
+    color: var(--orange-soft);
 
     font-size: 13px;
 }
@@ -2269,7 +2660,20 @@ small {
 
     object-fit: cover;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
+
+    transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+#image-preview-grid img:hover {
+    border-color:
+        rgba(255, 106, 0, 0.45);
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.30);
 }
 
 
@@ -2308,23 +2712,33 @@ small {
 
     padding: 20px;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
 
     background: var(--black-card);
 
     transition:
         border-color var(--transition-fast),
         background var(--transition-fast),
-        transform var(--transition-fast);
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
 }
 
 .contact-item:hover {
     border-color:
         rgba(255, 106, 0, 0.45);
 
-    background: var(--black-light);
+    background:
+        linear-gradient(
+            135deg,
+            var(--black-light),
+            #11100f
+        );
 
     transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.22);
 }
 
 .contact-item span {
@@ -2332,7 +2746,7 @@ small {
 
     margin-bottom: 7px;
 
-    color: var(--orange);
+    color: var(--orange-soft);
 
     font-size: 10px;
     font-weight: 700;
@@ -2370,7 +2784,7 @@ small {
 }
 
 .contact-item a:hover {
-    color: var(--orange);
+    color: var(--orange-soft);
 }
 
 
@@ -2383,7 +2797,13 @@ small {
 
     padding: 80px 0;
 
-    background: var(--black);
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255, 106, 0, 0.045),
+            transparent 35%
+        ),
+        var(--black);
 
     overflow: hidden;
 
@@ -2411,7 +2831,15 @@ small {
     width: 100%;
     height: 1px;
 
-    background: var(--line);
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--line),
+            rgba(255, 106, 0, 0.20),
+            var(--line),
+            transparent
+        );
 }
 
 .brand-closing-image {
@@ -2438,6 +2866,7 @@ small {
 }
 
 @keyframes logoCierrePulso {
+
     0%,
     100% {
         transform: scale(1);
@@ -2497,7 +2926,8 @@ small {
 
     background: #030303;
 
-    border-top: 1px solid var(--line);
+    border-top:
+        1px solid rgba(255, 106, 0, 0.16);
 
     color: var(--white);
 }
@@ -2529,6 +2959,16 @@ small {
     width: 130px;
 
     height: auto;
+
+    transition:
+        filter var(--transition-normal);
+}
+
+.footer-logo-image:hover {
+    filter:
+        drop-shadow(
+            0 0 12px rgba(255, 106, 0, 0.25)
+        );
 }
 
 .footer-brand p {
@@ -2562,17 +3002,21 @@ small {
     font-size: 13px;
 
     transition:
-        color var(--transition-fast);
+        color var(--transition-fast),
+        padding-left var(--transition-fast);
 }
 
 .footer-links a:hover {
-    color: var(--orange);
+    color: var(--orange-soft);
+
+    padding-left: 4px;
 }
 
 .footer-bottom {
     padding-top: 25px;
 
-    border-top: 1px solid var(--line);
+    border-top:
+        1px solid var(--line);
 
     display: flex;
 
@@ -2594,7 +3038,7 @@ small {
 }
 
 .footer-bottom a:hover {
-    color: var(--orange);
+    color: var(--orange-soft);
 }
 
 
@@ -2622,28 +3066,40 @@ small {
 
     padding: 13px 18px;
 
-    border: 1px solid var(--orange);
+    border:
+        1px solid var(--orange);
 
     border-radius: 100px;
 
-    background: rgba(5, 5, 5, 0.92);
+    background:
+        rgba(5, 5, 5, 0.92);
 
     color: var(--white);
 
     box-shadow:
-        0 10px 35px rgba(0, 0, 0, 0.4);
+        0 10px 35px rgba(0, 0, 0, 0.4),
+        0 0 25px rgba(255, 106, 0, 0.07);
 
     transition:
         transform var(--transition-fast),
-        background var(--transition-fast);
+        background var(--transition-fast),
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
 }
 
 .pulsi-button:hover {
     transform: translateY(-3px);
 
-    background: var(--orange);
+    background:
+        var(--orange-gradient);
+
+    border-color:
+        var(--orange-soft);
 
     color: var(--black);
+
+    box-shadow:
+        0 12px 35px rgba(255, 106, 0, 0.22);
 }
 
 .pulsi-pulse {
@@ -2652,7 +3108,8 @@ small {
 
     border-radius: 50%;
 
-    background: var(--orange);
+    background:
+        var(--orange-soft);
 
     box-shadow:
         0 0 0 5px rgba(255, 106, 0, 0.12),
@@ -2665,6 +3122,7 @@ small {
 }
 
 @keyframes pulsiPulse {
+
     0% {
         box-shadow:
             0 0 0 0 rgba(255, 106, 0, 0.35);
@@ -2704,7 +3162,8 @@ small {
 
     flex-direction: column;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid rgba(255, 106, 0, 0.18);
 
     border-radius: 18px;
 
@@ -2713,7 +3172,8 @@ small {
     color: var(--white);
 
     box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.65);
+        0 25px 70px rgba(0, 0, 0, 0.65),
+        0 0 45px rgba(255, 106, 0, 0.05);
 
     overflow: hidden;
 
@@ -2749,9 +3209,15 @@ small {
     align-items: center;
     justify-content: space-between;
 
-    border-bottom: 1px solid var(--line);
+    border-bottom:
+        1px solid rgba(255, 106, 0, 0.14);
 
-    background: #101010;
+    background:
+        linear-gradient(
+            135deg,
+            #121212,
+            #0d0d0d
+        );
 
     color: var(--white);
 }
@@ -2771,7 +3237,7 @@ small {
 
     margin-top: 2px;
 
-    color: var(--gray);
+    color: var(--orange-soft);
 
     font-size: 10px;
 }
@@ -2780,7 +3246,8 @@ small {
     width: 32px;
     height: 32px;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
 
     border-radius: 50%;
 
@@ -2789,6 +3256,22 @@ small {
     color: var(--white);
 
     font-size: 20px;
+
+    transition:
+        background var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast);
+}
+
+#pulsi-close:hover {
+    background:
+        var(--orange);
+
+    border-color:
+        var(--orange);
+
+    color:
+        var(--black);
 }
 
 .pulsi-messages {
@@ -2824,7 +3307,8 @@ small {
 .pulsi-message-ai {
     align-self: flex-start;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
 
     background: #121212;
 
@@ -2838,9 +3322,13 @@ small {
 .pulsi-message-user {
     align-self: flex-end;
 
-    background: var(--orange);
+    background:
+        var(--orange-gradient);
 
     color: #ffffff;
+
+    box-shadow:
+        0 5px 18px rgba(255, 106, 0, 0.12);
 }
 
 .pulsi-message-user p {
@@ -2856,7 +3344,8 @@ small {
 
     overflow-x: auto;
 
-    border-top: 1px solid var(--line);
+    border-top:
+        1px solid var(--line);
 }
 
 .pulsi-quick button {
@@ -2864,7 +3353,8 @@ small {
 
     padding: 8px 11px;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
 
     border-radius: 100px;
 
@@ -2873,12 +3363,22 @@ small {
     color: var(--gray);
 
     font-size: 10px;
+
+    transition:
+        border-color var(--transition-fast),
+        background var(--transition-fast),
+        color var(--transition-fast);
 }
 
 .pulsi-quick button:hover {
-    border-color: var(--orange);
+    border-color:
+        var(--orange);
 
-    color: var(--orange);
+    background:
+        rgba(255, 106, 0, 0.06);
+
+    color:
+        var(--orange-soft);
 }
 
 .pulsi-form {
@@ -2888,7 +3388,8 @@ small {
 
     padding: 12px;
 
-    border-top: 1px solid var(--line);
+    border-top:
+        1px solid var(--line);
 
     background: #0e0e0e;
 }
@@ -2900,7 +3401,8 @@ small {
 
     padding: 11px 13px;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
 
     border-radius: 9px;
 
@@ -2909,6 +3411,10 @@ small {
     background: #151515;
 
     color: var(--white);
+
+    transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
 }
 
 .pulsi-form input::placeholder {
@@ -2918,7 +3424,11 @@ small {
 }
 
 .pulsi-form input:focus {
-    border-color: var(--orange);
+    border-color:
+        var(--orange);
+
+    box-shadow:
+        0 0 0 3px rgba(255, 106, 0, 0.06);
 }
 
 .pulsi-form button {
@@ -2928,13 +3438,25 @@ small {
 
     border-radius: 9px;
 
-    background: var(--orange);
+    background:
+        var(--orange-gradient);
 
     color: #ffffff;
 
     font-size: 18px;
 
     font-weight: 700;
+
+    transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+.pulsi-form button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 18px rgba(255, 106, 0, 0.25);
 }
 
 
@@ -2999,11 +3521,13 @@ small {
     align-items: center;
     justify-content: center;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
 
     border-radius: 50%;
 
-    background: rgba(5, 5, 5, 0.9);
+    background:
+        rgba(5, 5, 5, 0.9);
 
     color: var(--white);
 
@@ -3015,7 +3539,10 @@ small {
     transition:
         opacity var(--transition-normal),
         visibility var(--transition-normal),
-        transform var(--transition-normal);
+        transform var(--transition-normal),
+        border-color var(--transition-fast),
+        color var(--transition-fast),
+        box-shadow var(--transition-fast);
 }
 
 .btn-volver-arriba.visible {
@@ -3027,9 +3554,14 @@ small {
 }
 
 .btn-volver-arriba:hover {
-    border-color: var(--orange);
+    border-color:
+        var(--orange);
 
-    color: var(--orange);
+    color:
+        var(--orange-soft);
+
+    box-shadow:
+        0 0 20px rgba(255, 106, 0, 0.10);
 }
 
 
@@ -3068,6 +3600,7 @@ small {
 }
 
 @keyframes pulsoViewEnter {
+
     from {
         opacity: 0;
 
@@ -3098,7 +3631,7 @@ small {
     background:
         radial-gradient(
             circle at 85% 15%,
-            rgba(255, 106, 0, 0.07),
+            rgba(255, 106, 0, 0.09),
             transparent 28%
         ),
         var(--black-soft);
@@ -3124,7 +3657,8 @@ small {
 
     padding: 32px;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
 
     background:
         linear-gradient(
@@ -3138,7 +3672,8 @@ small {
     transition:
         transform var(--transition-normal),
         border-color var(--transition-normal),
-        background var(--transition-normal);
+        background var(--transition-normal),
+        box-shadow var(--transition-normal);
 }
 
 .help-card::before {
@@ -3152,12 +3687,14 @@ small {
     right: -90px;
     bottom: -90px;
 
-    border: 1px solid rgba(255, 106, 0, 0.16);
+    border:
+        1px solid rgba(255, 106, 0, 0.20);
 
     transform: rotate(45deg);
 
     transition:
-        transform var(--transition-slow);
+        transform var(--transition-slow),
+        border-color var(--transition-normal);
 }
 
 .help-card:hover {
@@ -3168,12 +3705,18 @@ small {
 
     background:
         rgba(255, 255, 255, 0.035);
+
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.22);
 }
 
 .help-card:hover::before {
     transform:
         rotate(45deg)
         scale(1.25);
+
+    border-color:
+        rgba(255, 154, 56, 0.32);
 }
 
 .help-number {
@@ -3183,7 +3726,7 @@ small {
 
     margin-bottom: 45px;
 
-    color: var(--orange);
+    color: var(--orange-soft);
 
     font-size: 10px;
     font-weight: 700;
@@ -3237,11 +3780,15 @@ small {
     padding-bottom: 4px;
 
     transition:
-        color var(--transition-fast);
+        color var(--transition-fast),
+        border-color var(--transition-fast);
 }
 
 .help-card a:hover {
-    color: var(--orange);
+    color: var(--orange-soft);
+
+    border-color:
+        var(--orange-soft);
 }
 
 .help-contact-card {
@@ -3271,7 +3818,7 @@ small {
     padding-bottom: 25px;
 
     border-bottom:
-        1px solid var(--line);
+        1px solid rgba(255, 106, 0, 0.14);
 }
 
 .nav-menu-header span {
@@ -3292,7 +3839,8 @@ small {
     align-items: center;
     justify-content: center;
 
-    border: 1px solid var(--line);
+    border:
+        1px solid var(--line);
 
     border-radius: 50%;
 
@@ -3304,13 +3852,16 @@ small {
 
     transition:
         background var(--transition-fast),
-        border-color var(--transition-fast);
+        border-color var(--transition-fast),
+        color var(--transition-fast);
 }
 
 .nav-menu-close:hover {
-    background: var(--orange);
+    background:
+        var(--orange-gradient);
 
-    border-color: var(--orange);
+    border-color:
+        var(--orange);
 
     color: var(--black);
 }
@@ -3347,7 +3898,7 @@ small {
 .nav-menu-links a span {
     min-width: 25px;
 
-    color: var(--orange);
+    color: var(--orange-soft);
 
     font-size: 9px;
     font-weight: 700;
@@ -3388,7 +3939,7 @@ small {
 }
 
 .nav-menu-links a.active-view span {
-    color: var(--orange);
+    color: var(--orange-soft);
 }
 
 
@@ -3514,7 +4065,8 @@ small {
 
         gap: 5px;
 
-        border: 1px solid var(--line);
+        border:
+            1px solid rgba(255, 106, 0, 0.16);
 
         border-radius: 16px;
 
@@ -3683,7 +4235,8 @@ small {
 
         border-right: none;
 
-        border-bottom: 1px solid var(--line);
+        border-bottom:
+            1px solid var(--line);
     }
 
     .process-step:last-child {
@@ -3912,7 +4465,8 @@ small {
    ========================================================= */
 
 :focus-visible {
-    outline: 2px solid var(--orange);
+    outline:
+        2px solid var(--orange);
 
     outline-offset: 4px;
 }
@@ -3944,4 +4498,3 @@ small {
         scroll-behavior: auto !important;
     }
 }
-```

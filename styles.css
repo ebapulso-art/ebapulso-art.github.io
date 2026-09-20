@@ -15,13 +15,15 @@
     --black-card: #101010;
     --black-light: #151515;
 
+    /* CONTRASTE PRINCIPAL */
     --white: #ffffff;
     --white-soft: #eeeeee;
-    --gray: #a4a4a4;
-    --gray-dark: #666666;
+    --gray: #c2c2c2;
+    --gray-dark: #8f8f8f;
 
-    --line: rgba(255, 255, 255, 0.12);
+    --line: rgba(255, 255, 255, 0.14);
 
+    /* ACENTO PULSO */
     --orange: #ff6a00;
     --orange-light: #ff8533;
     --orange-dark: #d95500;
@@ -56,6 +58,7 @@
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 90px;
+    color-scheme: dark;
 }
 
 body {
@@ -129,9 +132,31 @@ ul {
     list-style: none;
 }
 
+p {
+    color: var(--gray);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--white);
+}
+
+strong,
+b {
+    color: var(--white);
+}
+
+small {
+    color: var(--gray);
+}
+
 ::selection {
     background: var(--orange);
-    color: var(--black);
+    color: #ffffff;
 }
 
 
@@ -154,6 +179,8 @@ ul {
     padding: 95px 0;
 
     overflow: hidden;
+
+    color: var(--white);
 }
 
 .section-label {
@@ -193,6 +220,8 @@ ul {
     line-height: 0.98;
 
     letter-spacing: -0.055em;
+
+    color: var(--white);
 }
 
 .section-title span {
@@ -239,6 +268,8 @@ ul {
     transition:
         background var(--transition-normal),
         border-color var(--transition-normal);
+
+    color: var(--white);
 }
 
 .navbar.scrolled {
@@ -343,7 +374,8 @@ ul {
         width var(--transition-normal);
 }
 
-.nav-menu a:hover {
+.nav-menu a:hover,
+.nav-menu a:focus {
     color: var(--white);
 }
 
@@ -463,6 +495,8 @@ ul {
         );
 
     overflow: hidden;
+
+    color: var(--white);
 }
 
 .hero::before {
@@ -649,14 +683,25 @@ ul {
     line-height: 0.88;
 
     letter-spacing: -0.065em;
+
+    color: var(--white);
 }
+
+/*
+   Antes:
+   color: transparent;
+   -webkit-text-stroke: 1px var(--white);
+
+   Eso hacía que parte del título pareciera desaparecer
+   sobre algunos fondos.
+*/
 
 .hero h1 span {
     display: block;
 
-    color: transparent;
+    color: var(--white);
 
-    -webkit-text-stroke: 1px var(--white);
+    -webkit-text-stroke: 0;
 
     text-shadow: none;
 }
@@ -664,7 +709,7 @@ ul {
 .hero-subtitle {
     margin-top: 26px;
 
-    color: var(--white);
+    color: var(--white-soft);
 
     font-family: var(--font-title);
 
@@ -713,6 +758,8 @@ ul {
 
     font-size: 13px;
     font-weight: 700;
+
+    color: var(--white);
 
     transition:
         transform var(--transition-fast),
@@ -1252,6 +1299,8 @@ ul {
     padding: 65px 0;
 
     background: var(--black-soft);
+
+    color: var(--white);
 }
 
 .brand-statement-line {
@@ -1316,6 +1365,8 @@ ul {
 
 .nosotros {
     background: var(--black);
+
+    color: var(--white);
 }
 
 .nosotros-content {
@@ -1342,6 +1393,8 @@ ul {
     line-height: 1;
 
     letter-spacing: -0.045em;
+
+    color: var(--white);
 }
 
 .nosotros-text .large-text span {
@@ -1405,6 +1458,8 @@ ul {
     font-family: var(--font-title);
 
     font-size: 23px;
+
+    color: var(--white);
 }
 
 .concept-card p {
@@ -1435,6 +1490,8 @@ ul {
 
 .servicios {
     background: var(--black-soft);
+
+    color: var(--white);
 }
 
 .services-grid {
@@ -1523,6 +1580,8 @@ ul {
     font-size: 25px;
 
     letter-spacing: -0.03em;
+
+    color: var(--white);
 }
 
 .service-card p {
@@ -1559,6 +1618,8 @@ ul {
 
 .proyectos {
     background: var(--black);
+
+    color: var(--white);
 }
 
 .projects-wrapper {
@@ -1584,7 +1645,7 @@ ul {
 
     border: 1px solid var(--line);
 
-    background: #0b0b0b;
+    background: var(--black-card);
 
     overflow: hidden;
 
@@ -1613,7 +1674,7 @@ ul {
 
     border-bottom: 1px solid var(--line);
 
-    background: #121212;
+    background: #181818;
 }
 
 .project-browser span {
@@ -1622,7 +1683,7 @@ ul {
 
     border-radius: 50%;
 
-    background: #444;
+    background: #555555;
 }
 
 .project-content {
@@ -1663,6 +1724,8 @@ ul {
     line-height: 1;
 
     letter-spacing: -0.04em;
+
+    color: var(--white);
 }
 
 .project-content p {
@@ -1690,6 +1753,10 @@ ul {
     padding-bottom: 4px;
 }
 
+.project-content a:hover {
+    color: var(--orange);
+}
+
 
 /* =========================================================
    11. INTENCIÓN / ECG
@@ -1707,6 +1774,8 @@ ul {
             #0a0a0a,
             #111111
         );
+
+    color: var(--white);
 }
 
 .intencion-content {
@@ -1729,6 +1798,8 @@ ul {
     line-height: 0.95;
 
     letter-spacing: -0.055em;
+
+    color: var(--white);
 }
 
 .intencion h2 span {
@@ -1809,6 +1880,8 @@ ul {
 
 .proceso {
     background: var(--black-soft);
+
+    color: var(--white);
 }
 
 .process-grid {
@@ -1852,6 +1925,8 @@ ul {
     font-family: var(--font-title);
 
     font-size: 21px;
+
+    color: var(--white);
 }
 
 .process-step p {
@@ -1869,6 +1944,8 @@ ul {
 
 .porque {
     background: var(--black);
+
+    color: var(--white);
 }
 
 .why-grid {
@@ -1915,6 +1992,8 @@ ul {
     font-family: var(--font-title);
 
     font-size: 19px;
+
+    color: var(--white);
 }
 
 .why-card p {
@@ -1948,6 +2027,8 @@ ul {
     text-align: center;
 
     overflow: hidden;
+
+    color: var(--white);
 }
 
 .cta::before,
@@ -1986,6 +2067,8 @@ ul {
     line-height: 0.8;
 
     letter-spacing: -0.07em;
+
+    color: var(--white);
 }
 
 .cta h2 span {
@@ -2019,10 +2102,14 @@ ul {
 
 .formulario {
     background: var(--black);
+
+    color: var(--white);
 }
 
 .project-form {
     margin-top: 48px;
+
+    color: var(--white);
 }
 
 .form-group {
@@ -2072,12 +2159,20 @@ ul {
         background var(--transition-fast);
 }
 
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #8a8a8a;
+    opacity: 1;
+}
+
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
     border-color: var(--orange);
 
     background: #111111;
+
+    color: var(--white);
 }
 
 .form-group textarea {
@@ -2115,16 +2210,21 @@ ul {
 
     background: rgba(255, 255, 255, 0.015);
 
+    color: var(--gray);
+
     cursor: pointer;
 
     transition:
         border-color var(--transition-fast),
-        background var(--transition-fast);
+        background var(--transition-fast),
+        color var(--transition-fast);
 }
 
 .form-options label:hover {
     border-color:
         rgba(255, 106, 0, 0.5);
+
+    color: var(--white);
 }
 
 .form-options input {
@@ -2179,6 +2279,8 @@ ul {
 
 .contacto {
     background: var(--black-soft);
+
+    color: var(--white);
 }
 
 .contact-grid {
@@ -2197,6 +2299,8 @@ ul {
     flex-direction: column;
 
     gap: 14px;
+
+    color: var(--white);
 }
 
 .contact-item {
@@ -2282,6 +2386,8 @@ ul {
     background: var(--black);
 
     overflow: hidden;
+
+    color: var(--white);
 }
 
 .brand-closing-content {
@@ -2392,6 +2498,8 @@ ul {
     background: #030303;
 
     border-top: 1px solid var(--line);
+
+    color: var(--white);
 }
 
 .footer-container {
@@ -2479,6 +2587,8 @@ ul {
 }
 
 .footer-bottom a {
+    color: var(--gray);
+
     transition:
         color var(--transition-fast);
 }
@@ -2600,6 +2710,8 @@ ul {
 
     background: #0a0a0a;
 
+    color: var(--white);
+
     box-shadow:
         0 25px 70px rgba(0, 0, 0, 0.65);
 
@@ -2640,6 +2752,8 @@ ul {
     border-bottom: 1px solid var(--line);
 
     background: #101010;
+
+    color: var(--white);
 }
 
 .pulsi-header strong {
@@ -2648,6 +2762,8 @@ ul {
     font-family: var(--font-title);
 
     font-size: 16px;
+
+    color: var(--white);
 }
 
 .pulsi-header span {
@@ -2715,12 +2831,20 @@ ul {
     color: var(--white);
 }
 
+.pulsi-message-ai p {
+    color: var(--white-soft);
+}
+
 .pulsi-message-user {
     align-self: flex-end;
 
     background: var(--orange);
 
-    color: var(--black);
+    color: #ffffff;
+}
+
+.pulsi-message-user p {
+    color: #ffffff;
 }
 
 .pulsi-quick {
@@ -2787,6 +2911,12 @@ ul {
     color: var(--white);
 }
 
+.pulsi-form input::placeholder {
+    color: #8a8a8a;
+
+    opacity: 1;
+}
+
 .pulsi-form input:focus {
     border-color: var(--orange);
 }
@@ -2800,7 +2930,7 @@ ul {
 
     background: var(--orange);
 
-    color: var(--black);
+    color: #ffffff;
 
     font-size: 18px;
 
@@ -2916,6 +3046,8 @@ ul {
     visibility: hidden;
 
     transform: translateY(18px);
+
+    color: var(--white);
 }
 
 .view.view-active {
@@ -2970,6 +3102,8 @@ ul {
             transparent 28%
         ),
         var(--black-soft);
+
+    color: var(--white);
 }
 
 .help-grid {
@@ -3069,6 +3203,8 @@ ul {
     line-height: 1.05;
 
     letter-spacing: -0.035em;
+
+    color: var(--white);
 }
 
 .help-card p {
@@ -3118,8 +3254,7 @@ ul {
 }
 
 .help-contact-card p {
-    color:
-        rgba(255, 255, 255, 0.58);
+    color: var(--gray);
 }
 
 
@@ -3140,7 +3275,7 @@ ul {
 }
 
 .nav-menu-header span {
-    color: var(--white);
+    color: var(--gray);
 
     font-size: 11px;
     font-weight: 700;
@@ -3810,761 +3945,3 @@ ul {
     }
 }
 ```
-/* ============================================================
-   PULSO — CORRECCIÓN DE CONTRASTE Y VISIBILIDAD
-   ============================================================ */
-
-:root {
-    --black: #080808;
-    --black-soft: #0d0d0d;
-    --black-card: #121212;
-    --black-light: #181818;
-
-    --white: #ffffff;
-    --white-soft: #eeeeee;
-
-    --gray: #b8b8b8;
-    --gray-dark: #888888;
-
-    --line: rgba(255, 255, 255, 0.14);
-
-    --orange: #ff6a00;
-    --orange-light: #ff8533;
-    --orange-dark: #d95500;
-}
-
-
-/* ============================================================
-   BASE
-   ============================================================ */
-
-html,
-body {
-    background: var(--black);
-    color: var(--white);
-}
-
-body {
-    color: var(--white);
-}
-
-
-/* ============================================================
-   TEXTOS GENERALES
-   ============================================================ */
-
-p {
-    color: var(--gray);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    color: var(--white);
-}
-
-strong,
-b {
-    color: var(--white);
-}
-
-small {
-    color: var(--gray);
-}
-
-
-/* ============================================================
-   CONTENEDORES / SECCIONES
-   ============================================================ */
-
-.section {
-    color: var(--white);
-}
-
-.section-title {
-    color: var(--white);
-}
-
-.section-description {
-    color: var(--gray);
-}
-
-.section-label {
-    color: var(--orange);
-}
-
-
-/* ============================================================
-   NAVEGACIÓN
-   ============================================================ */
-
-.navbar {
-    color: var(--white);
-}
-
-.nav-menu {
-    background: rgba(8, 8, 8, 0.97);
-}
-
-.nav-menu a {
-    color: var(--white);
-}
-
-.nav-menu a:hover,
-.nav-menu a:focus {
-    color: var(--orange);
-}
-
-.nav-menu-header {
-    color: var(--white);
-}
-
-.nav-menu-header span {
-    color: var(--gray);
-}
-
-.nav-menu-links a {
-    color: var(--white);
-}
-
-.nav-menu-links a span {
-    color: var(--gray);
-}
-
-.nav-menu-links a:hover span,
-.nav-menu-links a.active-view span {
-    color: var(--orange);
-}
-
-.nav-menu-footer {
-    color: var(--gray);
-}
-
-.nav-pulsi-link {
-    color: var(--orange);
-}
-
-
-/* ============================================================
-   HERO
-   ============================================================ */
-
-.hero {
-    background:
-        radial-gradient(
-            circle at 75% 45%,
-            rgba(255, 106, 0, 0.07),
-            transparent 32%
-        ),
-        var(--black);
-    color: var(--white);
-}
-
-.hero-eyebrow,
-.hero-brand-line {
-    color: var(--orange);
-}
-
-.hero h1 {
-    color: var(--white);
-}
-
-.hero h1 span {
-    color: var(--orange);
-}
-
-.hero-subtitle {
-    color: var(--white-soft);
-}
-
-.hero-description {
-    color: var(--gray);
-}
-
-.hero-index {
-    color: var(--gray-dark);
-}
-
-.scroll-indicator {
-    color: var(--gray);
-}
-
-.scroll-arrow {
-    color: var(--orange);
-}
-
-
-/* ============================================================
-   BRAND STATEMENT
-   ============================================================ */
-
-.brand-statement {
-    background: var(--black-soft);
-    color: var(--white);
-}
-
-.brand-statement-number {
-    color: var(--orange);
-}
-
-.brand-statement p {
-    color: var(--gray);
-}
-
-.brand-statement strong {
-    color: var(--white);
-}
-
-
-/* ============================================================
-   NOSOTROS
-   ============================================================ */
-
-.nosotros {
-    background: var(--black);
-    color: var(--white);
-}
-
-.nosotros-text .large-text {
-    color: var(--white);
-}
-
-.nosotros-text span {
-    color: var(--orange);
-}
-
-.concept-card {
-    background: var(--black-card);
-    border-color: var(--line);
-}
-
-.concept-card h3 {
-    color: var(--white);
-}
-
-.concept-card p {
-    color: var(--gray);
-}
-
-.concept-number {
-    color: var(--orange);
-}
-
-
-/* ============================================================
-   SERVICIOS
-   ============================================================ */
-
-.servicios {
-    background: var(--black-soft);
-    color: var(--white);
-}
-
-.service-card {
-    background: var(--black-card);
-    border-color: var(--line);
-}
-
-.service-card h3 {
-    color: var(--white);
-}
-
-.service-card p {
-    color: var(--gray);
-}
-
-.service-card li {
-    color: var(--gray);
-}
-
-.service-card li::marker {
-    color: var(--orange);
-}
-
-.service-number {
-    color: var(--orange);
-}
-
-
-/* ============================================================
-   PROYECTOS
-   ============================================================ */
-
-.proyectos {
-    background: var(--black);
-    color: var(--white);
-}
-
-.project-card {
-    background: var(--black-card);
-    border-color: var(--line);
-}
-
-.project-card h3 {
-    color: var(--white);
-}
-
-.project-card p {
-    color: var(--gray);
-}
-
-.project-card a {
-    color: var(--orange);
-}
-
-.project-card a:hover {
-    color: var(--orange-light);
-}
-
-.project-number {
-    color: var(--gray-dark);
-}
-
-.project-browser {
-    background: #181818;
-}
-
-
-/* ============================================================
-   INTENCIÓN
-   ============================================================ */
-
-.intencion {
-    background: var(--black-soft);
-    color: var(--white);
-}
-
-.intencion h2 {
-    color: var(--white);
-}
-
-.intencion h2 span {
-    color: var(--orange);
-}
-
-.intencion p {
-    color: var(--gray);
-}
-
-
-/* ============================================================
-   PROCESO
-   ============================================================ */
-
-.proceso {
-    background: var(--black);
-    color: var(--white);
-}
-
-.process-step {
-    border-color: var(--line);
-}
-
-.process-step h3 {
-    color: var(--white);
-}
-
-.process-step p {
-    color: var(--gray);
-}
-
-.process-step .number,
-.process-step > span {
-    color: var(--orange);
-}
-
-
-/* ============================================================
-   POR QUÉ PULSO
-   ============================================================ */
-
-.porque {
-    background: var(--black-soft);
-    color: var(--white);
-}
-
-.why-card {
-    background: var(--black-card);
-    border-color: var(--line);
-}
-
-.why-card h3 {
-    color: var(--white);
-}
-
-.why-card p {
-    color: var(--gray);
-}
-
-.why-card .number,
-.why-number {
-    color: var(--orange);
-}
-
-
-/* ============================================================
-   CTA
-   ============================================================ */
-
-.cta {
-    background: #111111;
-    color: var(--white);
-}
-
-.cta h2 {
-    color: var(--white);
-}
-
-.cta h2 span {
-    color: var(--orange);
-}
-
-.cta p {
-    color: var(--gray);
-}
-
-
-/* ============================================================
-   BOTONES
-   ============================================================ */
-
-.btn {
-    color: var(--white);
-}
-
-.btn-primary {
-    background: var(--orange);
-    color: #ffffff;
-}
-
-.btn-primary:hover {
-    background: var(--orange-light);
-    color: #ffffff;
-}
-
-.btn-secondary {
-    background: transparent;
-    color: var(--white);
-    border-color: rgba(255, 255, 255, 0.25);
-}
-
-.btn-secondary:hover {
-    color: var(--white);
-    border-color: var(--orange);
-    background: rgba(255, 106, 0, 0.06);
-}
-
-
-/* ============================================================
-   FORMULARIO
-   ============================================================ */
-
-.formulario {
-    background: var(--black);
-    color: var(--white);
-}
-
-.project-form {
-    color: var(--white);
-}
-
-.form-group label {
-    color: var(--white);
-}
-
-.form-group small {
-    color: var(--gray-dark);
-}
-
-.project-form input,
-.project-form textarea,
-.project-form select {
-    background: #111111;
-    color: var(--white);
-    border-color: rgba(255, 255, 255, 0.16);
-}
-
-.project-form input::placeholder,
-.project-form textarea::placeholder {
-    color: #777777;
-}
-
-.project-form input:focus,
-.project-form textarea:focus,
-.project-form select:focus {
-    color: var(--white);
-    border-color: var(--orange);
-    background: #141414;
-    outline: none;
-}
-
-.form-options label {
-    color: var(--gray);
-}
-
-.form-options label:hover {
-    color: var(--white);
-}
-
-.form-submit {
-    color: #ffffff;
-}
-
-.form-status {
-    color: var(--gray);
-}
-
-
-/* ============================================================
-   CONTACTO
-   ============================================================ */
-
-.contacto {
-    background: var(--black-soft);
-    color: var(--white);
-}
-
-.contact-info {
-    color: var(--white);
-}
-
-.contact-item {
-    border-color: var(--line);
-}
-
-.contact-item span {
-    color: var(--orange);
-}
-
-.contact-item strong {
-    color: var(--white);
-}
-
-.contact-item p {
-    color: var(--gray);
-}
-
-.contact-item a {
-    color: var(--white);
-}
-
-.contact-item a:hover {
-    color: var(--orange);
-}
-
-
-/* ============================================================
-   AYUDA
-   ============================================================ */
-
-.ayuda {
-    background: var(--black);
-    color: var(--white);
-}
-
-.help-card {
-    background: var(--black-card);
-    border-color: var(--line);
-}
-
-.help-card h3 {
-    color: var(--white);
-}
-
-.help-card p {
-    color: var(--gray);
-}
-
-.help-card a {
-    color: var(--orange);
-}
-
-.help-number {
-    color: var(--orange);
-}
-
-.help-contact-card {
-    background: #111111;
-    color: var(--white);
-}
-
-.help-contact-card p {
-    color: var(--gray);
-}
-
-
-/* ============================================================
-   BRAND CLOSING
-   ============================================================ */
-
-.brand-closing {
-    background: var(--black);
-    color: var(--white);
-}
-
-.brand-closing p {
-    color: var(--gray);
-}
-
-.brand-closing-line {
-    background: var(--orange);
-}
-
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-
-.footer {
-    background: #050505;
-    color: var(--white);
-}
-
-.footer-brand p {
-    color: var(--gray);
-}
-
-.footer-links h4 {
-    color: var(--white);
-}
-
-.footer-links a {
-    color: var(--gray);
-}
-
-.footer-links a:hover {
-    color: var(--orange);
-}
-
-.footer-bottom {
-    color: var(--gray-dark);
-    border-color: var(--line);
-}
-
-.footer-bottom a {
-    color: var(--gray);
-}
-
-.footer-bottom a:hover {
-    color: var(--orange);
-}
-
-
-/* ============================================================
-   PULSI
-   ============================================================ */
-
-.pulsi-chat {
-    background: #101010;
-    color: var(--white);
-    border-color: rgba(255, 255, 255, 0.14);
-}
-
-.pulsi-header {
-    background: #151515;
-    color: var(--white);
-}
-
-.pulsi-header strong {
-    color: var(--white);
-}
-
-.pulsi-header span {
-    color: var(--gray);
-}
-
-.pulsi-message p {
-    color: inherit;
-}
-
-.pulsi-message-ai {
-    background: #181818;
-    color: var(--white);
-}
-
-.pulsi-message-ai p {
-    color: var(--white-soft);
-}
-
-.pulsi-message-user {
-    background: var(--orange);
-    color: #ffffff;
-}
-
-.pulsi-message-user p {
-    color: #ffffff;
-}
-
-.pulsi-quick button {
-    background: transparent;
-    color: var(--gray);
-    border-color: rgba(255, 255, 255, 0.16);
-}
-
-.pulsi-quick button:hover {
-    color: var(--white);
-    border-color: var(--orange);
-}
-
-.pulsi-form input {
-    background: #151515;
-    color: var(--white);
-    border-color: rgba(255, 255, 255, 0.16);
-}
-
-.pulsi-form input::placeholder {
-    color: #777777;
-}
-
-.pulsi-form input:focus {
-    border-color: var(--orange);
-}
-
-.pulsi-form button {
-    background: var(--orange);
-    color: #ffffff;
-}
-
-
-/* ============================================================
-   VISTAS
-   ============================================================ */
-
-.view {
-    color: var(--white);
-}
-
-.view .section-heading {
-    color: var(--white);
-}
-
-.view .section-label {
-    color: var(--orange);
-}
-
-.view .section-title {
-    color: var(--white);
-}
-
-
-/* ============================================================
-   SELECCIÓN
-   ============================================================ */
-
-::selection {
-    background: var(--orange);
-    color: #ffffff;
-}
-
-
-/* ============================================================
-   ACCESIBILIDAD
-   ============================================================ */
-
-:focus-visible {
-    outline: 2px solid var(--orange);
-    outline-offset: 4px;
-}

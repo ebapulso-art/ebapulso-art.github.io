@@ -5,12 +5,10 @@
    ANIMACIÓN DEL LOGO:
    ECG → pulsaciones variables → convergencia
    → EBA → PULSO → glow → retracción → ECG
-============================================================ */
+   ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
-
     "use strict";
-
 
     /* =========================================================
        CONFIGURACIÓN GENERAL
@@ -34,17 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
        NAVBAR
        ========================================================= */
 
-    const menuToggle =
-        document.querySelector("#menu-toggle");
-
-    const navMenu =
-        document.querySelector("#nav-menu");
-
-    const navbar =
-        document.querySelector(".navbar");
-
-    const navMenuClose =
-        document.querySelector("#nav-menu-close");
+    const menuToggle = document.querySelector("#menu-toggle");
+    const navMenu = document.querySelector("#nav-menu");
+    const navbar = document.querySelector(".navbar");
+    const navMenuClose = document.querySelector("#nav-menu-close");
 
 
     /* =========================================================
@@ -52,30 +43,22 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================= */
 
     function cerrarMenu() {
-
         if (navMenu) {
-
             navMenu.classList.remove("is-open");
             navMenu.classList.remove("active");
             navMenu.classList.remove("activo");
-
         }
 
         if (menuToggle) {
-
             menuToggle.classList.remove("active");
 
             menuToggle.setAttribute(
                 "aria-expanded",
                 "false"
             );
-
         }
 
-        document.body.classList.remove(
-            "menu-abierto"
-        );
-
+        document.body.classList.remove("menu-abierto");
     }
 
 
@@ -84,28 +67,20 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================= */
 
     function abrirMenu() {
-
         if (navMenu) {
-
             navMenu.classList.add("is-open");
-
         }
 
         if (menuToggle) {
-
             menuToggle.classList.add("active");
 
             menuToggle.setAttribute(
                 "aria-expanded",
                 "true"
             );
-
         }
 
-        document.body.classList.add(
-            "menu-abierto"
-        );
-
+        document.body.classList.add("menu-abierto");
     }
 
 
@@ -114,12 +89,10 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================= */
 
     if (navMenuClose) {
-
         navMenuClose.addEventListener(
             "click",
             cerrarMenu
         );
-
     }
 
 
@@ -128,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================= */
 
     if (menuToggle) {
-
         menuToggle.setAttribute(
             "aria-expanded",
             "false"
@@ -137,25 +109,18 @@ document.addEventListener("DOMContentLoaded", () => {
         menuToggle.addEventListener(
             "click",
             (event) => {
-
                 event.stopPropagation();
 
                 if (
                     navMenu &&
                     navMenu.classList.contains("is-open")
                 ) {
-
                     cerrarMenu();
-
                 } else {
-
                     abrirMenu();
-
                 }
-
             }
         );
-
     }
 
 
@@ -169,30 +134,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const vistasPorNombre = {};
 
-
-    /*
-     * Guardamos todas las vistas agrupadas
-     * por su data-view.
-     */
-
     vistas.forEach((vista) => {
-
-        const nombre =
-            vista.dataset.view;
+        const nombre = vista.dataset.view;
 
         if (!vistasPorNombre[nombre]) {
-
             vistasPorNombre[nombre] = [];
-
         }
 
         vistasPorNombre[nombre].push(vista);
-
     });
 
-
-    let vistaActual =
-        null;
+    let vistaActual = null;
 
 
     /* =========================================================
@@ -203,142 +155,61 @@ document.addEventListener("DOMContentLoaded", () => {
         nombreVista,
         actualizarURL = true
     ) {
-
-        const grupo =
-            vistasPorNombre[nombreVista];
+        const grupo = vistasPorNombre[nombreVista];
 
         if (
             !grupo ||
             grupo.length === 0
         ) {
-
             return;
-
         }
 
-
-        /*
-         * Si ya estamos en esta vista,
-         * no hacemos la animación nuevamente.
-         */
-
-        if (
-            vistaActual === nombreVista
-        ) {
-
+        if (vistaActual === nombreVista) {
             window.scrollTo({
-
                 top: 0,
-
-                behavior:
-                    reduceMotion
-                        ? "auto"
-                        : "smooth"
-
+                behavior: reduceMotion ? "auto" : "smooth"
             });
 
             return;
-
         }
 
-
-        /*
-         * Quitamos la vista activa anterior.
-         */
-
         vistas.forEach((vista) => {
-
             vista.classList.remove(
                 "view-active",
                 "view-entering"
             );
-
         });
-
-
-        /*
-         * Activamos todas las secciones
-         * que pertenecen a la nueva vista.
-         */
 
         grupo.forEach((vista) => {
-
-            vista.classList.add(
-                "view-active"
-            );
-
+            vista.classList.add("view-active");
         });
-
-
-        /*
-         * Forzamos un pequeño cambio
-         * para permitir la animación CSS.
-         */
 
         requestAnimationFrame(() => {
-
             grupo.forEach((vista) => {
-
-                vista.classList.add(
-                    "view-entering"
-                );
-
+                vista.classList.add("view-entering");
             });
-
         });
 
-
-        vistaActual =
-            nombreVista;
-
-
-        /*
-         * Volvemos arriba de la nueva vista.
-         */
+        vistaActual = nombreVista;
 
         window.scrollTo({
-
             top: 0,
-
-            behavior:
-                reduceMotion
-                    ? "auto"
-                    : "smooth"
-
+            behavior: reduceMotion ? "auto" : "smooth"
         });
 
-
-        /*
-         * Actualizamos el hash.
-         */
-
         if (actualizarURL) {
+            const nuevoHash = `#${nombreVista}`;
 
-            const nuevoHash =
-                `#${nombreVista}`;
-
-            if (
-                window.location.hash !==
-                nuevoHash
-            ) {
-
+            if (window.location.hash !== nuevoHash) {
                 history.pushState(
-
                     {
-                        vista:
-                            nombreVista
+                        vista: nombreVista
                     },
-
                     "",
-
                     nuevoHash
-
                 );
-
             }
-
         }
-
     }
 
 
@@ -347,60 +218,24 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================= */
 
     function obtenerVistaDesdeURL() {
-
-        const hash =
-            window.location.hash
-                .replace(
-                    "#",
-                    ""
-                )
-                .trim()
-                .toLowerCase();
-
-
-        /*
-         * Si no hay hash,
-         * mostramos Inicio.
-         */
+        const hash = window.location.hash
+            .replace("#", "")
+            .trim()
+            .toLowerCase();
 
         if (!hash) {
-
             return "inicio";
-
         }
 
-
-        /*
-         * Pulsi no es una vista.
-         * Es un asistente flotante.
-         */
-
-        if (
-            hash ===
-            "pulsi-container"
-        ) {
-
+        if (hash === "pulsi-container") {
             return "inicio";
-
         }
 
-
-        /*
-         * Si el hash existe como vista,
-         * lo utilizamos.
-         */
-
-        if (
-            vistasPorNombre[hash]
-        ) {
-
+        if (vistasPorNombre[hash]) {
             return hash;
-
         }
-
 
         return "inicio";
-
     }
 
 
@@ -408,8 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
        INICIALIZAR VISTA
        ========================================================= */
 
-    const vistaInicial =
-        obtenerVistaDesdeURL();
+    const vistaInicial = obtenerVistaDesdeURL();
 
     cambiarVista(
         vistaInicial,
@@ -418,47 +252,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       BOTÓN ATRÁS / ADELANTE DEL NAVEGADOR
+       BOTÓN ATRÁS / ADELANTE
        ========================================================= */
 
     window.addEventListener(
         "popstate",
         () => {
-
-            const vista =
-                obtenerVistaDesdeURL();
+            const vista = obtenerVistaDesdeURL();
 
             cambiarVista(
                 vista,
                 false
             );
-
         }
     );
 
 
     /* =========================================================
-       CAMBIAR VISTA CUANDO CAMBIA EL HASH
+       CAMBIO DE HASH
        ========================================================= */
 
     window.addEventListener(
         "hashchange",
         () => {
+            const vista = obtenerVistaDesdeURL();
 
-            const vista =
-                obtenerVistaDesdeURL();
-
-            if (
-                vista !== vistaActual
-            ) {
-
+            if (vista !== vistaActual) {
                 cambiarVista(
                     vista,
                     false
                 );
-
             }
-
         }
     );
 
@@ -470,94 +294,50 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(
         'a[href^="#"]'
     ).forEach((link) => {
-
         link.addEventListener(
             "click",
             (event) => {
-
-                const id =
-                    link.getAttribute("href");
+                const id = link.getAttribute("href");
 
                 if (
                     !id ||
                     id === "#"
                 ) {
-
                     return;
-
                 }
-
 
                 /* =================================================
                    PULSI
                    ================================================= */
 
-                if (
-                    id === "#pulsi-container"
-                ) {
-
+                if (id === "#pulsi-container") {
                     event.preventDefault();
 
                     cerrarMenu();
-
                     abrirPulsi();
 
                     return;
-
                 }
 
+                const nombreVista = id
+                    .replace("#", "")
+                    .trim()
+                    .toLowerCase();
 
-                /*
-                 * Quitamos el #.
-                 */
-
-                const nombreVista =
-                    id
-                        .replace("#", "")
-                        .trim()
-                        .toLowerCase();
-
-
-                /*
-                 * Comprobamos si realmente
-                 * existe una vista con ese nombre.
-                 */
-
-                if (
-                    !vistasPorNombre[nombreVista]
-                ) {
-
+                if (!vistasPorNombre[nombreVista]) {
                     return;
-
                 }
-
-
-                /*
-                 * Evitamos el scroll tradicional.
-                 */
 
                 event.preventDefault();
 
-
-                /*
-                 * Cerramos el menú.
-                 */
-
                 cerrarMenu();
-
-
-                /*
-                 * Cambiamos de vista.
-                 */
 
                 cambiarVista(
                     nombreVista,
                     true
                 );
-
             }
         );
-
     });
 
 
@@ -568,22 +348,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener(
         "click",
         (event) => {
-
             if (
                 !navMenu ||
                 !navMenu.classList.contains("is-open")
             ) {
-
                 return;
-
             }
 
-
-            const dentroMenu =
-                navMenu.contains(
-                    event.target
-                );
-
+            const dentroMenu = navMenu.contains(
+                event.target
+            );
 
             const dentroBoton =
                 menuToggle &&
@@ -591,16 +365,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     event.target
                 );
 
-
             if (
                 !dentroMenu &&
                 !dentroBoton
             ) {
-
                 cerrarMenu();
-
             }
-
         }
     );
 
@@ -612,15 +382,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener(
         "keydown",
         (event) => {
-
-            if (
-                event.key === "Escape"
-            ) {
-
+            if (event.key === "Escape") {
                 cerrarMenu();
-
             }
-
         }
     );
 
@@ -630,20 +394,15 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================= */
 
     function actualizarNavbar() {
-
         if (!navbar) {
-
             return;
-
         }
 
         navbar.classList.toggle(
             "scrolled",
             window.scrollY > 35
         );
-
     }
-
 
     window.addEventListener(
         "scroll",
@@ -652,7 +411,6 @@ document.addEventListener("DOMContentLoaded", () => {
             passive: true
         }
     );
-
 
     actualizarNavbar();
 
@@ -674,74 +432,45 @@ document.addEventListener("DOMContentLoaded", () => {
             ].join(",")
         );
 
-
     if (
         "IntersectionObserver" in window &&
         !reduceMotion
     ) {
-
         const observer =
             new IntersectionObserver(
-
                 (entries, obs) => {
-
-                    entries.forEach(
-                        (entry) => {
-
-                            if (
-                                !entry.isIntersecting
-                            ) {
-
-                                return;
-
-                            }
-
-                            entry.target.classList.add(
-                                "visible"
-                            );
-
-                            obs.unobserve(
-                                entry.target
-                            );
-
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting) {
+                            return;
                         }
-                    );
 
+                        entry.target.classList.add(
+                            "visible"
+                        );
+
+                        obs.unobserve(
+                            entry.target
+                        );
+                    });
                 },
-
                 {
                     threshold: 0.12,
-
                     rootMargin:
                         "0px 0px -30px 0px"
                 }
-
             );
 
-
         elementosAnimados.forEach(
             (elemento) => {
-
-                observer.observe(
-                    elemento
-                );
-
+                observer.observe(elemento);
             }
         );
-
-
     } else {
-
         elementosAnimados.forEach(
             (elemento) => {
-
-                elemento.classList.add(
-                    "visible"
-                );
-
+                elemento.classList.add("visible");
             }
         );
-
     }
 
 
@@ -770,67 +499,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
        ========================================================= */
 
-
     const canvas =
         document.querySelector(
             "#pulsoLogoCanvas"
         );
 
-
     if (canvas) {
-
-        const ctx =
-            canvas.getContext("2d");
-
+        const ctx = canvas.getContext("2d");
 
         if (ctx) {
-
 
             /* =================================================
                COLORES
                ================================================= */
 
-            const NARANJA =
-                "#ff6a00";
-
-            const NARANJA_SUAVE =
-                "#ff8533";
-
-            const BLANCO =
-                "#ffffff";
-
-            const PLATA =
-                "#c6cbd0";
+            const NARANJA = "#ff6a00";
+            const NARANJA_SUAVE = "#ff8533";
+            const BLANCO = "#ffffff";
+            const PLATA = "#c6cbd0";
 
 
             /* =================================================
                ESPACIO LÓGICO
                ================================================= */
 
-            const W =
-                1800;
+            const W = 1800;
+            const H = 420;
+            const CX = 900;
+            const CY = 210;
 
-            const H =
-                420;
-
-            const CX =
-                900;
-
-            const CY =
-                210;
-
-
-            let dpr =
-                1;
-
-            let scale =
-                1;
-
-            let offsetX =
-                0;
-
-            let offsetY =
-                0;
+            let dpr = 1;
+            let scale = 1;
+            let offsetX = 0;
+            let offsetY = 0;
 
 
             /* =================================================
@@ -838,53 +539,39 @@ document.addEventListener("DOMContentLoaded", () => {
                ================================================= */
 
             function ajustarCanvas() {
-
                 const rect =
                     canvas.getBoundingClientRect();
 
+                dpr = Math.min(
+                    window.devicePixelRatio || 1,
+                    2
+                );
 
-                dpr =
-                    Math.min(
-                        window.devicePixelRatio || 1,
-                        2
-                    );
+                canvas.width = Math.max(
+                    1,
+                    Math.round(
+                        rect.width * dpr
+                    )
+                );
 
+                canvas.height = Math.max(
+                    1,
+                    Math.round(
+                        rect.height * dpr
+                    )
+                );
 
-                canvas.width =
-                    Math.max(
-                        1,
-                        Math.round(
-                            rect.width * dpr
-                        )
-                    );
-
-
-                canvas.height =
-                    Math.max(
-                        1,
-                        Math.round(
-                            rect.height * dpr
-                        )
-                    );
-
-
-                scale =
-                    Math.min(
-                        rect.width / W,
-                        rect.height / H
-                    );
-
+                scale = Math.min(
+                    rect.width / W,
+                    rect.height / H
+                );
 
                 if (
                     !Number.isFinite(scale) ||
                     scale <= 0
                 ) {
-
-                    scale =
-                        1;
-
+                    scale = 1;
                 }
-
 
                 offsetX =
                     (
@@ -892,18 +579,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         W * scale
                     ) / 2;
 
-
                 offsetY =
                     (
                         rect.height -
                         H * scale
                     ) / 2;
-
             }
 
-
             ajustarCanvas();
-
 
             window.addEventListener(
                 "resize",
@@ -919,7 +602,6 @@ document.addEventListener("DOMContentLoaded", () => {
                ================================================= */
 
             function clamp(v) {
-
                 return Math.max(
                     0,
                     Math.min(
@@ -927,7 +609,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         v
                     )
                 );
-
             }
 
 
@@ -936,59 +617,45 @@ document.addEventListener("DOMContentLoaded", () => {
                 b,
                 t
             ) {
-
                 return (
                     a +
                     (b - a) * t
                 );
-
             }
 
 
             function easeInOut(t) {
-
-                t =
-                    clamp(t);
+                t = clamp(t);
 
                 return (
                     t < 0.5
-
                         ? 2 * t * t
-
                         : 1 -
                           Math.pow(
                               -2 * t + 2,
                               2
                           ) / 2
                 );
-
             }
 
 
             function easeInOutCubic(t) {
-
-                t =
-                    clamp(t);
+                t = clamp(t);
 
                 return (
                     t < 0.5
-
                         ? 4 * t * t * t
-
                         : 1 -
                           Math.pow(
                               -2 * t + 2,
                               3
                           ) / 2
                 );
-
             }
 
 
             function smoothstep(t) {
-
-                t =
-                    clamp(t);
+                t = clamp(t);
 
                 return (
                     t *
@@ -998,7 +665,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         2 * t
                     )
                 );
-
             }
 
 
@@ -1006,12 +672,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 x,
                 y
             ) {
-
                 return {
                     x,
                     y
                 };
-
             }
 
 
@@ -1020,56 +684,42 @@ document.addEventListener("DOMContentLoaded", () => {
                ================================================= */
 
             const tiposPulso = [
-
                 {
                     ancho: 82,
                     alto: 32
                 },
-
                 {
                     ancho: 96,
                     alto: 46
                 },
-
                 {
                     ancho: 112,
                     alto: 65
                 },
-
                 {
                     ancho: 128,
                     alto: 88
                 },
-
                 {
                     ancho: 145,
                     alto: 112
                 },
-
                 {
                     ancho: 104,
                     alto: 76
                 },
-
                 {
                     ancho: 138,
                     alto: 58
                 }
-
             ];
 
 
             function crearECG() {
+                const ruta = [];
 
-                const ruta =
-                    [];
-
-                let x =
-                    -900;
-
-                let semilla =
-                    0;
-
+                let x = -900;
+                let semilla = 0;
 
                 ruta.push(
                     punto(
@@ -1078,21 +728,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     )
                 );
 
-
                 while (
                     x <
                     W + 1200
                 ) {
-
                     const tipo =
                         tiposPulso[
                             semilla %
                             tiposPulso.length
                         ];
 
-
                     semilla++;
-
 
                     const variacionAltura =
                         0.90 +
@@ -1105,7 +751,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         ) /
                         100;
 
-
                     const descanso =
                         115 +
                         (
@@ -1116,19 +761,14 @@ document.addEventListener("DOMContentLoaded", () => {
                             55
                         );
 
-
-                    x +=
-                        descanso;
-
+                    x += descanso;
 
                     const ancho =
                         tipo.ancho;
 
-
                     const alto =
                         tipo.alto *
                         variacionAltura;
-
 
                     ruta.push(
                         punto(
@@ -1136,7 +776,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             CY
                         )
                     );
-
 
                     ruta.push(
                         punto(
@@ -1146,7 +785,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         )
                     );
 
-
                     ruta.push(
                         punto(
                             x +
@@ -1155,7 +793,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             alto
                         )
                     );
-
 
                     ruta.push(
                         punto(
@@ -1174,7 +811,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         )
                     );
 
-
                     ruta.push(
                         punto(
                             x +
@@ -1182,7 +818,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             CY
                         )
                     );
-
 
                     ruta.push(
                         punto(
@@ -1192,12 +827,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         )
                     );
 
-
-                    x +=
-                        ancho;
-
+                    x += ancho;
                 }
-
 
                 ruta.push(
                     punto(
@@ -1206,14 +837,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     )
                 );
 
-
                 return ruta;
-
             }
 
 
-            const ecg =
-                crearECG();
+            const ecg = crearECG();
 
 
             /* =================================================
@@ -1224,28 +852,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 ruta,
                 progreso
             ) {
-
                 if (
                     !ruta ||
                     ruta.length < 2
                 ) {
-
                     return punto(
                         CX,
                         CY
                     );
-
                 }
-
 
                 const total =
                     ruta.length - 1;
 
-
                 const posicion =
                     clamp(progreso) *
                     total;
-
 
                 const indice =
                     Math.min(
@@ -1253,38 +875,30 @@ document.addEventListener("DOMContentLoaded", () => {
                         total - 1
                     );
 
-
                 const t =
                     posicion -
                     indice;
 
-
                 const a =
                     ruta[indice];
-
 
                 const b =
                     ruta[
                         indice + 1
                     ];
 
-
                 return punto(
-
                     lerp(
                         a.x,
                         b.x,
                         t
                     ),
-
                     lerp(
                         a.y,
                         b.y,
                         t
                     )
-
                 );
-
             }
 
 
@@ -1296,17 +910,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 ruta,
                 cantidad
             ) {
-
-                const resultado =
-                    [];
-
+                const resultado = [];
 
                 for (
                     let i = 0;
                     i < cantidad;
                     i++
                 ) {
-
                     const progreso =
                         cantidad === 1
                             ? 0
@@ -1315,19 +925,15 @@ document.addEventListener("DOMContentLoaded", () => {
                                   cantidad - 1
                               );
 
-
                     resultado.push(
                         obtenerPunto(
                             ruta,
                             progreso
                         )
                     );
-
                 }
 
-
                 return resultado;
-
             }
 
 
@@ -1336,10 +942,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 destino,
                 t
             ) {
-
-                const resultado =
-                    [];
-
+                const resultado = [];
 
                 const cantidad =
                     Math.min(
@@ -1347,38 +950,28 @@ document.addEventListener("DOMContentLoaded", () => {
                         destino.length
                     );
 
-
                 for (
                     let i = 0;
                     i < cantidad;
                     i++
                 ) {
-
                     resultado.push(
-
                         punto(
-
                             lerp(
                                 origen[i].x,
                                 destino[i].x,
                                 t
                             ),
-
                             lerp(
                                 origen[i].y,
                                 destino[i].y,
                                 t
                             )
-
                         )
-
                     );
-
                 }
 
-
                 return resultado;
-
             }
 
 
@@ -1387,81 +980,58 @@ document.addEventListener("DOMContentLoaded", () => {
                ================================================= */
 
             const logoSuperior = [
-
                 punto(610, 210),
                 punto(680, 195),
                 punto(735, 168),
                 punto(790, 135),
                 punto(845, 112),
                 punto(900, 104)
-
             ];
 
-
             const logoMedio = [
-
                 punto(610, 210),
                 punto(680, 210),
                 punto(750, 210),
                 punto(820, 210),
                 punto(900, 210)
-
             ];
 
-
             const logoInferior = [
-
                 punto(610, 210),
                 punto(680, 225),
                 punto(735, 252),
                 punto(790, 285),
                 punto(845, 308),
                 punto(900, 316)
-
             ];
 
-
             const logoSuperiorCompleto = [
-
                 ...logoSuperior,
-
                 punto(955, 112),
                 punto(1015, 132),
                 punto(1075, 165),
                 punto(1135, 195),
                 punto(1190, 210)
-
             ];
 
-
             const logoMedioCompleto = [
-
                 ...logoMedio,
-
                 punto(970, 210),
                 punto(1050, 210),
                 punto(1120, 210),
                 punto(1190, 210)
-
             ];
 
-
             const logoInferiorCompleto = [
-
                 ...logoInferior,
-
                 punto(955, 308),
                 punto(1015, 288),
                 punto(1075, 255),
                 punto(1135, 225),
                 punto(1190, 210)
-
             ];
 
-
-            const CANTIDAD_PUNTOS =
-                70;
-
+            const CANTIDAD_PUNTOS = 70;
 
             const logoSuperiorPuntos =
                 muestrearRuta(
@@ -1469,13 +1039,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     CANTIDAD_PUNTOS
                 );
 
-
             const logoMedioPuntos =
                 muestrearRuta(
                     logoMedioCompleto,
                     CANTIDAD_PUNTOS
                 );
-
 
             const logoInferiorPuntos =
                 muestrearRuta(
@@ -1488,19 +1056,11 @@ document.addEventListener("DOMContentLoaded", () => {
                FUENTES DEL MORPH
                ================================================= */
 
-            const FUENTE_INICIO =
-                0.355;
-
-            const FUENTE_FIN =
-                0.645;
-
-
             const fuenteECG =
                 muestrearRuta(
                     ecg,
                     CANTIDAD_PUNTOS
                 );
-
 
             const fuenteSuperior =
                 fuenteECG.map(
@@ -1511,7 +1071,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         )
                 );
 
-
             const fuenteMedio =
                 fuenteECG.map(
                     (p) =>
@@ -1520,7 +1079,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             p.y
                         )
                 );
-
 
             const fuenteInferior =
                 fuenteECG.map(
@@ -1540,17 +1098,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 intensidad = 1,
                 escalaTexto = 1
             ) {
-
                 ctx.save();
 
-
-                ctx.textAlign =
-                    "center";
-
-
-                ctx.textBaseline =
-                    "middle";
-
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
 
                 ctx.font =
                     `800 ${
@@ -1558,23 +1109,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         escalaTexto
                     }px Manrope, DM Sans, sans-serif`;
 
+                ctx.fillStyle = BLANCO;
+                ctx.globalAlpha = intensidad;
 
-                ctx.fillStyle =
-                    BLANCO;
-
-
-                ctx.globalAlpha =
-                    intensidad;
-
-
-                ctx.shadowColor =
-                    NARANJA;
-
-
+                ctx.shadowColor = NARANJA;
                 ctx.shadowBlur =
                     18 *
                     intensidad;
-
 
                 ctx.fillText(
                     "EBA",
@@ -1582,22 +1123,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     192
                 );
 
-
                 ctx.font =
                     `600 ${
                         31 *
                         escalaTexto
                     }px Manrope, DM Sans, sans-serif`;
 
-
                 ctx.fillStyle =
                     NARANJA_SUAVE;
-
 
                 ctx.shadowBlur =
                     10 *
                     intensidad;
-
 
                 ctx.fillText(
                     "PULSO",
@@ -1605,9 +1142,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     260
                 );
 
-
                 ctx.restore();
-
             }
 
 
@@ -1618,15 +1153,11 @@ document.addEventListener("DOMContentLoaded", () => {
             function dibujarGlow(
                 intensidad
             ) {
-
                 if (
                     intensidad <= 0
                 ) {
-
                     return;
-
                 }
-
 
                 const gradiente =
                     ctx.createRadialGradient(
@@ -1638,41 +1169,25 @@ document.addEventListener("DOMContentLoaded", () => {
                         360
                     );
 
-
                 gradiente.addColorStop(
                     0,
-                    `rgba(
-                        255,
-                        106,
-                        0,
-                        ${0.13 * intensidad}
-                    )`
+                    `rgba(255,106,0,${0.13 * intensidad})`
                 );
-
 
                 gradiente.addColorStop(
                     0.45,
-                    `rgba(
-                        255,
-                        106,
-                        0,
-                        ${0.045 * intensidad}
-                    )`
+                    `rgba(255,106,0,${0.045 * intensidad})`
                 );
-
 
                 gradiente.addColorStop(
                     1,
                     "rgba(255,106,0,0)"
                 );
 
-
                 ctx.save();
-
 
                 ctx.fillStyle =
                     gradiente;
-
 
                 ctx.fillRect(
                     250,
@@ -1681,9 +1196,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     H
                 );
 
-
                 ctx.restore();
-
             }
 
 
@@ -1698,81 +1211,59 @@ document.addEventListener("DOMContentLoaded", () => {
                 alpha,
                 glow
             ) {
-
                 if (
                     !ruta ||
                     ruta.length < 2
                 ) {
-
                     return;
-
                 }
 
-
                 ctx.save();
-
 
                 ctx.globalAlpha =
                     alpha;
 
-
                 ctx.strokeStyle =
                     color;
-
 
                 ctx.lineWidth =
                     grosor;
 
-
                 ctx.lineCap =
                     "round";
-
 
                 ctx.lineJoin =
                     "round";
 
-
-                if (
-                    glow > 0
-                ) {
-
+                if (glow > 0) {
                     ctx.shadowColor =
                         color;
 
                     ctx.shadowBlur =
                         glow;
-
                 }
 
-
                 ctx.beginPath();
-
 
                 ctx.moveTo(
                     ruta[0].x,
                     ruta[0].y
                 );
 
-
                 for (
                     let i = 1;
                     i < ruta.length;
                     i++
                 ) {
-
                     ctx.lineTo(
                         ruta[i].x,
                         ruta[i].y
                     );
-
                 }
-
 
                 ctx.stroke();
 
-
                 ctx.restore();
-
             }
 
 
@@ -1783,161 +1274,82 @@ document.addEventListener("DOMContentLoaded", () => {
             const VELOCIDAD_ECG =
                 0.000055;
 
-
             function dibujarECG(
                 tiempo,
                 alpha = 1
             ) {
-
                 const progreso =
                     (
                         tiempo *
                         VELOCIDAD_ECG
                     ) % 1;
 
-
                 const desplazamiento =
                     progreso *
                     900;
 
-
-                ctx.save();
-
-
-                ctx.translate(
-                    -desplazamiento,
-                    0
-                );
-
-
-                ctx.beginPath();
-
-
-                ctx.moveTo(
-                    ecg[0].x,
-                    ecg[0].y
-                );
-
-
-                for (
-                    let i = 1;
-                    i < ecg.length;
-                    i++
+                function dibujarCopia(
+                    desplazamientoX
                 ) {
+                    ctx.save();
 
-                    ctx.lineTo(
-                        ecg[i].x,
-                        ecg[i].y
+                    ctx.translate(
+                        desplazamientoX,
+                        0
                     );
 
+                    ctx.beginPath();
+
+                    ctx.moveTo(
+                        ecg[0].x,
+                        ecg[0].y
+                    );
+
+                    for (
+                        let i = 1;
+                        i < ecg.length;
+                        i++
+                    ) {
+                        ctx.lineTo(
+                            ecg[i].x,
+                            ecg[i].y
+                        );
+                    }
+
+                    ctx.strokeStyle =
+                        NARANJA;
+
+                    ctx.lineWidth =
+                        2.7;
+
+                    ctx.lineCap =
+                        "round";
+
+                    ctx.lineJoin =
+                        "round";
+
+                    ctx.globalAlpha =
+                        alpha;
+
+                    ctx.shadowColor =
+                        NARANJA;
+
+                    ctx.shadowBlur =
+                        7;
+
+                    ctx.stroke();
+
+                    ctx.restore();
                 }
 
+                dibujarCopia(
+                    -desplazamiento
+                );
 
-                ctx.strokeStyle =
-                    NARANJA;
-
-
-                ctx.lineWidth =
-                    2.7;
-
-
-                ctx.lineCap =
-                    "round";
-
-
-                ctx.lineJoin =
-                    "round";
-
-
-                ctx.globalAlpha =
-                    alpha;
-
-
-                ctx.shadowColor =
-                    NARANJA;
-
-
-                ctx.shadowBlur =
-                    7;
-
-
-                ctx.stroke();
-
-
-                ctx.restore();
-
-
-                /*
-                 * Segunda copia para mantener
-                 * continuidad visual.
-                 */
-
-                ctx.save();
-
-
-                ctx.translate(
+                dibujarCopia(
                     900 -
-                    desplazamiento,
-                    0
+                    desplazamiento
                 );
-
-
-                ctx.beginPath();
-
-
-                ctx.moveTo(
-                    ecg[0].x,
-                    ecg[0].y
-                );
-
-
-                for (
-                    let i = 1;
-                    i < ecg.length;
-                    i++
-                ) {
-
-                    ctx.lineTo(
-                        ecg[i].x,
-                        ecg[i].y
-                    );
-
-                }
-
-
-                ctx.strokeStyle =
-                    NARANJA;
-
-
-                ctx.lineWidth =
-                    2.7;
-
-
-                ctx.lineCap =
-                    "round";
-
-
-                ctx.lineJoin =
-                    "round";
-
-
-                ctx.globalAlpha =
-                    alpha;
-
-
-                ctx.shadowColor =
-                    NARANJA;
-
-
-                ctx.shadowBlur =
-                    7;
-
-
-                ctx.stroke();
-
-
-                ctx.restore();
-
             }
 
 
@@ -1949,13 +1361,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 tiempo,
                 intensidad
             ) {
-
                 const progreso =
                     (
                         tiempo *
                         VELOCIDAD_ECG
                     ) % 1;
-
 
                 const p =
                     obtenerPunto(
@@ -1963,16 +1373,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         progreso
                     );
 
-
                 const desplazamiento =
                     progreso *
                     900;
 
-
                 const x =
                     p.x -
                     desplazamiento;
-
 
                 const respiracion =
                     (
@@ -1982,23 +1389,18 @@ document.addEventListener("DOMContentLoaded", () => {
                         ) + 1
                     ) / 2;
 
-
                 ctx.save();
-
 
                 ctx.fillStyle =
                     NARANJA_SUAVE;
 
-
                 ctx.shadowColor =
                     NARANJA_SUAVE;
-
 
                 ctx.shadowBlur =
                     18 +
                     respiracion *
                     10;
-
 
                 ctx.globalAlpha =
                     intensidad *
@@ -2008,9 +1410,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         0.35
                     );
 
-
                 ctx.beginPath();
-
 
                 ctx.arc(
                     x,
@@ -2021,12 +1421,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     Math.PI * 2
                 );
 
-
                 ctx.fill();
 
-
                 ctx.restore();
-
             }
 
 
@@ -2037,10 +1434,8 @@ document.addEventListener("DOMContentLoaded", () => {
             function dibujarMorph(
                 tiempo
             ) {
-
                 const PERIODO =
                     12000;
-
 
                 const progresoLoop =
                     (
@@ -2048,7 +1443,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         PERIODO
                     ) /
                     PERIODO;
-
 
                 const onda =
                     (
@@ -2060,18 +1454,15 @@ document.addEventListener("DOMContentLoaded", () => {
                         ) + 1
                     ) / 2;
 
-
                 const morphBase =
                     easeInOutCubic(
                         onda
                     );
 
-
                 const morph =
                     morphBase > 0.82
                         ? 0.98
                         : morphBase;
-
 
                 const logoIntensidad =
                     Math.pow(
@@ -2079,14 +1470,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         0.72
                     );
 
-
                 const alphaECG =
                     lerp(
                         1,
                         0.18,
                         logoIntensidad
                     );
-
 
                 dibujarECG(
                     tiempo,
@@ -2109,11 +1498,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         logoIntensidad
                     );
 
-
                 function moverFuente(
                     fuente
                 ) {
-
                     return fuente.map(
                         (p) =>
                             punto(
@@ -2122,27 +1509,22 @@ document.addEventListener("DOMContentLoaded", () => {
                                 p.y
                             )
                     );
-
                 }
-
 
                 const fuenteA =
                     moverFuente(
                         fuenteSuperior
                     );
 
-
                 const fuenteB =
                     moverFuente(
                         fuenteMedio
                     );
 
-
                 const fuenteC =
                     moverFuente(
                         fuenteInferior
                     );
-
 
                 const recorridoSuperior =
                     interpolarPuntos(
@@ -2151,14 +1533,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         morph
                     );
 
-
                 const recorridoMedio =
                     interpolarPuntos(
                         fuenteB,
                         logoMedioPuntos,
                         morph
                     );
-
 
                 const recorridoInferior =
                     interpolarPuntos(
@@ -2253,7 +1633,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         1.25
                     );
 
-
                 dibujarGlow(
                     glow *
                     (
@@ -2280,7 +1659,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         0.34
                     );
 
-
                 const textoSalida =
                     1 -
                     smoothstep(
@@ -2291,14 +1669,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         0.08
                     );
 
-
                 const intensidadTexto =
                     textoEntrada *
                     Math.max(
                         0,
                         textoSalida
                     );
-
 
                 const respiracion =
                     (
@@ -2308,12 +1684,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         ) + 1
                     ) / 2;
 
-
                 if (
                     intensidadTexto >
                     0.001
                 ) {
-
                     dibujarTexto(
                         intensidadTexto *
                         (
@@ -2321,12 +1695,10 @@ document.addEventListener("DOMContentLoaded", () => {
                             respiracion *
                             0.08
                         ),
-
                         0.92 +
                         intensidadTexto *
                         0.08
                     );
-
                 }
 
 
@@ -2338,7 +1710,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     logoIntensidad >
                     0.05
                 ) {
-
                     const pulso =
                         (
                             Math.sin(
@@ -2347,31 +1718,24 @@ document.addEventListener("DOMContentLoaded", () => {
                             ) + 1
                         ) / 2;
 
-
                     ctx.save();
-
 
                     ctx.fillStyle =
                         NARANJA_SUAVE;
 
-
                     ctx.shadowColor =
                         NARANJA;
-
 
                     ctx.shadowBlur =
                         18 +
                         pulso *
                         18;
 
-
                     ctx.globalAlpha =
                         logoIntensidad *
                         0.72;
 
-
                     ctx.beginPath();
-
 
                     ctx.arc(
                         CX,
@@ -2382,14 +1746,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         Math.PI * 2
                     );
 
-
                     ctx.fill();
 
-
                     ctx.restore();
-
                 }
-
             }
 
 
@@ -2397,10 +1757,7 @@ document.addEventListener("DOMContentLoaded", () => {
                REDUCIR MOVIMIENTO
                ================================================= */
 
-            if (
-                reduceMotion
-            ) {
-
+            if (reduceMotion) {
                 ctx.setTransform(
                     1,
                     0,
@@ -2410,7 +1767,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     0
                 );
 
-
                 ctx.clearRect(
                     0,
                     0,
@@ -2418,32 +1774,26 @@ document.addEventListener("DOMContentLoaded", () => {
                     canvas.height
                 );
 
-
                 ctx.save();
-
 
                 ctx.scale(
                     dpr,
                     dpr
                 );
 
-
                 ctx.translate(
                     offsetX,
                     offsetY
                 );
-
 
                 ctx.scale(
                     scale,
                     scale
                 );
 
-
                 dibujarGlow(
                     0.55
                 );
-
 
                 dibujarRuta(
                     logoSuperiorPuntos,
@@ -2453,7 +1803,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     8
                 );
 
-
                 dibujarRuta(
                     logoMedioPuntos,
                     BLANCO,
@@ -2461,7 +1810,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     0.95,
                     10
                 );
-
 
                 dibujarRuta(
                     logoInferiorPuntos,
@@ -2471,18 +1819,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     8
                 );
 
-
                 dibujarTexto(
                     1,
                     1
                 );
 
-
                 ctx.restore();
 
-
             } else {
-
 
                 /* =================================================
                    ANIMACIÓN
@@ -2491,28 +1835,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 let inicio =
                     performance.now();
 
+                let animando = true;
 
-                let animando =
-                    true;
+                let frameId = null;
 
 
                 function animar(
                     timestamp
                 ) {
-
-                    if (
-                        !animando
-                    ) {
-
+                    if (!animando) {
+                        frameId = null;
                         return;
-
                     }
-
 
                     const tiempo =
                         timestamp -
                         inicio;
-
 
                     ctx.setTransform(
                         1,
@@ -2523,7 +1861,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         0
                     );
 
-
                     ctx.clearRect(
                         0,
                         0,
@@ -2531,32 +1868,26 @@ document.addEventListener("DOMContentLoaded", () => {
                         canvas.height
                     );
 
-
                     ctx.save();
-
 
                     ctx.scale(
                         dpr,
                         dpr
                     );
 
-
                     ctx.translate(
                         offsetX,
                         offsetY
                     );
-
 
                     ctx.scale(
                         scale,
                         scale
                     );
 
-
                     dibujarMorph(
                         tiempo
                     );
-
 
                     const ciclo =
                         (
@@ -2564,7 +1895,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             16000
                         ) /
                         16000;
-
 
                     const onda =
                         (
@@ -2576,7 +1906,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             ) + 1
                         ) / 2;
 
-
                     const intensidadPulso =
                         lerp(
                             0.78,
@@ -2587,114 +1916,74 @@ document.addEventListener("DOMContentLoaded", () => {
                             )
                         );
 
-
                     dibujarPulsoMovil(
                         tiempo,
                         intensidadPulso
                     );
 
-
                     ctx.restore();
 
+                    frameId =
+                        requestAnimationFrame(
+                            animar
+                        );
+                }
 
+
+                function iniciarAnimacion() {
+                    if (animando) {
+                        return;
+                    }
+
+                    animando = true;
+
+                    inicio =
+                        performance.now();
+
+                    if (!frameId) {
+                        frameId =
+                            requestAnimationFrame(
+                                animar
+                            );
+                    }
+                }
+
+
+                function detenerAnimacion() {
+                    animando = false;
+
+                    if (frameId) {
+                        cancelAnimationFrame(
+                            frameId
+                        );
+
+                        frameId = null;
+                    }
+                }
+
+
+                frameId =
                     requestAnimationFrame(
                         animar
                     );
 
-                }
-
-
-                requestAnimationFrame(
-                    animar
-                );
-
 
                 /* =================================================
-                   VISIBILIDAD DEL HERO
-                   ================================================= */
-
-                const hero =
-                    document.querySelector(
-                        "#inicio"
-                    );
-
-
-                if (
-                    hero &&
-                    "IntersectionObserver" in window
-                ) {
-
-                    const heroObserver =
-                        new IntersectionObserver(
-                            (entries) => {
-
-                                entries.forEach(
-                                    (entry) => {
-
-                                        if (
-                                            entry.isIntersecting
-                                        ) {
-
-                                            animando =
-                                                true;
-
-                                        }
-
-                                    }
-                                );
-
-                            },
-                            {
-                                threshold: 0.15
-                            }
-                        );
-
-
-                    heroObserver.observe(
-                        hero
-                    );
-
-                }
-
-
-                /* =================================================
-                   VISIBILIDAD DE LA PÁGINA
+                   VISIBILIDAD DEL DOCUMENTO
                    ================================================= */
 
                 document.addEventListener(
                     "visibilitychange",
                     () => {
-
-                        if (
-                            document.hidden
-                        ) {
-
-                            animando =
-                                false;
-
+                        if (document.hidden) {
+                            detenerAnimacion();
                         } else {
-
-                            animando =
-                                true;
-
-
-                            inicio =
-                                performance.now();
-
-
-                            requestAnimationFrame(
-                                animar
-                            );
-
+                            iniciarAnimacion();
                         }
-
                     }
                 );
-
             }
-
         }
-
     }
 
 
@@ -2707,30 +1996,25 @@ document.addEventListener("DOMContentLoaded", () => {
             "#pulsi-button"
         );
 
-
     const pulsiChat =
         document.querySelector(
             "#pulsi-chat"
         );
-
 
     const pulsiClose =
         document.querySelector(
             "#pulsi-close"
         );
 
-
     const pulsiMessages =
         document.querySelector(
             "#pulsi-messages"
         );
 
-
     const pulsiForm =
         document.querySelector(
             "#pulsi-form"
         );
-
 
     const pulsiInput =
         document.querySelector(
@@ -2743,48 +2027,34 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================= */
 
     function abrirPulsi() {
-
         if (!pulsiChat) {
-
             return;
-
         }
-
 
         pulsiChat.classList.add(
             "active"
         );
-
 
         pulsiChat.setAttribute(
             "aria-hidden",
             "false"
         );
 
-
         if (pulsiButton) {
-
             pulsiButton.setAttribute(
                 "aria-expanded",
                 "true"
             );
-
         }
 
-
         if (pulsiInput) {
-
             setTimeout(
                 () => {
-
                     pulsiInput.focus();
-
                 },
                 150
             );
-
         }
-
     }
 
 
@@ -2793,34 +2063,25 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================= */
 
     function cerrarPulsi() {
-
         if (!pulsiChat) {
-
             return;
-
         }
-
 
         pulsiChat.classList.remove(
             "active"
         );
-
 
         pulsiChat.setAttribute(
             "aria-hidden",
             "true"
         );
 
-
         if (pulsiButton) {
-
             pulsiButton.setAttribute(
                 "aria-expanded",
                 "false"
             );
-
         }
-
     }
 
 
@@ -2829,12 +2090,10 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================= */
 
     if (pulsiButton) {
-
         pulsiButton.addEventListener(
             "click",
             abrirPulsi
         );
-
     }
 
 
@@ -2843,12 +2102,10 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================= */
 
     if (pulsiClose) {
-
         pulsiClose.addEventListener(
             "click",
             cerrarPulsi
         );
-
     }
 
 
@@ -2860,51 +2117,38 @@ document.addEventListener("DOMContentLoaded", () => {
         texto,
         tipo
     ) {
-
         if (!pulsiMessages) {
-
             return;
-
         }
-
 
         const elemento =
             document.createElement(
                 "div"
             );
 
-
         elemento.className =
             tipo === "user"
-
                 ? "pulsi-message pulsi-message-user"
-
                 : "pulsi-message pulsi-message-ai";
-
 
         const textoElemento =
             document.createElement(
                 "p"
             );
 
-
         textoElemento.textContent =
             texto;
-
 
         elemento.appendChild(
             textoElemento
         );
 
-
         pulsiMessages.appendChild(
             elemento
         );
 
-
         pulsiMessages.scrollTop =
             pulsiMessages.scrollHeight;
-
     }
 
 
@@ -2913,9 +2157,7 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================= */
 
     const respuestasPulsi = [
-
         {
-
             claves: [
                 "servicio",
                 "servicios"
@@ -2923,12 +2165,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             respuesta:
                 "En PULSO trabajamos identidad visual, diseño gráfico, páginas web y experiencias digitales."
-
         },
 
-
         {
-
             claves: [
                 "web",
                 "pagina",
@@ -2938,12 +2177,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             respuesta:
                 "PULSO puede crear una página web adaptada a la identidad y necesidades de tu proyecto."
-
         },
 
-
         {
-
             claves: [
                 "logo",
                 "logotipo",
@@ -2953,12 +2189,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             respuesta:
                 "Podemos trabajar desde el logo hasta un sistema visual completo para que tu proyecto tenga una identidad propia."
-
         },
 
-
         {
-
             claves: [
                 "diseño",
                 "flyer",
@@ -2970,12 +2203,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             respuesta:
                 "También hacemos piezas gráficas, flyers, carteles, tarjetas, contenido para redes y material visual."
-
         },
 
-
         {
-
             claves: [
                 "contacto",
                 "hablar",
@@ -2984,21 +2214,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
             respuesta:
                 "Podés contarnos tu idea desde el formulario de proyecto y empezar a darle forma junto a PULSO."
-
         },
 
-
         {
-
             claves: [
                 "pulso"
             ],
 
             respuesta:
                 "PULSO es un estudio creativo enfocado en transformar ideas en identidades y experiencias digitales."
-
         }
-
     ];
 
 
@@ -3009,7 +2234,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function normalizarTexto(
         texto
     ) {
-
         return texto
             .toLowerCase()
             .normalize("NFD")
@@ -3017,7 +2241,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 /[\u0300-\u036f]/g,
                 ""
             );
-
     }
 
 
@@ -3028,49 +2251,37 @@ document.addEventListener("DOMContentLoaded", () => {
     function responderPulsi(
         pregunta
     ) {
-
         const texto =
             normalizarTexto(
                 pregunta
             );
 
-
         for (
             const item of respuestasPulsi
         ) {
-
             const coincide =
                 item.claves.some(
                     (clave) => {
-
                         const claveNormalizada =
                             normalizarTexto(
                                 clave
                             );
 
-
                         return texto.includes(
                             claveNormalizada
                         );
-
                     }
                 );
 
-
             if (coincide) {
-
                 return item.respuesta;
-
             }
-
         }
-
 
         return (
             "Todavía no tengo esa información conectada. " +
             "Podés contarme un poco más o usar el formulario para hablar con PULSO."
         );
-
     }
 
 
@@ -3079,59 +2290,42 @@ document.addEventListener("DOMContentLoaded", () => {
        ========================================================= */
 
     if (pulsiForm) {
-
         pulsiForm.addEventListener(
             "submit",
             (event) => {
-
                 event.preventDefault();
 
-
                 if (!pulsiInput) {
-
                     return;
-
                 }
-
 
                 const pregunta =
                     pulsiInput.value.trim();
 
-
                 if (!pregunta) {
-
                     return;
-
                 }
 
-
-                pulsiInput.value =
-                    "";
-
+                pulsiInput.value = "";
 
                 mensajePulsi(
                     pregunta,
                     "user"
                 );
 
-
                 setTimeout(
                     () => {
-
                         mensajePulsi(
                             responderPulsi(
                                 pregunta
                             ),
                             "ai"
                         );
-
                     },
                     250
                 );
-
             }
         );
-
     }
 
 
@@ -3143,46 +2337,35 @@ document.addEventListener("DOMContentLoaded", () => {
         ".pulsi-quick button"
     ).forEach(
         (button) => {
-
             button.addEventListener(
                 "click",
                 () => {
-
                     const pregunta =
                         button.dataset.question ||
                         button.textContent.trim();
 
-
                     if (!pregunta) {
-
                         return;
-
                     }
-
 
                     mensajePulsi(
                         pregunta,
                         "user"
                     );
 
-
                     setTimeout(
                         () => {
-
                             mensajePulsi(
                                 responderPulsi(
                                     pregunta
                                 ),
                                 "ai"
                             );
-
                         },
                         250
                     );
-
                 }
             );
-
         }
     );
 
@@ -3194,15 +2377,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener(
         "keydown",
         (event) => {
-
             if (
                 event.key === "Escape"
             ) {
-
                 cerrarPulsi();
-
             }
-
         }
     );
 
@@ -3214,22 +2393,17 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener(
         "click",
         (event) => {
-
             if (
                 !pulsiChat ||
                 !pulsiChat.classList.contains("active")
             ) {
-
                 return;
-
             }
-
 
             const dentroChat =
                 pulsiChat.contains(
                     event.target
                 );
-
 
             const dentroBoton =
                 pulsiButton &&
@@ -3237,16 +2411,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     event.target
                 );
 
-
             if (
                 !dentroChat &&
                 !dentroBoton
             ) {
-
                 cerrarPulsi();
-
             }
-
         }
     );
 
@@ -3259,7 +2429,6 @@ document.addEventListener("DOMContentLoaded", () => {
         "%cPULSO",
         "color:#ff6a00;font-size:24px;font-weight:800;letter-spacing:5px"
     );
-
 
     console.log(
         "Sistema PULSO iniciado."

@@ -1,3 +1,4 @@
+```css
 /* =========================================================
    PULSO — SISTEMA VISUAL
    Diseño que deja huella.
@@ -18,6 +19,7 @@
     --white-soft: #eeeeee;
     --gray: #a4a4a4;
     --gray-dark: #666666;
+
     --line: rgba(255, 255, 255, 0.12);
 
     --orange: #ff6a00;
@@ -68,6 +70,7 @@ body {
     color: var(--white);
     font-family: var(--font-main);
     line-height: 1.6;
+
     overflow-x: hidden;
 }
 
@@ -82,22 +85,23 @@ body::before {
 
     background-image:
         linear-gradient(
-            rgba(255,255,255,0.015) 1px,
+            rgba(255, 255, 255, 0.015) 1px,
             transparent 1px
         ),
         linear-gradient(
             90deg,
-            rgba(255,255,255,0.015) 1px,
+            rgba(255, 255, 255, 0.015) 1px,
             transparent 1px
         );
 
     background-size: 80px 80px;
 
-    mask-image: linear-gradient(
-        to bottom,
-        black,
-        transparent 75%
-    );
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 75%
+        );
 }
 
 img {
@@ -112,7 +116,8 @@ a {
 
 button,
 input,
-textarea {
+textarea,
+select {
     font: inherit;
 }
 
@@ -122,6 +127,11 @@ button {
 
 ul {
     list-style: none;
+}
+
+::selection {
+    background: var(--orange);
+    color: var(--black);
 }
 
 
@@ -141,7 +151,7 @@ ul {
 .section {
     position: relative;
 
-    padding: 130px 0;
+    padding: 95px 0;
 
     overflow: hidden;
 }
@@ -152,7 +162,7 @@ ul {
 
     gap: 12px;
 
-    margin-bottom: 28px;
+    margin-bottom: 22px;
 
     color: var(--orange);
 
@@ -192,12 +202,11 @@ ul {
 .section-description {
     max-width: 650px;
 
-    margin-top: 28px;
+    margin-top: 20px;
 
     color: var(--gray);
 
     font-size: 17px;
-
     line-height: 1.8;
 }
 
@@ -234,7 +243,6 @@ ul {
 
 .navbar.scrolled {
     background: rgba(5, 5, 5, 0.92);
-
     border-color: var(--line);
 }
 
@@ -243,6 +251,7 @@ ul {
     height: 90px;
 
     margin: 0;
+
     padding-left: 10px;
     padding-right: 20px;
 
@@ -252,7 +261,7 @@ ul {
 
     gap: 35px;
 }
-}
+
 .logo {
     display: inline-flex;
     align-items: center;
@@ -276,14 +285,14 @@ ul {
     flex-direction: column;
     align-items: stretch;
 
+    padding: 30px 40px 40px;
+
     background: rgba(5, 5, 5, 0.97);
 
     backdrop-filter: blur(22px);
     -webkit-backdrop-filter: blur(22px);
 
     z-index: 2000;
-
-    padding: 30px 40px 40px;
 
     opacity: 0;
     visibility: hidden;
@@ -375,11 +384,9 @@ ul {
     border: 1px solid var(--line);
     border-radius: 100px;
 
-    background: rgba(255,255,255,0.02);
+    background: rgba(255, 255, 255, 0.02);
 
     color: var(--white);
-
-    cursor: pointer;
 
     font-family: inherit;
     font-size: 12px;
@@ -398,7 +405,6 @@ ul {
     display: flex;
 
     flex-direction: column;
-
     justify-content: center;
 
     gap: 4px;
@@ -422,7 +428,7 @@ ul {
 .menu-toggle:hover {
     border-color: var(--orange);
 
-    background: rgba(255,106,0,0.08);
+    background: rgba(255, 106, 0, 0.08);
 
     transform: translateY(-1px);
 }
@@ -435,9 +441,9 @@ ul {
 .hero {
     position: relative;
 
-    min-height: 100vh;
+    min-height: 100svh;
 
-    padding: 150px 0 80px;
+    padding: 125px 0 70px;
 
     display: flex;
     flex-direction: column;
@@ -497,7 +503,7 @@ ul {
         var(--container)
     );
 
-    margin: 0 auto 60px;
+    margin: 0 auto 45px;
 
     display: flex;
     align-items: center;
@@ -513,25 +519,26 @@ ul {
 
     height: 1px;
 
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255,255,255,0.25)
-    );
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.25)
+        );
 }
 
 .hero-brand-line:last-child {
-    background: linear-gradient(
-        90deg,
-        rgba(255,255,255,0.25),
-        transparent
-    );
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.25),
+            transparent
+        );
 }
 
 
 /* =========================================================
-   PULSO — LOGO ECG ANIMADO
-   CANVAS
+   PULSO — LOGO ECG ANIMADO / CANVAS
    ========================================================= */
 
 .hero-pulso-canvas {
@@ -541,9 +548,9 @@ ul {
     height: 210px;
 
     margin-left: 50%;
-    transform: translateX(-50%);
+    margin-bottom: 45px;
 
-    margin-bottom: 55px;
+    transform: translateX(-50%);
 
     display: flex;
     align-items: center;
@@ -553,11 +560,6 @@ ul {
 
     z-index: 3;
 }
-
-
-/* =========================================================
-   CANVAS
-   ========================================================= */
 
 #pulsoLogoCanvas {
     display: block;
@@ -569,11 +571,6 @@ ul {
 
     pointer-events: none;
 }
-
-
-/* =========================================================
-   ILUMINACIÓN SUAVE DEL LOGO
-   ========================================================= */
 
 .hero-pulso-canvas::after {
     content: "";
@@ -604,40 +601,6 @@ ul {
 
 
 /* =========================================================
-   TABLET / CELULAR
-   ========================================================= */
-
-@media (max-width: 760px) {
-
-    .hero-pulso-canvas {
-
-        height: 150px;
-
-        margin-bottom: 45px;
-
-    }
-
-}
-
-
-/* =========================================================
-   CELULAR PEQUEÑO
-   ========================================================= */
-
-@media (max-width: 420px) {
-
-    .hero-pulso-canvas {
-
-        height: 125px;
-
-        margin-bottom: 40px;
-
-    }
-
-}
-
-
-/* =========================================================
    HERO — CONTENIDO
    ========================================================= */
 
@@ -655,7 +618,7 @@ ul {
         minmax(0, 1.05fr)
         minmax(400px, 0.95fr);
 
-    gap: 80px;
+    gap: 55px;
 
     align-items: center;
 
@@ -664,7 +627,7 @@ ul {
 }
 
 .hero-eyebrow {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 
     color: var(--orange);
 
@@ -699,7 +662,7 @@ ul {
 }
 
 .hero-subtitle {
-    margin-top: 35px;
+    margin-top: 26px;
 
     color: var(--white);
 
@@ -713,7 +676,7 @@ ul {
 .hero-description {
     max-width: 570px;
 
-    margin-top: 16px;
+    margin-top: 13px;
 
     color: var(--gray);
 
@@ -728,8 +691,13 @@ ul {
 
     gap: 14px;
 
-    margin-top: 38px;
+    margin-top: 30px;
 }
+
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
 
 .btn {
     display: inline-flex;
@@ -772,9 +740,9 @@ ul {
 }
 
 .btn-secondary {
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 
-    background: rgba(255,255,255,0.02);
+    background: rgba(255, 255, 255, 0.02);
 
     color: var(--white);
 }
@@ -793,7 +761,7 @@ ul {
 .hero-visual {
     position: relative;
 
-    min-height: 430px;
+    min-height: 400px;
 
     display: flex;
 
@@ -808,20 +776,20 @@ ul {
 
     aspect-ratio: 1 / 1;
 
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid rgba(255, 255, 255, 0.12);
 
     background:
         radial-gradient(
             circle at center,
-            rgba(255,106,0,0.10),
+            rgba(255, 106, 0, 0.10),
             transparent 48%
         ),
-        rgba(255,255,255,0.015);
+        rgba(255, 255, 255, 0.015);
 
     transform: rotate(-3deg);
 
     box-shadow:
-        0 0 80px rgba(255,106,0,0.06);
+        0 0 80px rgba(255, 106, 0, 0.06);
 
     overflow: hidden;
 
@@ -839,7 +807,7 @@ ul {
 
     inset: 28px;
 
-    border: 1px solid rgba(255,255,255,0.06);
+    border: 1px solid rgba(255, 255, 255, 0.06);
 
     pointer-events: none;
 
@@ -865,9 +833,9 @@ ul {
         linear-gradient(
             90deg,
             transparent,
-            rgba(255,106,0,0.12),
-            rgba(255,106,0,0.30),
-            rgba(255,106,0,0.12),
+            rgba(255, 106, 0, 0.12),
+            rgba(255, 106, 0, 0.30),
+            rgba(255, 106, 0, 0.12),
             transparent
         );
 
@@ -922,7 +890,7 @@ ul {
         translate(-50%, -50%)
         rotate(45deg);
 
-    border: 1px solid rgba(255,106,0,0.45);
+    border: 1px solid rgba(255, 106, 0, 0.45);
 
     display: flex;
 
@@ -940,8 +908,9 @@ ul {
         infinite;
 
     box-shadow:
-        0 0 0 rgba(255,106,0,0);
+        0 0 0 rgba(255, 106, 0, 0);
 }
+
 .pulse-symbol::before {
     content: "";
 
@@ -949,7 +918,7 @@ ul {
 
     inset: 15px;
 
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .pulse-symbol span {
@@ -961,7 +930,7 @@ ul {
     background: var(--orange);
 
     box-shadow:
-        0 0 15px rgba(255,106,0,0.6);
+        0 0 15px rgba(255, 106, 0, 0.6);
 
     transform-origin: center;
 
@@ -971,6 +940,7 @@ ul {
         ease-in-out
         infinite;
 }
+
 .pulse-symbol span:nth-child(1) {
     height: 25px;
 }
@@ -1010,16 +980,23 @@ ul {
     stroke-dashoffset: 1200;
 
     animation:
-        pulseDraw 5s linear infinite;
+        pulseDraw
+        5s
+        linear
+        infinite;
 
     filter:
         drop-shadow(
-            0 0 8px rgba(255,106,0,0.55)
+            0 0 8px rgba(255, 106, 0, 0.55)
         );
 }
 
-@keyframes pulseDraw {
 
+/* =========================================================
+   ANIMACIONES
+   ========================================================= */
+
+@keyframes pulseDraw {
     0% {
         stroke-dashoffset: 1200;
         opacity: 0.15;
@@ -1044,8 +1021,8 @@ ul {
         opacity: 0.15;
     }
 }
-@keyframes pulseVisualFloat {
 
+@keyframes pulseVisualFloat {
     0%,
     100% {
         transform:
@@ -1053,7 +1030,7 @@ ul {
             translateY(0);
 
         box-shadow:
-            0 0 80px rgba(255,106,0,0.06);
+            0 0 80px rgba(255, 106, 0, 0.06);
     }
 
     50% {
@@ -1062,13 +1039,11 @@ ul {
             translateY(-7px);
 
         box-shadow:
-            0 0 100px rgba(255,106,0,0.10);
+            0 0 100px rgba(255, 106, 0, 0.10);
     }
 }
 
-
 @keyframes pulseInnerFrame {
-
     0%,
     100% {
         opacity: 0.55;
@@ -1081,9 +1056,7 @@ ul {
     }
 }
 
-
 @keyframes pulseCenterLine {
-
     0%,
     100% {
         opacity: 0.45;
@@ -1102,9 +1075,7 @@ ul {
     }
 }
 
-
 @keyframes pulseSymbolFloat {
-
     0%,
     100% {
         transform:
@@ -1113,7 +1084,7 @@ ul {
             scale(1);
 
         box-shadow:
-            0 0 0 rgba(255,106,0,0);
+            0 0 0 rgba(255, 106, 0, 0);
     }
 
     50% {
@@ -1123,13 +1094,11 @@ ul {
             scale(1.035);
 
         box-shadow:
-            0 0 35px rgba(255,106,0,0.10);
+            0 0 35px rgba(255, 106, 0, 0.10);
     }
 }
 
-
 @keyframes pulseBars {
-
     0%,
     100% {
         opacity: 0.65;
@@ -1138,7 +1107,7 @@ ul {
             scaleY(0.82);
 
         box-shadow:
-            0 0 8px rgba(255,106,0,0.25);
+            0 0 8px rgba(255, 106, 0, 0.25);
     }
 
     45% {
@@ -1148,7 +1117,7 @@ ul {
             scaleY(1.08);
 
         box-shadow:
-            0 0 18px rgba(255,106,0,0.65);
+            0 0 18px rgba(255, 106, 0, 0.65);
     }
 
     55% {
@@ -1158,23 +1127,18 @@ ul {
             scaleY(1);
 
         box-shadow:
-            0 0 15px rgba(255,106,0,0.55);
+            0 0 15px rgba(255, 106, 0, 0.55);
     }
 }
 
-/* =========================================================
-   ANIMACIÓN DEL LOGO PRINCIPAL
-   ========================================================= */
-
 @keyframes logoPulso {
-
     0%,
     100% {
         transform: scale(1);
 
         filter:
             drop-shadow(
-                0 0 0 rgba(255,106,0,0)
+                0 0 0 rgba(255, 106, 0, 0)
             );
     }
 
@@ -1183,7 +1147,7 @@ ul {
 
         filter:
             drop-shadow(
-                0 0 5px rgba(255,106,0,0.18)
+                0 0 5px rgba(255, 106, 0, 0.18)
             );
     }
 
@@ -1192,7 +1156,7 @@ ul {
 
         filter:
             drop-shadow(
-                0 0 13px rgba(255,106,0,0.38)
+                0 0 13px rgba(255, 106, 0, 0.38)
             );
     }
 
@@ -1201,7 +1165,7 @@ ul {
 
         filter:
             drop-shadow(
-                0 0 5px rgba(255,106,0,0.15)
+                0 0 5px rgba(255, 106, 0, 0.15)
             );
     }
 }
@@ -1260,11 +1224,13 @@ ul {
     font-size: 18px;
 
     animation:
-        scrollArrow 1.5s ease-in-out infinite;
+        scrollArrow
+        1.5s
+        ease-in-out
+        infinite;
 }
 
 @keyframes scrollArrow {
-
     0%,
     100% {
         transform: translateY(0);
@@ -1277,13 +1243,13 @@ ul {
 
 
 /* =========================================================
-   07. BRAND STATEMENT
+   07. BRAND STATEMENT / MANIFIESTO
    ========================================================= */
 
 .brand-statement {
     position: relative;
 
-    padding: 70px 0;
+    padding: 65px 0;
 
     background: var(--black-soft);
 }
@@ -1307,7 +1273,7 @@ ul {
         var(--container)
     );
 
-    margin: 45px auto;
+    margin: 40px auto;
 
     display: grid;
 
@@ -1359,7 +1325,7 @@ ul {
         minmax(280px, 0.8fr)
         minmax(0, 1.2fr);
 
-    gap: 90px;
+    gap: 65px;
 
     align-items: start;
 }
@@ -1369,7 +1335,7 @@ ul {
 
     font-family: var(--font-title);
 
-    font-size: clamp(32px, 4vw, 58px);
+    font-size: clamp(34px, 4vw, 54px);
 
     font-weight: 700;
 
@@ -1397,9 +1363,9 @@ ul {
 .concept-card {
     position: relative;
 
-    min-height: 220px;
+    min-height: 185px;
 
-    padding: 30px;
+    padding: 26px;
 
     background: var(--black-card);
 
@@ -1452,7 +1418,7 @@ ul {
 .concept-number {
     display: block;
 
-    margin-bottom: 45px;
+    margin-bottom: 32px;
 
     color: var(--orange);
 
@@ -1476,25 +1442,25 @@ ul {
 
     grid-template-columns: repeat(2, 1fr);
 
-    gap: 16px;
+    gap: 12px;
 
-    margin-top: 70px;
+    margin-top: 48px;
 }
 
 .service-card {
     position: relative;
 
-    min-height: 310px;
+    min-height: 245px;
 
-    padding: 40px;
+    padding: 30px;
 
     border: 1px solid var(--line);
 
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,0.035),
-            rgba(255,255,255,0.008)
+            rgba(255, 255, 255, 0.035),
+            rgba(255, 255, 255, 0.008)
         );
 
     overflow: hidden;
@@ -1515,7 +1481,7 @@ ul {
     right: -80px;
     bottom: -80px;
 
-    border: 1px solid rgba(255,106,0,0.18);
+    border: 1px solid rgba(255, 106, 0, 0.18);
 
     transform: rotate(45deg);
 
@@ -1526,7 +1492,8 @@ ul {
 .service-card:hover {
     transform: translateY(-5px);
 
-    border-color: rgba(255,106,0,0.45);
+    border-color:
+        rgba(255, 106, 0, 0.45);
 }
 
 .service-card:hover::before {
@@ -1538,7 +1505,7 @@ ul {
 .service-number {
     display: block;
 
-    margin-bottom: 60px;
+    margin-bottom: 38px;
 
     color: var(--orange);
 
@@ -1553,7 +1520,7 @@ ul {
 
     font-family: var(--font-title);
 
-    font-size: 28px;
+    font-size: 25px;
 
     letter-spacing: -0.03em;
 }
@@ -1570,7 +1537,7 @@ ul {
 
     gap: 8px;
 
-    margin-top: 25px;
+    margin-top: 18px;
 }
 
 .service-card li {
@@ -1605,15 +1572,15 @@ ul {
 
     grid-template-columns: repeat(3, 1fr);
 
-    gap: 18px;
+    gap: 14px;
 
-    margin-top: 70px;
+    margin-top: 48px;
 }
 
 .project-card {
     position: relative;
 
-    min-height: 430px;
+    min-height: 370px;
 
     border: 1px solid var(--line);
 
@@ -1629,7 +1596,8 @@ ul {
 .project-card:hover {
     transform: translateY(-8px);
 
-    border-color: rgba(255,106,0,0.4);
+    border-color:
+        rgba(255, 106, 0, 0.4);
 }
 
 .project-browser {
@@ -1660,7 +1628,7 @@ ul {
 .project-content {
     height: calc(100% - 35px);
 
-    padding: 30px;
+    padding: 26px;
 
     display: flex;
 
@@ -1671,7 +1639,7 @@ ul {
     background:
         linear-gradient(
             135deg,
-            rgba(255,106,0,0.09),
+            rgba(255, 106, 0, 0.09),
             transparent 45%
         );
 }
@@ -1690,7 +1658,7 @@ ul {
 .project-content h3 {
     font-family: var(--font-title);
 
-    font-size: 31px;
+    font-size: 28px;
 
     line-height: 1;
 
@@ -1710,7 +1678,7 @@ ul {
 
     width: fit-content;
 
-    margin-top: 25px;
+    margin-top: 18px;
 
     color: var(--white);
 
@@ -1730,6 +1698,9 @@ ul {
 .intencion {
     position: relative;
 
+    padding-top: 90px;
+    padding-bottom: 90px;
+
     background:
         linear-gradient(
             135deg,
@@ -1743,7 +1714,7 @@ ul {
 
     grid-template-columns: 1fr 1fr;
 
-    gap: 80px;
+    gap: 55px;
 
     align-items: center;
 }
@@ -1753,7 +1724,7 @@ ul {
 
     font-family: var(--font-title);
 
-    font-size: clamp(40px, 5vw, 72px);
+    font-size: clamp(38px, 5vw, 65px);
 
     line-height: 0.95;
 
@@ -1779,7 +1750,7 @@ ul {
 .intencion-visual {
     position: relative;
 
-    min-height: 300px;
+    min-height: 260px;
 
     display: flex;
 
@@ -1806,16 +1777,18 @@ ul {
     stroke-dashoffset: 1100;
 
     animation:
-        intentionPulse 6s linear infinite;
+        intentionPulse
+        6s
+        linear
+        infinite;
 
     filter:
         drop-shadow(
-            0 0 10px rgba(255,106,0,0.45)
+            0 0 10px rgba(255, 106, 0, 0.45)
         );
 }
 
 @keyframes intentionPulse {
-
     0% {
         stroke-dashoffset: 1100;
     }
@@ -1843,7 +1816,7 @@ ul {
 
     grid-template-columns: repeat(5, 1fr);
 
-    margin-top: 70px;
+    margin-top: 48px;
 
     border-top: 1px solid var(--line);
 
@@ -1853,9 +1826,9 @@ ul {
 .process-step {
     position: relative;
 
-    min-height: 270px;
+    min-height: 215px;
 
-    padding: 30px;
+    padding: 25px;
 
     border-right: 1px solid var(--line);
 }
@@ -1874,7 +1847,7 @@ ul {
 }
 
 .process-step h3 {
-    margin-top: 75px;
+    margin-top: 55px;
 
     font-family: var(--font-title);
 
@@ -1905,7 +1878,7 @@ ul {
 
     gap: 1px;
 
-    margin-top: 70px;
+    margin-top: 48px;
 
     background: var(--line);
 
@@ -1913,9 +1886,9 @@ ul {
 }
 
 .why-card {
-    min-height: 210px;
+    min-height: 180px;
 
-    padding: 30px;
+    padding: 26px;
 
     background: var(--black-card);
 
@@ -1937,7 +1910,7 @@ ul {
 }
 
 .why-card h3 {
-    margin-top: 55px;
+    margin-top: 42px;
 
     font-family: var(--font-title);
 
@@ -1962,12 +1935,12 @@ ul {
 .cta {
     position: relative;
 
-    padding: 150px 0;
+    padding: 105px 0;
 
     background:
         radial-gradient(
             circle at 50% 50%,
-            rgba(255,106,0,0.12),
+            rgba(255, 106, 0, 0.12),
             transparent 35%
         ),
         var(--black-soft);
@@ -1986,7 +1959,7 @@ ul {
     width: 450px;
     height: 450px;
 
-    border: 1px solid rgba(255,106,0,0.10);
+    border: 1px solid rgba(255, 106, 0, 0.10);
 
     transform: rotate(45deg);
 }
@@ -2008,7 +1981,7 @@ ul {
 
     font-family: var(--font-title);
 
-    font-size: clamp(60px, 10vw, 140px);
+    font-size: clamp(55px, 9vw, 120px);
 
     line-height: 0.8;
 
@@ -2026,7 +1999,7 @@ ul {
 
     z-index: 2;
 
-    margin: 35px auto;
+    margin: 25px auto;
 
     color: var(--gray);
 
@@ -2049,11 +2022,11 @@ ul {
 }
 
 .project-form {
-    margin-top: 70px;
+    margin-top: 48px;
 }
 
 .form-group {
-    margin-bottom: 45px;
+    margin-bottom: 32px;
 }
 
 .form-group label {
@@ -2140,7 +2113,7 @@ ul {
 
     border: 1px solid var(--line);
 
-    background: rgba(255,255,255,0.015);
+    background: rgba(255, 255, 255, 0.015);
 
     cursor: pointer;
 
@@ -2150,7 +2123,8 @@ ul {
 }
 
 .form-options label:hover {
-    border-color: rgba(255,106,0,0.5);
+    border-color:
+        rgba(255, 106, 0, 0.5);
 }
 
 .form-options input {
@@ -2212,9 +2186,9 @@ ul {
 
     grid-template-columns: 1fr 1fr;
 
-    gap: 80px;
+    gap: 55px;
 
-    margin-top: 70px;
+    margin-top: 48px;
 }
 
 .contact-info {
@@ -2222,13 +2196,13 @@ ul {
 
     flex-direction: column;
 
-    gap: 20px;
+    gap: 14px;
 }
 
 .contact-item {
     display: block;
 
-    padding: 24px;
+    padding: 20px;
 
     border: 1px solid var(--line);
 
@@ -2241,7 +2215,8 @@ ul {
 }
 
 .contact-item:hover {
-    border-color: rgba(255,106,0,0.45);
+    border-color:
+        rgba(255, 106, 0, 0.45);
 
     background: var(--black-light);
 
@@ -2302,7 +2277,7 @@ ul {
 .brand-closing {
     position: relative;
 
-    padding: 110px 0;
+    padding: 80px 0;
 
     background: var(--black);
 
@@ -2333,11 +2308,6 @@ ul {
     background: var(--line);
 }
 
-
-/* =========================================================
-   LOGO FINAL — PULSO
-   ========================================================= */
-
 .brand-closing-image {
     width: clamp(220px, 28vw, 360px);
 
@@ -2346,11 +2316,14 @@ ul {
     transform-origin: center;
 
     animation:
-        logoCierrePulso 5.5s ease-in-out infinite;
+        logoCierrePulso
+        5.5s
+        ease-in-out
+        infinite;
 
     filter:
         drop-shadow(
-            0 0 0 rgba(255,106,0,0)
+            0 0 0 rgba(255, 106, 0, 0)
         );
 
     will-change:
@@ -2359,14 +2332,13 @@ ul {
 }
 
 @keyframes logoCierrePulso {
-
     0%,
     100% {
         transform: scale(1);
 
         filter:
             drop-shadow(
-                0 0 0 rgba(255,106,0,0)
+                0 0 0 rgba(255, 106, 0, 0)
             );
     }
 
@@ -2375,7 +2347,7 @@ ul {
 
         filter:
             drop-shadow(
-                0 0 4px rgba(255,106,0,0.14)
+                0 0 4px rgba(255, 106, 0, 0.14)
             );
     }
 
@@ -2384,7 +2356,7 @@ ul {
 
         filter:
             drop-shadow(
-                0 0 14px rgba(255,106,0,0.35)
+                0 0 14px rgba(255, 106, 0, 0.35)
             );
     }
 
@@ -2393,7 +2365,7 @@ ul {
 
         filter:
             drop-shadow(
-                0 0 5px rgba(255,106,0,0.14)
+                0 0 5px rgba(255, 106, 0, 0.14)
             );
     }
 }
@@ -2415,7 +2387,7 @@ ul {
    ========================================================= */
 
 .footer {
-    padding: 70px 0 30px;
+    padding: 55px 0 25px;
 
     background: #030303;
 
@@ -2438,7 +2410,7 @@ ul {
 
     gap: 50px;
 
-    padding-bottom: 60px;
+    padding-bottom: 45px;
 }
 
 .footer-brand {
@@ -2447,6 +2419,7 @@ ul {
 
 .footer-logo-image {
     width: 130px;
+
     height: auto;
 }
 
@@ -2522,8 +2495,8 @@ ul {
 .pulsi-container {
     position: fixed;
 
-    right: 25px;
-    bottom: 25px;
+    right: 22px;
+    bottom: 22px;
 
     z-index: 2000;
 }
@@ -2543,12 +2516,12 @@ ul {
 
     border-radius: 100px;
 
-    background: rgba(5,5,5,0.92);
+    background: rgba(5, 5, 5, 0.92);
 
     color: var(--white);
 
     box-shadow:
-        0 10px 35px rgba(0,0,0,0.4);
+        0 10px 35px rgba(0, 0, 0, 0.4);
 
     transition:
         transform var(--transition-fast),
@@ -2572,28 +2545,29 @@ ul {
     background: var(--orange);
 
     box-shadow:
-        0 0 0 5px rgba(255,106,0,0.12),
-        0 0 15px rgba(255,106,0,0.7);
+        0 0 0 5px rgba(255, 106, 0, 0.12),
+        0 0 15px rgba(255, 106, 0, 0.7);
 
     animation:
-        pulsiPulse 1.7s infinite;
+        pulsiPulse
+        1.7s
+        infinite;
 }
 
 @keyframes pulsiPulse {
-
     0% {
         box-shadow:
-            0 0 0 0 rgba(255,106,0,0.35);
+            0 0 0 0 rgba(255, 106, 0, 0.35);
     }
 
     70% {
         box-shadow:
-            0 0 0 9px rgba(255,106,0,0);
+            0 0 0 9px rgba(255, 106, 0, 0);
     }
 
     100% {
         box-shadow:
-            0 0 0 0 rgba(255,106,0,0);
+            0 0 0 0 rgba(255, 106, 0, 0);
     }
 }
 
@@ -2614,7 +2588,7 @@ ul {
         370px
     );
 
-    height: 540px;
+    height: 500px;
 
     display: flex;
 
@@ -2627,7 +2601,7 @@ ul {
     background: #0a0a0a;
 
     box-shadow:
-        0 25px 70px rgba(0,0,0,0.65);
+        0 25px 70px rgba(0, 0, 0, 0.65);
 
     overflow: hidden;
 
@@ -2853,7 +2827,8 @@ ul {
 
     transform: translateY(0);
 
-    transition-delay: var(--animation-delay, 0ms);
+    transition-delay:
+        var(--animation-delay, 0ms);
 }
 
 .stagger-card {
@@ -2871,7 +2846,8 @@ ul {
 
     transform: translateY(0);
 
-    transition-delay: var(--animation-delay, 0ms);
+    transition-delay:
+        var(--animation-delay, 0ms);
 }
 
 
@@ -2882,8 +2858,8 @@ ul {
 .btn-volver-arriba {
     position: fixed;
 
-    right: 25px;
-    bottom: 90px;
+    right: 22px;
+    bottom: 82px;
 
     width: 42px;
     height: 42px;
@@ -2897,7 +2873,7 @@ ul {
 
     border-radius: 50%;
 
-    background: rgba(5,5,5,0.9);
+    background: rgba(5, 5, 5, 0.9);
 
     color: var(--white);
 
@@ -2928,560 +2904,61 @@ ul {
 
 
 /* =========================================================
-   23. RESPONSIVE — TABLET
-   ========================================================= */
-
-@media (max-width: 1050px) {
-
-    .nav-menu {
-        gap: 18px;
-    }
-
-    .hero-container {
-        grid-template-columns: 1fr;
-
-        gap: 50px;
-    }
-
-    .hero-content {
-        max-width: 850px;
-    }
-
-    .hero-visual {
-        min-height: 350px;
-    }
-
-    .pulse-visual {
-        max-width: 500px;
-    }
-
-    .nosotros-content {
-        grid-template-columns: 1fr;
-
-        gap: 60px;
-    }
-
-    .projects-track {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .process-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .process-step:nth-child(3) {
-        border-right: none;
-    }
-
-    .intencion-content {
-        grid-template-columns: 1fr;
-
-        gap: 50px;
-    }
-
-    .why-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .footer-top {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-
-/* =========================================================
-   24. RESPONSIVE — MOBILE
-   ========================================================= */
-
-@media (max-width: 760px) {
-
-    .container {
-        width: min(
-            calc(100% - 30px),
-            var(--container)
-        );
-    }
-
-    .section {
-        padding: 90px 0;
-    }
-
-    .nav-container {
-        width: calc(100% - 30px);
-
-        height: 72px;
-    }
-
-    .logo-image {
-        width: 100px;
-    }
-
-    .menu-toggle {
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-    }
-
-    .nav-menu {
-        position: absolute;
-
-        top: 72px;
-
-        left: 15px;
-        right: 15px;
-
-        padding: 20px;
-
-        display: none;
-
-        flex-direction: column;
-
-        align-items: stretch;
-
-        gap: 5px;
-
-        border: 1px solid var(--line);
-
-        background: rgba(5,5,5,0.97);
-
-        backdrop-filter: blur(20px);
-    }
-
-    .nav-menu.active,
-    .nav-menu.activo {
-        display: flex;
-    }
-
-    .nav-menu a {
-        padding: 12px;
-    }
-
-    .nav-cta {
-        text-align: center;
-    }
-
-    .hero {
-        min-height: auto;
-
-        padding: 125px 0 80px;
-    }
-
-    .hero-brand {
-        width: calc(100% - 30px);
-
-        margin-bottom: 45px;
-
-        gap: 12px;
-    }
-
-    .hero-container {
-        width: calc(100% - 30px);
-
-        grid-template-columns: 1fr;
-
-        gap: 50px;
-    }
-
-    .hero h1 {
-        font-size: clamp(52px, 16vw, 82px);
-    }
-
-    .hero-description {
-        font-size: 14px;
-    }
-
-    .hero-buttons {
-        flex-direction: column;
-
-        align-items: stretch;
-    }
-
-    .btn {
-        width: 100%;
-    }
-
-    .hero-visual {
-        min-height: 320px;
-    }
-
-    .pulse-visual {
-        width: 100%;
-
-        transform: rotate(-2deg);
-    }
-
-    .hero-index {
-        right: 15px;
-
-        bottom: 20px;
-    }
-
-    .scroll-indicator {
-        left: 15px;
-
-        bottom: 20px;
-    }
-
-    .brand-statement {
-        padding: 55px 0;
-    }
-
-    .brand-statement-content {
-        width: calc(100% - 30px);
-
-        grid-template-columns: 35px 1fr;
-
-        gap: 15px;
-
-        margin: 35px auto;
-    }
-
-    .brand-statement p {
-        font-size: 23px;
-    }
-
-    .concepts-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .services-grid {
-        grid-template-columns: 1fr;
-
-        margin-top: 45px;
-    }
-
-    .service-card {
-        min-height: 280px;
-
-        padding: 28px;
-    }
-
-    .projects-track {
-        grid-template-columns: 1fr;
-
-        margin-top: 45px;
-    }
-
-    .project-card {
-        min-height: 380px;
-    }
-
-    .process-grid {
-        grid-template-columns: 1fr;
-
-        margin-top: 45px;
-    }
-
-    .process-step {
-        min-height: 190px;
-
-        border-right: none;
-
-        border-bottom: 1px solid var(--line);
-    }
-
-    .process-step:last-child {
-        border-bottom: none;
-    }
-
-    .process-step h3 {
-        margin-top: 45px;
-    }
-
-    .why-grid {
-        grid-template-columns: 1fr;
-
-        margin-top: 45px;
-    }
-
-    .why-card {
-        min-height: 180px;
-    }
-
-    .why-card h3 {
-        margin-top: 40px;
-    }
-
-    .cta {
-        padding: 100px 0;
-    }
-
-    .cta h2 {
-        font-size: clamp(65px, 20vw, 110px);
-    }
-
-    .form-grid,
-    .form-options {
-        grid-template-columns: 1fr;
-    }
-
-    #image-preview-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .contact-grid {
-        grid-template-columns: 1fr;
-
-        gap: 40px;
-
-        margin-top: 45px;
-    }
-
-    .brand-closing {
-        padding: 80px 0;
-    }
-
-    .brand-closing-image {
-        width: 220px;
-    }
-
-    .brand-closing-content {
-        width: calc(100% - 30px);
-    }
-
-    .footer {
-        padding-top: 55px;
-    }
-
-    .footer-top {
-        grid-template-columns: 1fr;
-
-        gap: 40px;
-
-        padding-bottom: 40px;
-    }
-
-    .footer-bottom {
-        flex-direction: column;
-
-        align-items: flex-start;
-    }
-
-    .pulsi-container {
-        right: 15px;
-
-        bottom: 15px;
-    }
-
-    .pulsi-chat {
-        right: 0;
-
-        bottom: 62px;
-
-        height: 500px;
-    }
-
-    .btn-volver-arriba {
-        right: 15px;
-
-        bottom: 75px;
-    }
-
-    .intencion-visual {
-        min-height: 220px;
-    }
-}
-
-
-/* =========================================================
-   25. RESPONSIVE — MOBILE PEQUEÑO
-   ========================================================= */
-
-@media (max-width: 420px) {
-
-    .hero h1 {
-        font-size: 50px;
-    }
-
-    .hero-brand-line {
-        display: none;
-    }
-
-    .brand-closing-image {
-        width: 205px;
-    }
-
-    .pulse-visual {
-        min-height: 300px;
-    }
-
-    .pulse-symbol {
-        width: 110px;
-        height: 110px;
-    }
-
-    .pulse-symbol span {
-        height: 32px;
-    }
-
-    .pulse-symbol span:nth-child(2) {
-        height: 50px;
-    }
-
-    .pulse-symbol span:nth-child(3) {
-        height: 25px;
-    }
-
-    .section-title {
-        font-size: 42px;
-    }
-
-    .service-card h3 {
-        font-size: 25px;
-    }
-
-    .pulsi-chat {
-        width: calc(100vw - 30px);
-
-        right: -2px;
-    }
-
-    .intencion-visual {
-        min-height: 180px;
-    }
-}
-
-
-/* =========================================================
-   26. ACCESIBILIDAD
-   ========================================================= */
-
-:focus-visible {
-    outline: 2px solid var(--orange);
-
-    outline-offset: 4px;
-}
-
-::selection {
-    background: var(--orange);
-
-    color: var(--black);
-}
-
-
-/* =========================================================
-   27. REDUCIR MOVIMIENTO
-   ========================================================= */
-
-.reducir-movimiento *,
-.reducir-movimiento *::before,
-.reducir-movimiento *::after {
-    animation: none !important;
-
-    transition: none !important;
-
-    scroll-behavior: auto !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation: none !important;
-
-        transition: none !important;
-
-        scroll-behavior: auto !important;
-    }
-}
-/* =========================================================
-   28. PULSO — SISTEMA DE VISTAS
-   Navegación tipo SPA dentro de index.html
-========================================================= */
-/* =========================================================
-   SISTEMA DE VISTAS — PULSO
-   Cada vista funciona como una página interna
+   23. SISTEMA DE VISTAS
    ========================================================= */
 
 .view {
-  display: none;
-  position: relative;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(18px);
+    display: none;
+
+    position: relative;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(18px);
 }
-
-
-/* =========================================================
-   VISTA ACTIVA
-   ========================================================= */
 
 .view.view-active {
-  display: block;
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+    display: block;
+
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
 }
-
-
-/* =========================================================
-   ENTRADA DE VISTA
-   ========================================================= */
 
 .view.view-entering {
-  animation:
-    pulsoViewEnter
-    0.55s
-    cubic-bezier(.22,.61,.36,1)
-    both;
-}
-
-
-/* =========================================================
-   ANIMACIÓN DE ENTRADA
-   ========================================================= */
-
-@keyframes pulsoViewEnter {
-
-  from {
-    opacity: 0;
-    transform: translateY(22px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
+    animation:
+        pulsoViewEnter
+        0.55s
+        cubic-bezier(.22, .61, .36, 1)
+        both;
 }
 
 @keyframes pulsoViewEnter {
-
     from {
         opacity: 0;
+
         transform: translateY(24px);
     }
 
     to {
         opacity: 1;
+
         transform: translateY(0);
     }
-
 }
 
-
-/* =========================================================
-   CABECERA INTERNA DE LAS VISTAS
-========================================================= */
-
-.view .section-heading {
-    position: relative;
-}
-
-.view .section-label {
-    position: relative;
-}
-
+.view .section-heading,
+.view .section-label,
 .view .section-title {
     position: relative;
 }
 
 
 /* =========================================================
-   AYUDA
-========================================================= */
+   24. AYUDA
+   ========================================================= */
 
 .ayuda {
     position: relative;
@@ -3489,7 +2966,7 @@ ul {
     background:
         radial-gradient(
             circle at 85% 15%,
-            rgba(255,106,0,0.07),
+            rgba(255, 106, 0, 0.07),
             transparent 28%
         ),
         var(--black-soft);
@@ -3503,23 +2980,23 @@ ul {
 
     gap: 16px;
 
-    margin-top: 70px;
+    margin-top: 55px;
 }
 
 .help-card {
     position: relative;
 
-    min-height: 280px;
+    min-height: 260px;
 
-    padding: 36px;
+    padding: 32px;
 
     border: 1px solid var(--line);
 
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,0.035),
-            rgba(255,255,255,0.008)
+            rgba(255, 255, 255, 0.035),
+            rgba(255, 255, 255, 0.008)
         );
 
     overflow: hidden;
@@ -3541,7 +3018,7 @@ ul {
     right: -90px;
     bottom: -90px;
 
-    border: 1px solid rgba(255,106,0,0.16);
+    border: 1px solid rgba(255, 106, 0, 0.16);
 
     transform: rotate(45deg);
 
@@ -3553,10 +3030,10 @@ ul {
     transform: translateY(-5px);
 
     border-color:
-        rgba(255,106,0,0.45);
+        rgba(255, 106, 0, 0.45);
 
     background:
-        rgba(255,255,255,0.035);
+        rgba(255, 255, 255, 0.035);
 }
 
 .help-card:hover::before {
@@ -3570,7 +3047,7 @@ ul {
 
     display: block;
 
-    margin-bottom: 55px;
+    margin-bottom: 45px;
 
     color: var(--orange);
 
@@ -3611,7 +3088,7 @@ ul {
 
     display: inline-flex;
 
-    margin-top: 25px;
+    margin-top: 22px;
 
     color: var(--white);
 
@@ -3642,13 +3119,13 @@ ul {
 
 .help-contact-card p {
     color:
-        rgba(255,255,255,0.58);
+        rgba(255, 255, 255, 0.58);
 }
 
 
 /* =========================================================
-   MENÚ — NUEVA ESTRUCTURA
-========================================================= */
+   25. MENÚ — NUEVA ESTRUCTURA
+   ========================================================= */
 
 .nav-menu-header {
     display: flex;
@@ -3681,6 +3158,7 @@ ul {
     justify-content: center;
 
     border: 1px solid var(--line);
+
     border-radius: 50%;
 
     background: transparent;
@@ -3770,11 +3248,6 @@ ul {
         1px solid var(--line);
 }
 
-
-/* =========================================================
-   VISTA ACTIVA
-========================================================= */
-
 .nav-menu-links a.active-view {
     color: var(--white);
 }
@@ -3785,15 +3258,404 @@ ul {
 
 
 /* =========================================================
-   RESPONSIVE — SISTEMA DE VISTAS
-========================================================= */
+   26. RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .section {
+        padding: 85px 0;
+    }
+
+    .nav-menu {
+        gap: 18px;
+    }
+
+    .hero-container {
+        grid-template-columns: 1fr;
+
+        gap: 45px;
+    }
+
+    .hero-content {
+        max-width: 850px;
+    }
+
+    .hero-visual {
+        min-height: 350px;
+    }
+
+    .pulse-visual {
+        max-width: 500px;
+    }
+
+    .nosotros-content {
+        grid-template-columns: 1fr;
+
+        gap: 55px;
+    }
+
+    .projects-track {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .process-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .process-step:nth-child(3) {
+        border-right: none;
+    }
+
+    .intencion-content {
+        grid-template-columns: 1fr;
+
+        gap: 45px;
+    }
+
+    .why-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-top {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+/* =========================================================
+   27. RESPONSIVE — MOBILE
+   ========================================================= */
 
 @media (max-width: 760px) {
+
+    .container {
+        width: min(
+            calc(100% - 30px),
+            var(--container)
+        );
+    }
+
+    .section {
+        padding: 70px 0;
+    }
+
+    .nav-container {
+        width: calc(100% - 30px);
+
+        height: 72px;
+    }
+
+    .logo-image {
+        width: 100px;
+    }
+
+    .menu-toggle {
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-menu {
+        position: absolute;
+
+        top: 72px;
+
+        left: 15px;
+        right: 15px;
+
+        width: auto;
+        height: auto;
+        max-height: calc(100vh - 90px);
+
+        padding: 20px;
+
+        display: none;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 5px;
+
+        border: 1px solid var(--line);
+
+        border-radius: 16px;
+
+        background:
+            rgba(5, 5, 5, 0.97);
+
+        backdrop-filter: blur(20px);
+
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+
+        transform: none;
+    }
+
+    .nav-menu.active,
+    .nav-menu.activo,
+    .nav-menu.is-open {
+        display: flex;
+    }
+
+    .nav-menu a {
+        padding: 12px;
+    }
+
+    .nav-cta {
+        text-align: center;
+    }
+
+    .hero {
+        min-height: auto;
+
+        padding: 110px 0 60px;
+    }
+
+    .hero-brand {
+        width: calc(100% - 30px);
+
+        margin-bottom: 35px;
+
+        gap: 12px;
+    }
+
+    .hero-pulso-canvas {
+        height: 150px;
+
+        margin-bottom: 35px;
+    }
+
+    .hero-container {
+        width: calc(100% - 30px);
+
+        grid-template-columns: 1fr;
+
+        gap: 40px;
+    }
+
+    .hero h1 {
+        font-size: clamp(52px, 16vw, 82px);
+    }
+
+    .hero-subtitle {
+        margin-top: 22px;
+    }
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        margin-top: 25px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .hero-visual {
+        min-height: 300px;
+    }
+
+    .pulse-visual {
+        width: 100%;
+
+        transform: rotate(-2deg);
+    }
+
+    .hero-index {
+        right: 15px;
+
+        bottom: 20px;
+    }
+
+    .scroll-indicator {
+        left: 15px;
+
+        bottom: 20px;
+    }
+
+    .brand-statement {
+        padding: 55px 0;
+    }
+
+    .brand-statement-content {
+        width: calc(100% - 30px);
+
+        grid-template-columns: 35px 1fr;
+
+        gap: 15px;
+
+        margin: 35px auto;
+    }
+
+    .brand-statement p {
+        font-size: 23px;
+    }
+
+    .concepts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .concept-card {
+        min-height: auto;
+
+        padding: 24px;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+
+        margin-top: 35px;
+    }
+
+    .service-card {
+        min-height: 220px;
+
+        padding: 25px;
+    }
+
+    .service-number {
+        margin-bottom: 30px;
+    }
+
+    .projects-track {
+        grid-template-columns: 1fr;
+
+        margin-top: 35px;
+    }
+
+    .project-card {
+        min-height: 340px;
+    }
+
+    .process-grid {
+        grid-template-columns: 1fr;
+
+        margin-top: 35px;
+    }
+
+    .process-step {
+        min-height: 165px;
+
+        border-right: none;
+
+        border-bottom: 1px solid var(--line);
+    }
+
+    .process-step:last-child {
+        border-bottom: none;
+    }
+
+    .process-step h3 {
+        margin-top: 35px;
+    }
+
+    .why-grid {
+        grid-template-columns: 1fr;
+
+        margin-top: 35px;
+    }
+
+    .why-card {
+        min-height: 160px;
+    }
+
+    .why-card h3 {
+        margin-top: 32px;
+    }
+
+    .cta {
+        padding: 80px 0;
+    }
+
+    .cta h2 {
+        font-size: clamp(65px, 20vw, 110px);
+    }
+
+    .form-grid,
+    .form-options {
+        grid-template-columns: 1fr;
+    }
+
+    #image-preview-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+
+        gap: 40px;
+
+        margin-top: 35px;
+    }
+
+    .brand-closing {
+        padding: 65px 0;
+    }
+
+    .brand-closing-image {
+        width: 220px;
+    }
+
+    .brand-closing-content {
+        width: calc(100% - 30px);
+    }
+
+    .footer {
+        padding-top: 50px;
+    }
+
+    .footer-top {
+        grid-template-columns: 1fr;
+
+        gap: 35px;
+
+        padding-bottom: 40px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .pulsi-container {
+        right: 15px;
+
+        bottom: 15px;
+    }
+
+    .pulsi-chat {
+        right: 0;
+
+        bottom: 62px;
+
+        height: 500px;
+    }
+
+    .btn-volver-arriba {
+        right: 15px;
+
+        bottom: 75px;
+    }
+
+    .intencion-visual {
+        min-height: 220px;
+    }
 
     .help-grid {
         grid-template-columns: 1fr;
 
-        margin-top: 45px;
+        margin-top: 40px;
     }
 
     .help-card {
@@ -3809,10 +3671,96 @@ ul {
     .help-card h3 {
         font-size: 24px;
     }
-
 }
 
+
+/* =========================================================
+   28. RESPONSIVE — MOBILE PEQUEÑO
+   ========================================================= */
+
 @media (max-width: 420px) {
+
+    .section {
+        padding: 60px 0;
+    }
+
+    .hero {
+        padding-top: 100px;
+        padding-bottom: 55px;
+    }
+
+    .hero-pulso-canvas {
+        height: 125px;
+
+        margin-bottom: 30px;
+    }
+
+    .hero h1 {
+        font-size: 50px;
+    }
+
+    .hero-brand-line {
+        display: none;
+    }
+
+    .brand-closing-image {
+        width: 205px;
+    }
+
+    .pulse-visual {
+        min-height: 300px;
+    }
+
+    .pulse-symbol {
+        width: 110px;
+        height: 110px;
+    }
+
+    .pulse-symbol span {
+        height: 32px;
+    }
+
+    .pulse-symbol span:nth-child(2) {
+        height: 50px;
+    }
+
+    .pulse-symbol span:nth-child(3) {
+        height: 25px;
+    }
+
+    .section-title {
+        font-size: 42px;
+    }
+
+    .service-card h3 {
+        font-size: 25px;
+    }
+
+    .project-card {
+        min-height: 320px;
+    }
+
+    .process-step {
+        min-height: 150px;
+    }
+
+    .cta {
+        padding: 70px 0;
+    }
+
+    .brand-closing {
+        padding: 55px 0;
+    }
+
+    .pulsi-chat {
+        width: calc(100vw - 30px);
+
+        right: -2px;
+    }
+
+    .intencion-visual {
+        min-height: 180px;
+    }
 
     .help-card {
         padding: 24px;
@@ -3821,5 +3769,44 @@ ul {
     .help-card h3 {
         font-size: 22px;
     }
-
 }
+
+
+/* =========================================================
+   29. ACCESIBILIDAD
+   ========================================================= */
+
+:focus-visible {
+    outline: 2px solid var(--orange);
+
+    outline-offset: 4px;
+}
+
+
+/* =========================================================
+   30. REDUCIR MOVIMIENTO
+   ========================================================= */
+
+.reducir-movimiento *,
+.reducir-movimiento *::before,
+.reducir-movimiento *::after {
+    animation: none !important;
+
+    transition: none !important;
+
+    scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+
+        transition: none !important;
+
+        scroll-behavior: auto !important;
+    }
+}
+```

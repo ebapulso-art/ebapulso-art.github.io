@@ -3810,3 +3810,761 @@ ul {
     }
 }
 ```
+/* ============================================================
+   PULSO — CORRECCIÓN DE CONTRASTE Y VISIBILIDAD
+   ============================================================ */
+
+:root {
+    --black: #080808;
+    --black-soft: #0d0d0d;
+    --black-card: #121212;
+    --black-light: #181818;
+
+    --white: #ffffff;
+    --white-soft: #eeeeee;
+
+    --gray: #b8b8b8;
+    --gray-dark: #888888;
+
+    --line: rgba(255, 255, 255, 0.14);
+
+    --orange: #ff6a00;
+    --orange-light: #ff8533;
+    --orange-dark: #d95500;
+}
+
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+html,
+body {
+    background: var(--black);
+    color: var(--white);
+}
+
+body {
+    color: var(--white);
+}
+
+
+/* ============================================================
+   TEXTOS GENERALES
+   ============================================================ */
+
+p {
+    color: var(--gray);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--white);
+}
+
+strong,
+b {
+    color: var(--white);
+}
+
+small {
+    color: var(--gray);
+}
+
+
+/* ============================================================
+   CONTENEDORES / SECCIONES
+   ============================================================ */
+
+.section {
+    color: var(--white);
+}
+
+.section-title {
+    color: var(--white);
+}
+
+.section-description {
+    color: var(--gray);
+}
+
+.section-label {
+    color: var(--orange);
+}
+
+
+/* ============================================================
+   NAVEGACIÓN
+   ============================================================ */
+
+.navbar {
+    color: var(--white);
+}
+
+.nav-menu {
+    background: rgba(8, 8, 8, 0.97);
+}
+
+.nav-menu a {
+    color: var(--white);
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus {
+    color: var(--orange);
+}
+
+.nav-menu-header {
+    color: var(--white);
+}
+
+.nav-menu-header span {
+    color: var(--gray);
+}
+
+.nav-menu-links a {
+    color: var(--white);
+}
+
+.nav-menu-links a span {
+    color: var(--gray);
+}
+
+.nav-menu-links a:hover span,
+.nav-menu-links a.active-view span {
+    color: var(--orange);
+}
+
+.nav-menu-footer {
+    color: var(--gray);
+}
+
+.nav-pulsi-link {
+    color: var(--orange);
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+    background:
+        radial-gradient(
+            circle at 75% 45%,
+            rgba(255, 106, 0, 0.07),
+            transparent 32%
+        ),
+        var(--black);
+    color: var(--white);
+}
+
+.hero-eyebrow,
+.hero-brand-line {
+    color: var(--orange);
+}
+
+.hero h1 {
+    color: var(--white);
+}
+
+.hero h1 span {
+    color: var(--orange);
+}
+
+.hero-subtitle {
+    color: var(--white-soft);
+}
+
+.hero-description {
+    color: var(--gray);
+}
+
+.hero-index {
+    color: var(--gray-dark);
+}
+
+.scroll-indicator {
+    color: var(--gray);
+}
+
+.scroll-arrow {
+    color: var(--orange);
+}
+
+
+/* ============================================================
+   BRAND STATEMENT
+   ============================================================ */
+
+.brand-statement {
+    background: var(--black-soft);
+    color: var(--white);
+}
+
+.brand-statement-number {
+    color: var(--orange);
+}
+
+.brand-statement p {
+    color: var(--gray);
+}
+
+.brand-statement strong {
+    color: var(--white);
+}
+
+
+/* ============================================================
+   NOSOTROS
+   ============================================================ */
+
+.nosotros {
+    background: var(--black);
+    color: var(--white);
+}
+
+.nosotros-text .large-text {
+    color: var(--white);
+}
+
+.nosotros-text span {
+    color: var(--orange);
+}
+
+.concept-card {
+    background: var(--black-card);
+    border-color: var(--line);
+}
+
+.concept-card h3 {
+    color: var(--white);
+}
+
+.concept-card p {
+    color: var(--gray);
+}
+
+.concept-number {
+    color: var(--orange);
+}
+
+
+/* ============================================================
+   SERVICIOS
+   ============================================================ */
+
+.servicios {
+    background: var(--black-soft);
+    color: var(--white);
+}
+
+.service-card {
+    background: var(--black-card);
+    border-color: var(--line);
+}
+
+.service-card h3 {
+    color: var(--white);
+}
+
+.service-card p {
+    color: var(--gray);
+}
+
+.service-card li {
+    color: var(--gray);
+}
+
+.service-card li::marker {
+    color: var(--orange);
+}
+
+.service-number {
+    color: var(--orange);
+}
+
+
+/* ============================================================
+   PROYECTOS
+   ============================================================ */
+
+.proyectos {
+    background: var(--black);
+    color: var(--white);
+}
+
+.project-card {
+    background: var(--black-card);
+    border-color: var(--line);
+}
+
+.project-card h3 {
+    color: var(--white);
+}
+
+.project-card p {
+    color: var(--gray);
+}
+
+.project-card a {
+    color: var(--orange);
+}
+
+.project-card a:hover {
+    color: var(--orange-light);
+}
+
+.project-number {
+    color: var(--gray-dark);
+}
+
+.project-browser {
+    background: #181818;
+}
+
+
+/* ============================================================
+   INTENCIÓN
+   ============================================================ */
+
+.intencion {
+    background: var(--black-soft);
+    color: var(--white);
+}
+
+.intencion h2 {
+    color: var(--white);
+}
+
+.intencion h2 span {
+    color: var(--orange);
+}
+
+.intencion p {
+    color: var(--gray);
+}
+
+
+/* ============================================================
+   PROCESO
+   ============================================================ */
+
+.proceso {
+    background: var(--black);
+    color: var(--white);
+}
+
+.process-step {
+    border-color: var(--line);
+}
+
+.process-step h3 {
+    color: var(--white);
+}
+
+.process-step p {
+    color: var(--gray);
+}
+
+.process-step .number,
+.process-step > span {
+    color: var(--orange);
+}
+
+
+/* ============================================================
+   POR QUÉ PULSO
+   ============================================================ */
+
+.porque {
+    background: var(--black-soft);
+    color: var(--white);
+}
+
+.why-card {
+    background: var(--black-card);
+    border-color: var(--line);
+}
+
+.why-card h3 {
+    color: var(--white);
+}
+
+.why-card p {
+    color: var(--gray);
+}
+
+.why-card .number,
+.why-number {
+    color: var(--orange);
+}
+
+
+/* ============================================================
+   CTA
+   ============================================================ */
+
+.cta {
+    background: #111111;
+    color: var(--white);
+}
+
+.cta h2 {
+    color: var(--white);
+}
+
+.cta h2 span {
+    color: var(--orange);
+}
+
+.cta p {
+    color: var(--gray);
+}
+
+
+/* ============================================================
+   BOTONES
+   ============================================================ */
+
+.btn {
+    color: var(--white);
+}
+
+.btn-primary {
+    background: var(--orange);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: var(--orange-light);
+    color: #ffffff;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn-secondary:hover {
+    color: var(--white);
+    border-color: var(--orange);
+    background: rgba(255, 106, 0, 0.06);
+}
+
+
+/* ============================================================
+   FORMULARIO
+   ============================================================ */
+
+.formulario {
+    background: var(--black);
+    color: var(--white);
+}
+
+.project-form {
+    color: var(--white);
+}
+
+.form-group label {
+    color: var(--white);
+}
+
+.form-group small {
+    color: var(--gray-dark);
+}
+
+.project-form input,
+.project-form textarea,
+.project-form select {
+    background: #111111;
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.project-form input::placeholder,
+.project-form textarea::placeholder {
+    color: #777777;
+}
+
+.project-form input:focus,
+.project-form textarea:focus,
+.project-form select:focus {
+    color: var(--white);
+    border-color: var(--orange);
+    background: #141414;
+    outline: none;
+}
+
+.form-options label {
+    color: var(--gray);
+}
+
+.form-options label:hover {
+    color: var(--white);
+}
+
+.form-submit {
+    color: #ffffff;
+}
+
+.form-status {
+    color: var(--gray);
+}
+
+
+/* ============================================================
+   CONTACTO
+   ============================================================ */
+
+.contacto {
+    background: var(--black-soft);
+    color: var(--white);
+}
+
+.contact-info {
+    color: var(--white);
+}
+
+.contact-item {
+    border-color: var(--line);
+}
+
+.contact-item span {
+    color: var(--orange);
+}
+
+.contact-item strong {
+    color: var(--white);
+}
+
+.contact-item p {
+    color: var(--gray);
+}
+
+.contact-item a {
+    color: var(--white);
+}
+
+.contact-item a:hover {
+    color: var(--orange);
+}
+
+
+/* ============================================================
+   AYUDA
+   ============================================================ */
+
+.ayuda {
+    background: var(--black);
+    color: var(--white);
+}
+
+.help-card {
+    background: var(--black-card);
+    border-color: var(--line);
+}
+
+.help-card h3 {
+    color: var(--white);
+}
+
+.help-card p {
+    color: var(--gray);
+}
+
+.help-card a {
+    color: var(--orange);
+}
+
+.help-number {
+    color: var(--orange);
+}
+
+.help-contact-card {
+    background: #111111;
+    color: var(--white);
+}
+
+.help-contact-card p {
+    color: var(--gray);
+}
+
+
+/* ============================================================
+   BRAND CLOSING
+   ============================================================ */
+
+.brand-closing {
+    background: var(--black);
+    color: var(--white);
+}
+
+.brand-closing p {
+    color: var(--gray);
+}
+
+.brand-closing-line {
+    background: var(--orange);
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.footer {
+    background: #050505;
+    color: var(--white);
+}
+
+.footer-brand p {
+    color: var(--gray);
+}
+
+.footer-links h4 {
+    color: var(--white);
+}
+
+.footer-links a {
+    color: var(--gray);
+}
+
+.footer-links a:hover {
+    color: var(--orange);
+}
+
+.footer-bottom {
+    color: var(--gray-dark);
+    border-color: var(--line);
+}
+
+.footer-bottom a {
+    color: var(--gray);
+}
+
+.footer-bottom a:hover {
+    color: var(--orange);
+}
+
+
+/* ============================================================
+   PULSI
+   ============================================================ */
+
+.pulsi-chat {
+    background: #101010;
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+.pulsi-header {
+    background: #151515;
+    color: var(--white);
+}
+
+.pulsi-header strong {
+    color: var(--white);
+}
+
+.pulsi-header span {
+    color: var(--gray);
+}
+
+.pulsi-message p {
+    color: inherit;
+}
+
+.pulsi-message-ai {
+    background: #181818;
+    color: var(--white);
+}
+
+.pulsi-message-ai p {
+    color: var(--white-soft);
+}
+
+.pulsi-message-user {
+    background: var(--orange);
+    color: #ffffff;
+}
+
+.pulsi-message-user p {
+    color: #ffffff;
+}
+
+.pulsi-quick button {
+    background: transparent;
+    color: var(--gray);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.pulsi-quick button:hover {
+    color: var(--white);
+    border-color: var(--orange);
+}
+
+.pulsi-form input {
+    background: #151515;
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.pulsi-form input::placeholder {
+    color: #777777;
+}
+
+.pulsi-form input:focus {
+    border-color: var(--orange);
+}
+
+.pulsi-form button {
+    background: var(--orange);
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   VISTAS
+   ============================================================ */
+
+.view {
+    color: var(--white);
+}
+
+.view .section-heading {
+    color: var(--white);
+}
+
+.view .section-label {
+    color: var(--orange);
+}
+
+.view .section-title {
+    color: var(--white);
+}
+
+
+/* ============================================================
+   SELECCIÓN
+   ============================================================ */
+
+::selection {
+    background: var(--orange);
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   ACCESIBILIDAD
+   ============================================================ */
+
+:focus-visible {
+    outline: 2px solid var(--orange);
+    outline-offset: 4px;
+}
